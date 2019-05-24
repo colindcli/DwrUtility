@@ -1,0 +1,78 @@
+{
+  "LeftDiffs": [
+    {
+      "Number": 2,
+      "Id": 1,
+      "Name": "Item1"
+    },
+    {
+      "Number": 1,
+      "Id": 1,
+      "Name": "Item1"
+    }
+  ],
+  "RightDiffs": [
+    {
+      "Number": 17,
+      "Id": 5,
+      "Name": "Item5"
+    },
+    {
+      "Number": 16,
+      "Id": 5,
+      "Name": "Item5"
+    }
+  ],
+  "Repeats": [
+    {
+      "Object": {
+        "Id": 4,
+        "Name": "Item4"
+      },
+      "Lefts": [
+        {
+          "Number": 8,
+          "Id": 4,
+          "Name": "Item4"
+        }
+      ],
+      "Rights": [
+        {
+          "Number": 15,
+          "Id": 4,
+          "Name": "Item4"
+        },
+        {
+          "Number": 14,
+          "Id": 4,
+          "Name": "Item4"
+        }
+      ]
+    },
+    {
+      "Object": {
+        "Id": 2,
+        "Name": "Item2"
+      },
+      "Lefts": [
+        {
+          "Number": 4,
+          "Id": 2,
+          "Name": "Item2"
+        },
+        {
+          "Number": 3,
+          "Id": 2,
+          "Name": "Item2"
+        }
+      ],
+      "Rights": [
+        {
+          "Number": 11,
+          "Id": 2,
+          "Name": "Item2"
+        }
+      ]
+    }
+  ]
+}

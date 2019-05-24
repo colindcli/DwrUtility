@@ -1,0 +1,40 @@
+[
+  {
+    "Id": 1,
+    "ParentId": 0,
+    "Name": "1",
+    "Childs": [
+      {
+        "Id": 3,
+        "ParentId": 1,
+        "Name": "12",
+        "Childs": []
+      },
+      {
+        "Id": 4,
+        "ParentId": 1,
+        "Name": "111",
+        "Childs": []
+      },
+      {
+        "Id": 5,
+        "ParentId": 1,
+        "Name": "2",
+        "Childs": []
+      },
+      {
+        "Id": 7,
+        "ParentId": 1,
+        "Name": "222",
+        "Childs": [
+          {
+            "Id": 8,
+            "ParentId": 7,
+            "Name": "222",
+            "Childs": []
+          }
+        ]
+      }
+    ]
+  }
+]

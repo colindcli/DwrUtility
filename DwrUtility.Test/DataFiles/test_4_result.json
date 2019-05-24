@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "ParentId": 0,
+    "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab01",
+    "ParentGuid": null,
+    "Name": "1",
+    "Childs": [
+      {
+        "Id": 2,
+        "ParentId": 1,
+        "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab02",
+        "ParentGuid": "4d50839f-6800-4c8e-80e8-6c104fb1ab01",
+        "Name": "11",
+        "Childs": [
+          {
+            "Id": 4,
+            "ParentId": 2,
+            "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab03",
+            "ParentGuid": "4d50839f-6800-4c8e-80e8-6c104fb1ab02",
+            "Name": "111",
+            "Childs": []
+          }
+        ]
+      },
+      {
+        "Id": 3,
+        "ParentId": 1,
+        "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab04",
+        "ParentGuid": "4d50839f-6800-4c8e-80e8-6c104fb1ab01",
+        "Name": "12",
+        "Childs": []
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "ParentId": 0,
+    "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab05",
+    "ParentGuid": null,
+    "Name": "2",
+    "Childs": [
+      {
+        "Id": 6,
+        "ParentId": 5,
+        "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab06",
+        "ParentGuid": "4d50839f-6800-4c8e-80e8-6c104fb1ab05",
+        "Name": "21",
+        "Childs": [
+          {
+            "Id": 7,
+            "ParentId": 6,
+            "Guid": "4d50839f-6800-4c8e-80e8-6c104fb1ab07",
+            "ParentGuid": "4d50839f-6800-4c8e-80e8-6c104fb1ab06",
+            "Name": "211",
+            "Childs": []
+          }
+        ]
+      }
+    ]
+  }
+]

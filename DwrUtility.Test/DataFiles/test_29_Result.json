@@ -1,0 +1,16 @@
+{
+  "LeftDiffs": [ 1 ],
+  "RightDiffs": [ 4 ],
+  "Repeats": [
+    {
+      "Object": 3,
+      "Lefts": [ 3 ],
+      "Rights": [ 3, 3, 3, 3 ]
+    },
+    {
+      "Object": 2,
+      "Lefts": [ 2, 2, 2 ],
+      "Rights": [ 2 ]
+    }
+  ]
+}

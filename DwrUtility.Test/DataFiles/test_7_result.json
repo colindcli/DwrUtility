@@ -1,0 +1,13 @@
+[
+  {
+    "TeamId": 100,
+    "ParentId": 0,
+    "Childs": [
+      {
+        "TeamId": 101,
+        "ParentId": 100,
+        "Childs": []
+      }
+    ]
+  }
+]

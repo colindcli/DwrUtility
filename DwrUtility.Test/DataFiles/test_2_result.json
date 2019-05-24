@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 100,
+    "ParentId": 0,
+    "ParentIds": null,
+    "Depth": 0,
+    "Name": "1",
+    "Childs": [
+      {
+        "Id": 101,
+        "ParentId": 100,
+        "ParentIds": null,
+        "Depth": 0,
+        "Name": "11",
+        "Childs": [
+          {
+            "Id": 102,
+            "ParentId": 101,
+            "ParentIds": null,
+            "Depth": 0,
+            "Name": "111",
+            "Childs": []
+          }
+        ]
+      },
+      {
+        "Id": 103,
+        "ParentId": 100,
+        "ParentIds": null,
+        "Depth": 0,
+        "Name": "12",
+        "Childs": []
+      }
+    ]
+  },
+  {
+    "Id": 104,
+    "ParentId": 0,
+    "ParentIds": null,
+    "Depth": 0,
+    "Name": "2",
+    "Childs": [
+      {
+        "Id": 105,
+        "ParentId": 104,
+        "ParentIds": null,
+        "Depth": 0,
+        "Name": "22",
+        "Childs": [
+          {
+            "Id": 106,
+            "ParentId": 105,
+            "ParentIds": null,
+            "Depth": 0,
+            "Name": "222",
+            "Childs": []
+          }
+        ]
+      }
+    ]
+  }
+]

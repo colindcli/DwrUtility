@@ -1,0 +1,52 @@
+{
+  "LeftDiffs": [
+    {
+      "Number": 100,
+      "Id": 0,
+      "Name": "Item0"
+    },
+    {
+      "Number": 101,
+      "Id": 1,
+      "Name": "Item1"
+    },
+    {
+      "Number": 102,
+      "Id": 2,
+      "Name": "Item2"
+    },
+    {
+      "Number": 103,
+      "Id": 3,
+      "Name": "Item3"
+    },
+    {
+      "Number": 110,
+      "Id": 3,
+      "Name": "AddRow3"
+    },
+    {
+      "Number": 111,
+      "Id": 3,
+      "Name": "AddRow3"
+    }
+  ],
+  "RightDiffs": [
+    {
+      "Number": 206,
+      "Id": 10,
+      "Name": "Item10"
+    },
+    {
+      "Number": 207,
+      "Id": 11,
+      "Name": "Item11"
+    },
+    {
+      "Number": 208,
+      "Id": 30,
+      "Name": "AddSource30"
+    }
+  ],
+  "Repeats": []
+}
