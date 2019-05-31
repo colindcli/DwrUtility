@@ -317,5 +317,142 @@ namespace DwrUtility.Lists
         }
 
         #endregion
+
+        #region 重复数据处理
+
+        /// <summary>
+        /// 是否有重复数据（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static bool HasRepeat<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            var hsSet = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
+            foreach (var item in list)
+            {
+                var success = hsSet.Add(key.Invoke(item));
+                if (!success)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 获取重复TKey，多个重复TKey也是返回一个（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static HashSet<TKey> GetRepeatKeys<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            var hsSet = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
+            var items = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
+            foreach (var item in list)
+            {
+                var v = key.Invoke(item);
+                var success = hsSet.Add(v);
+                if (!success)
+                {
+                    items.Add(v);
+                }
+            }
+
+            return items;
+        }
+
+        /// <summary>
+        /// 获取重复数据（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static List<T> GetRepeatLists<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            var rows = new List<T>();
+            var repeatKeys = GetRepeatKeys(list, key, comparer);
+            if (repeatKeys.Count == 0)
+            {
+                return rows;
+            }
+
+            foreach (var item in list)
+            {
+                if (repeatKeys.Contains(key.Invoke(item)))
+                {
+                    rows.Add(item);
+                }
+            }
+
+            return rows;
+        }
+
+        /// <summary>
+        /// 去重（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static List<TKey> Distinct<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
+            foreach (var item in list)
+            {
+                dict.Add(key.Invoke(item));
+            }
+
+            return dict.ToList();
+        }
+
+        /// <summary>
+        /// 转Dictionary（去重处理，TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        {
+            var dict = comparer == null ? new Dictionary<TKey, TValue>() : new Dictionary<TKey, TValue>(comparer);
+            foreach (var item in list)
+            {
+                var k = key.Invoke(item);
+                if (!dict.ContainsKey(k))
+                {
+                    dict.Add(k, value.Invoke(item));
+                }
+                else
+                {
+                    if (!useFirstValue)
+                    {
+                        dict[k] = value.Invoke(item);
+                    }
+                }
+            }
+
+            return dict;
+        }
+
+        #endregion
     }
 }

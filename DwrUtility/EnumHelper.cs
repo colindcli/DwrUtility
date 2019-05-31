@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DwrUtility.Lists;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace DwrUtility
             foreach (var el in enumList)
             {
                 var vs = Enum.GetValues(el).Cast<int>().ToList();
-                var repeats = vs.GetRepeats(p => p);
+                var repeats = vs.GetRepeatKeys(p => p);
                 if (repeats.Count > 0)
                 {
                     throw new Exception($"枚举{el.FullName}重复值: {string.Join(";", repeats)}");

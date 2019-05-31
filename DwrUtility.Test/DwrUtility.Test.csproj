@@ -90,6 +90,12 @@
     <None Include="DataFiles\test_2.json" />
     <None Include="DataFiles\test_28_Result2.json" />
     <None Include="DataFiles\test_30_1.json" />
+    <None Include="DataFiles\test_31_Result_A.json" />
+    <None Include="DataFiles\test_37_Result_A.json" />
+    <None Include="DataFiles\test_39_Result_A.json" />
+    <None Include="DataFiles\test_39_Result.json" />
+    <None Include="DataFiles\test_38_Result_B.json" />
+    <None Include="DataFiles\test_38_Result_A.json" />
     <None Include="DataFiles\test_38_Result.json" />
     <None Include="DataFiles\test_37_Result.json" />
     <None Include="DataFiles\test_36_Result.json" />

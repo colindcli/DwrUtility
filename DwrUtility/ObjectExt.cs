@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlTypes;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
@@ -29,106 +27,6 @@ namespace DwrUtility
         public static long ToTicks(this DateTime dt)
         {
             return (dt.ToUniversalTime().Ticks - 621355968000000000) / 10000;
-        }
-
-        /// <summary>
-        /// 是否有重复数据（TKey必须是匿名对象）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
-        /// <param name="list"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static bool HasRepeat<T, TKey>(this List<T> list, Func<T, TKey> obj)
-        {
-            var hsSet = new HashSet<TKey>();
-            foreach (var item in list)
-            {
-                var success = hsSet.Add(obj.Invoke(item));
-                if (!success)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 获取重复数据（TKey必须是匿名对象）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
-        /// <param name="list"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static List<TKey> GetRepeats<T, TKey>(this List<T> list, Func<T, TKey> obj)
-        {
-            var hsSet = new HashSet<TKey>();
-            var items = new List<TKey>();
-            foreach (var item in list)
-            {
-                var v = obj.Invoke(item);
-                var success = hsSet.Add(v);
-                if (!success)
-                {
-                    items.Add(v);
-                }
-            }
-
-            return items;
-        }
-
-        /// <summary>
-        /// 去重（TKey必须是匿名对象）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
-        /// <param name="list"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static List<TKey> Distinct<T, TKey>(this List<T> list, Func<T, TKey> obj)
-        {
-            var dict = new HashSet<TKey>();
-            foreach (var item in list)
-            {
-                dict.Add(obj.Invoke(item));
-            }
-
-            return dict.ToList();
-        }
-
-        /// <summary>
-        /// 转Dictionary（去重处理，TKey必须是匿名对象）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
-        /// <returns></returns>
-        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(this List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue)
-        {
-            var dict = new Dictionary<TKey, TValue>();
-            foreach (var item in list)
-            {
-                var k = key.Invoke(item);
-                if (!dict.ContainsKey(k))
-                {
-                    dict.Add(k, value.Invoke(item));
-                }
-                else
-                {
-                    if (!useFirstValue)
-                    {
-                        dict[k] = value.Invoke(item);
-                    }
-                }
-            }
-
-            return dict;
         }
 
         /// <summary>

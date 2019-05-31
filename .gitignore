@@ -1,0 +1,7 @@
+.vs/*
+DwrUtility.Test/bin/*
+DwrUtility.Test/obj/*
+DwrUtility/bin/*
+DwrUtility/obj/*
+packages/*
+TestResults/*

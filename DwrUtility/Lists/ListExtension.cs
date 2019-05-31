@@ -262,5 +262,79 @@ namespace DwrUtility.Lists
             var param = new ListComparerParam<TLeft, TRight, TEquals>(leftList, rightList, leftFunc, rightFunc);
             return ListHelper.RemoveSameOneRecord(param);
         }
+
+        /// <summary>
+        /// 是否有重复数据（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static bool HasRepeat<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            return ListHelper.HasRepeat(list, key, comparer);
+        }
+
+        /// <summary>
+        /// 获取重复TKey，多个重复TKey也是返回一个（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static HashSet<TKey> GetRepeatKeys<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            return ListHelper.GetRepeatKeys(list, key, comparer);
+        }
+
+        /// <summary>
+        /// 获取重复数据（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static List<T> GetRepeatLists<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            return ListHelper.GetRepeatLists(list, key, comparer);
+        }
+
+        /// <summary>
+        /// 去重（TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static List<TKey> Distinct<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        {
+            return ListHelper.Distinct(list, key, comparer);
+        }
+
+        /// <summary>
+        /// 转Dictionary（去重处理，TKey必须是匿名对象）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(this List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        {
+            return ListHelper.ToDictionary(list, key, value, useFirstValue, comparer);
+        }
+
     }
 }
