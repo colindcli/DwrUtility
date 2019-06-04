@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DwrUtility.Trees;
 
 namespace DwrUtility.Test
@@ -109,6 +110,31 @@ namespace DwrUtility.Test
         {
             var guids = TreeHelper.NewGuidNull(10);
             Assert.IsTrue(guids.Count == 10);
+        }
+
+        [TestMethod]
+        public void TestMethod7()
+        {
+            //待验证
+            var path = $"{FileDir}test_40.json";
+            var json = File.ReadAllText(path);
+            var list = JsonConvert.DeserializeObject<List<Team>>(json);
+
+            var result = new List<int>();
+            list.ForEachTreeView(p => p.Childs, p =>
+            {
+                result.Add(p.Id);
+            });
+            var s = JsonConvert.SerializeObject(result);
+
+
+            //正确结果
+            var pathResult = $"{FileDir}test_40_result.json";
+            var resultOk = JsonConvert.DeserializeObject<List<int>>(File.ReadAllText(pathResult));
+
+
+            var eq = new CompareLogic().Compare(result, resultOk);
+            Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
         }
 
         public class Team

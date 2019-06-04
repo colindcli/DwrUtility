@@ -1,0 +1,48 @@
+[
+  {
+    "Id": 1,
+    "ParentId": 0,
+    "Name": "1",
+    "Childs": [
+      {
+        "Id": 2,
+        "ParentId": 1,
+        "Name": "11",
+        "Childs": [
+          {
+            "Id": 4,
+            "ParentId": 2,
+            "Name": "111",
+            "Childs": []
+          }
+        ]
+      },
+      {
+        "Id": 3,
+        "ParentId": 1,
+        "Name": "12",
+        "Childs": []
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "ParentId": 0,
+    "Name": "2",
+    "Childs": [
+      {
+        "Id": 6,
+        "ParentId": 5,
+        "Name": "22",
+        "Childs": [
+          {
+            "Id": 7,
+            "ParentId": 6,
+            "Name": "222",
+            "Childs": []
+          }
+        ]
+      }
+    ]
+  }
+]

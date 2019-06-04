@@ -42,6 +42,18 @@ namespace DwrUtility.Trees
         }
 
         /// <summary>
+        /// 遍历树节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="treeView"></param>
+        /// <param name="childField"></param>
+        /// <param name="predicate"></param>
+        public static void ForEachTreeView<T>(this List<T> treeView, Func<T, List<T>> childField, Action<T> predicate)
+        {
+            TreeHelper.ForEachTreeView(treeView, childField, predicate);
+        }
+
+        /// <summary>
         /// List转生成树结构
         /// </summary>
         /// <typeparam name="T">列表对象</typeparam>
