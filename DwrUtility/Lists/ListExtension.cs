@@ -314,9 +314,9 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> Distinct<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<TKey> ToDistinct<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
-            return ListHelper.Distinct(list, key, comparer);
+            return ListHelper.ToDistinct(list, key, comparer);
         }
 
         /// <summary>
@@ -331,9 +331,9 @@ namespace DwrUtility.Lists
         /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(this List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(this List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
         {
-            return ListHelper.ToDictionary(list, key, value, useFirstValue, comparer);
+            return ListHelper.ToDict(list, key, value, useFirstValue, comparer);
         }
 
     }

@@ -39,7 +39,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDictionary(p => p.Id, p => p.Name, true);
+            var obj = rows.ToDict(p => p.Id, p => p.Name, true);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<Dictionary<int, string>>(str);
 
@@ -76,7 +76,7 @@ namespace DwrUtility.Test
                 Name = $"Value_2A"
             });
 
-            var obj = rows.ToDictionary(p => p.Id, p => p.Name, true, StringComparer.OrdinalIgnoreCase);
+            var obj = rows.ToDict(p => p.Id, p => p.Name, true, StringComparer.OrdinalIgnoreCase);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
 
@@ -114,7 +114,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDictionary(p => p.Id, p => p.Name, false);
+            var obj = rows.ToDict(p => p.Id, p => p.Name, false);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<Dictionary<int, string>>(str);
 
@@ -155,7 +155,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDictionary(p => new { p.Id, p.Name }, p => p, true);
+            var obj = rows.ToDict(p => new { p.Id, p.Name }, p => p, true);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<Dictionary<object, RowTwo>>(str);
 
@@ -196,7 +196,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDictionary(p => new { p.Id, p.Name }, p => p, false);
+            var obj = rows.ToDict(p => new { p.Id, p.Name }, p => p, false);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<Dictionary<object, RowTwo>>(str);
 
@@ -237,7 +237,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.Distinct(p => new { p.Id, p.Name });
+            var obj = rows.ToDistinct(p => new { p.Id, p.Name });
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<RowTwo>>(str);
 
@@ -278,7 +278,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.Distinct(p => p.Id, StringComparer.OrdinalIgnoreCase);
+            var obj = rows.ToDistinct(p => p.Id, StringComparer.OrdinalIgnoreCase);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<string>>(str);
 

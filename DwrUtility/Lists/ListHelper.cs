@@ -18,7 +18,7 @@ namespace DwrUtility.Lists
         /// <param name="param"></param>
         public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, Guid> param)
         {
-            var dict = param.Source.ToDictionary(param.SourceIdField, param.SourceValueField, true);
+            var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
             foreach (var item in param.List)
             {
@@ -36,7 +36,7 @@ namespace DwrUtility.Lists
         /// <param name="param"></param>
         public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, int> param)
         {
-            var dict = param.Source.ToDictionary(param.SourceIdField, param.SourceValueField, true);
+            var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
             foreach (var item in param.List)
             {
@@ -54,7 +54,7 @@ namespace DwrUtility.Lists
         /// <param name="param"></param>
         public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, long> param)
         {
-            var dict = param.Source.ToDictionary(param.SourceIdField, param.SourceValueField, true);
+            var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
             foreach (var item in param.List)
             {
@@ -78,7 +78,7 @@ namespace DwrUtility.Lists
         /// <returns></returns>
         public static List<TList> SetListValues<TList, TSource, TIdType, TValueType>(ListValueByIds<TList, TSource, TIdType, TValueType> param)
         {
-            var dict = param.Source.ToDictionary(param.SourceIdField, param.SourceValueField, true);
+            var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
             var defVal = default(TValueType);
             foreach (var item in param.List)
@@ -104,7 +104,7 @@ namespace DwrUtility.Lists
         /// <returns></returns>
         public static List<TList> SetListValue<TList, TSource, TIdType, TValueType>(ListValueById<TList, TSource, TIdType, TValueType> param)
         {
-            var dict = param.Source.ToDictionary(param.SourceIdField, param.SourceValueField, param.UseSourceFirstValue);
+            var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, param.UseSourceFirstValue);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
             foreach (var item in param.List)
             {
@@ -408,7 +408,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> Distinct<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<TKey> ToDistinct<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             foreach (var item in list)
@@ -431,7 +431,7 @@ namespace DwrUtility.Lists
         /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new Dictionary<TKey, TValue>() : new Dictionary<TKey, TValue>(comparer);
             foreach (var item in list)
