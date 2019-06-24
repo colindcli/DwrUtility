@@ -408,7 +408,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> ToDistinct<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<TKey> ToDist<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             foreach (var item in list)

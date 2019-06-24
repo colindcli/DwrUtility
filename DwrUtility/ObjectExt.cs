@@ -192,6 +192,9 @@ namespace DwrUtility
             return regex.IsMatch(email);
         }
 
+        private static readonly Regex RegexHtml1 = new Regex("<[^>]+>", RegexOptions.Singleline);
+        private static readonly Regex RegexHtml2 = new Regex("&[^;]+;", RegexOptions.Singleline);
+        private static readonly Regex RegexHtml3 = new Regex("[ ]+", RegexOptions.Singleline);
         /// <summary>
         /// 删除内容html标签
         /// </summary>
@@ -199,8 +202,13 @@ namespace DwrUtility
         /// <returns></returns>
         public static string ClearHtml(this string html)
         {
-            var strText = Regex.Replace(html, "<[^>]+>", "");
-            return Regex.Replace(strText, "&[^;]+;", "");
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return "";
+            }
+            var strText = RegexHtml1.Replace(html, "");
+            strText = RegexHtml2.Replace(strText,  "");
+            return RegexHtml3.Replace(strText,  "");
         }
 
         /// <summary>

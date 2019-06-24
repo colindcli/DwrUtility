@@ -314,9 +314,9 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> ToDistinct<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<TKey> ToDist<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
-            return ListHelper.ToDistinct(list, key, comparer);
+            return ListHelper.ToDist(list, key, comparer);
         }
 
         /// <summary>

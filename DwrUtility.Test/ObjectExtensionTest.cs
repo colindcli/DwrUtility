@@ -237,7 +237,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDistinct(p => new { p.Id, p.Name });
+            var obj = rows.ToDist(p => new { p.Id, p.Name });
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<RowTwo>>(str);
 
@@ -278,7 +278,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDistinct(p => p.Id, StringComparer.OrdinalIgnoreCase);
+            var obj = rows.ToDist(p => p.Id, StringComparer.OrdinalIgnoreCase);
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<string>>(str);
 
@@ -626,6 +626,24 @@ namespace DwrUtility.Test
 
             var eq = new CompareLogic().Compare(result, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod14()
+        {
+            var html = "<span id=\"test\">te   st </span> &nbsp;";
+            var res = html.ClearHtml();
+
+            Assert.IsTrue(res.IsEquals("test"));
+        }
+
+        [TestMethod]
+        public void TestMethod15()
+        {
+            string html = string.Empty;
+            var res = html.ClearHtml();
+
+            Assert.IsTrue(res.IsEquals(""));
         }
 
         public class Row

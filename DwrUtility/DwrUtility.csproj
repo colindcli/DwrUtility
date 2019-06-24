@@ -54,6 +54,8 @@
     <Compile Include="Lists\ListDiffResult.cs" />
     <Compile Include="Lists\ListEquals.cs" />
     <Compile Include="Lists\ListRepeatResult.cs" />
+    <Compile Include="Strings\StringExtension.cs" />
+    <Compile Include="Strings\StringUtility.cs" />
     <Compile Include="Trees\DeleteNodeParam.cs" />
     <Compile Include="Lists\ListValueParam.cs" />
     <Compile Include="Trees\TreeIdParam.cs" />
