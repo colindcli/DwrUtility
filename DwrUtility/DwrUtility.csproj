@@ -50,6 +50,9 @@
     <Compile Include="Email\EmailHelper.cs" />
     <Compile Include="Email\EmailParam.cs" />
     <Compile Include="EncryptionHelper.cs" />
+    <Compile Include="Images\ImagePosition.cs" />
+    <Compile Include="Images\ImageHelper.cs" />
+    <Compile Include="Images\ThumbnailType.cs" />
     <Compile Include="Lists\ListComparerParam.cs" />
     <Compile Include="Lists\ListDiffResult.cs" />
     <Compile Include="Lists\ListEquals.cs" />
