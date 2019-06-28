@@ -70,5 +70,15 @@ namespace DwrUtility.Test
             });
             DirectoryHelper.DeleteFile(path);
         }
+
+        [TestMethod]
+        public void TestMethod7()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var en = EncryptionHelper.EncryptDes(str, "12345678");
+            var res = EncryptionHelper.DecryptDes(en, "12345678");
+
+            Assert.IsTrue(res == str);
+        }
     }
 }

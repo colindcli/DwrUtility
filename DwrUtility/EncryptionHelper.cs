@@ -77,9 +77,9 @@ namespace DwrUtility
         {
             try
             {
-                var rgbKey = Encoding.ASCII.GetBytes(key.Substring(0, 8));
+                var rgbKey = Encoding.UTF8.GetBytes(key.Substring(0, 8));
                 var rgbIv = rgbKey;
-                var inputByteArray = Encoding.ASCII.GetBytes(str);
+                var inputByteArray = Encoding.UTF8.GetBytes(str);
                 var dcsp = new DESCryptoServiceProvider();
                 var mStream = new MemoryStream();
                 var cStream = new CryptoStream(mStream, dcsp.CreateEncryptor(rgbKey, rgbIv), CryptoStreamMode.Write);
@@ -107,7 +107,7 @@ namespace DwrUtility
         {
             try
             {
-                var rgbKey = Encoding.ASCII.GetBytes(key);
+                var rgbKey = Encoding.UTF8.GetBytes(key);
                 var rgbIv = rgbKey;
                 var inputByteArray = new byte[str.Length / 2];
                 for (var x = 0; x < str.Length / 2; x++)
@@ -120,7 +120,7 @@ namespace DwrUtility
                 var cStream = new CryptoStream(mStream, dcsp.CreateDecryptor(rgbKey, rgbIv), CryptoStreamMode.Write);
                 cStream.Write(inputByteArray, 0, inputByteArray.Length);
                 cStream.FlushFinalBlock();
-                return Encoding.ASCII.GetString(mStream.ToArray());
+                return Encoding.UTF8.GetString(mStream.ToArray());
             }
             catch (Exception ex)
             {
