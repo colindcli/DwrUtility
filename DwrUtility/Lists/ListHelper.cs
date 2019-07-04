@@ -9,6 +9,30 @@ namespace DwrUtility.Lists
     /// </summary>
     public class ListHelper
     {
+        /// <summary>
+        /// 分批循环数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="size">分批大小</param>
+        /// <param name="action"></param>
+        public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
+        {
+            if (source == null)
+            {
+                return;
+            }
+            // ReSharper disable once PossibleMultipleEnumeration
+            var count = source.Count();
+            var total = count / size + (count % size > 0 ? 1 : 0);
+            for (var index = 0; index < total; index++)
+            {
+                // ReSharper disable once PossibleMultipleEnumeration
+                var rows = source.Skip(index * size).Take(size);
+                action?.Invoke(rows);
+            }
+        }
+
         #region ids -> values
         /// <summary>
         /// 给list集合字段Value赋值（list集合的Id字段是字符串分割的集合，所以赋值后Value字段也是字符串分割的集合）
@@ -16,7 +40,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="param"></param>
-        public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, Guid> param)
+        public static IEnumerable<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, Guid> param)
         {
             var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
@@ -34,7 +58,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="param"></param>
-        public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, int> param)
+        public static IEnumerable<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, int> param)
         {
             var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
@@ -52,7 +76,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="param"></param>
-        public static List<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, long> param)
+        public static IEnumerable<TList> SetListValues<TList, TSource>(ListValueByIdsString<TList, TSource, long> param)
         {
             var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
@@ -76,7 +100,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="TValueType"></typeparam>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static List<TList> SetListValues<TList, TSource, TIdType, TValueType>(ListValueByIds<TList, TSource, TIdType, TValueType> param)
+        public static IEnumerable<TList> SetListValues<TList, TSource, TIdType, TValueType>(ListValueByIds<TList, TSource, TIdType, TValueType> param)
         {
             var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, true);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
@@ -102,7 +126,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="TValueType"></typeparam>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static List<TList> SetListValue<TList, TSource, TIdType, TValueType>(ListValueById<TList, TSource, TIdType, TValueType> param)
+        public static IEnumerable<TList> SetListValue<TList, TSource, TIdType, TValueType>(ListValueById<TList, TSource, TIdType, TValueType> param)
         {
             var dict = param.Source.ToDict(param.SourceIdField, param.SourceValueField, param.UseSourceFirstValue);
             var setValueField = typeof(TList).GetProperty(param.ListValueField.GetPropertyName());
@@ -132,7 +156,7 @@ namespace DwrUtility.Lists
         /// <returns></returns>
         public static bool IsEquals<TLeft, TRight, TEquals>(ListComparerParam<TLeft, TRight, TEquals> param, bool isBigData)
         {
-            if (param.LeftList.Count != param.RightList.Count)
+            if (param.LeftList.Count() != param.RightList.Count())
             {
                 return false;
             }
@@ -329,7 +353,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static bool HasRepeat<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static bool HasRepeat<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var hsSet = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             foreach (var item in list)
@@ -353,7 +377,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static HashSet<TKey> GetRepeatKeys<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static HashSet<TKey> GetRepeatKeys<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var hsSet = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             var items = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
@@ -379,7 +403,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<T> GetRepeatLists<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<T> GetRepeatLists<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var rows = new List<T>();
             var repeatKeys = GetRepeatKeys(list, key, comparer);
@@ -408,7 +432,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> ToDist<T, TKey>(List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static List<TKey> ToDist<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             foreach (var item in list)
@@ -431,7 +455,7 @@ namespace DwrUtility.Lists
         /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(IEnumerable<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new Dictionary<TKey, TValue>() : new Dictionary<TKey, TValue>(comparer);
             foreach (var item in list)

@@ -101,7 +101,7 @@ namespace DwrUtility.Test
                 SourceIdField = p => p.Id,
                 SourceValueField = p => p.Value,
                 UseSourceFirstValue = true
-            });
+            }).ToList();
 
             var b = rows.Count == items.Count;
             var b0 = items[0].Value == 0;
@@ -148,7 +148,7 @@ namespace DwrUtility.Test
                 SourceIdField = p => p.Id,
                 SourceValueField = p => p.Value,
                 UseSourceFirstValue = false
-            });
+            }).ToList();
 
             var b = rows.Count == items.Count;
             var b0 = items[0].Value == 1;
@@ -517,6 +517,21 @@ namespace DwrUtility.Test
 
             var eq = new CompareLogic().Compare(result, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod26()
+        {
+            var list = Enumerable.Range(1, 100).ToList();
+            list.Add(100);
+
+            var item = new List<int>();
+            list.ForBatch(7, ns => { item.AddRange(ns); });
+
+            var result = list.GetDiffList(item, p => p, p => p, false);
+            var b = result.Repeats.Count == 0 && result.LeftDiffs.Count == 0 && result.RightDiffs.Count == 0;
+
+            Assert.IsTrue(b);
         }
 
         public class RowOne

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DwrUtility.Lists;
 using KellermanSoftware.CompareNetObjects;
 using Newtonsoft.Json;
@@ -73,7 +74,7 @@ namespace DwrUtility.Test
             var json = File.ReadAllText(path);
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
-            var result = list.GetPreviousList(2, 5);
+            var result = list.GetPreviousList(2, 5).ToList();
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -94,7 +95,7 @@ namespace DwrUtility.Test
             var json = File.ReadAllText(path);
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
-            var result = list.GetNextList(3, 5);
+            var result = list.GetNextList(3, 5).ToList();
             var s = JsonConvert.SerializeObject(result);
             
             //正确结果
@@ -114,7 +115,7 @@ namespace DwrUtility.Test
             var json = File.ReadAllText(path);
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
-            var result = list.GetPreviousList(2, 1);
+            var result = list.GetPreviousList(2, 1).ToList();
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -135,7 +136,7 @@ namespace DwrUtility.Test
             var json = File.ReadAllText(path);
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
-            var result = list.GetNextList(3, 1);
+            var result = list.GetNextList(3, 1).ToList();
             var s = JsonConvert.SerializeObject(result);
 
             //正确结果

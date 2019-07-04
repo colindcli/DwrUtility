@@ -11,7 +11,19 @@ namespace DwrUtility.Lists
     public static class ListExtension
     {
         /// <summary>
-        /// 获取当前索引值的前一条
+        /// 分批循环数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="size">分批大小</param>
+        /// <param name="action"></param>
+        public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
+        {
+            ListHelper.ForBatch(source, size, action);
+        }
+
+        /// <summary>
+        /// 获取当前索引值的前一条记录
         /// </summary>
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
@@ -22,7 +34,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 获取当前索引值的后一条
+        /// 获取当前索引值的后一条记录
         /// </summary>
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
@@ -33,13 +45,13 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 获取当前索引值的前n条
+        /// 获取当前索引值的前n条记录
         /// </summary>
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
         /// <param name="n">获取数量</param>
         /// <returns></returns>
-        public static List<T> GetPreviousList<T>(this List<T> list, int index, int n = 1) where T : new()
+        public static IEnumerable<T> GetPreviousList<T>(this IEnumerable<T> list, int index, int n = 1) where T : new()
         {
             if (n < 1)
             {
@@ -47,24 +59,24 @@ namespace DwrUtility.Lists
             }
 
             var start = index - n;
-            return list.Skip(start < 0 ? 0 : start).Take(start < 0 ? n + start : n).ToList();
+            return list.Skip(start < 0 ? 0 : start).Take(start < 0 ? n + start : n);
         }
 
         /// <summary>
-        /// 获取当前索引值的后n条
+        /// 获取当前索引值的后n条记录
         /// </summary>
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
         /// <param name="n">获取数量</param>
         /// <returns></returns>
-        public static List<T> GetNextList<T>(this List<T> list, int index, int n = 1) where T : new()
+        public static IEnumerable<T> GetNextList<T>(this IEnumerable<T> list, int index, int n = 1) where T : new()
         {
             if (n < 1)
             {
                 return new List<T>();
             }
 
-            return list.Skip(index + 1).Take(n).ToList();
+            return list.Skip(index + 1).Take(n);
         }
 
         /// <summary>
@@ -79,7 +91,7 @@ namespace DwrUtility.Lists
         /// <param name="sourceIdField">Source.Id字段</param>
         /// <param name="sourceValueField">Source.Value字段</param>
         /// <param name="split">字符串分割符</param>
-        public static List<TList> SetListValuesByIdsString<TList, TSource>(this List<TList> list, List<TSource> source,
+        public static IEnumerable<TList> SetListValuesByIdsString<TList, TSource>(this IEnumerable<TList> list, IEnumerable<TSource> source,
             Func<TList, string> listIdField, Expression<Func<TList, string>> listValueField, Func<TSource, Guid> sourceIdField,
             Func<TSource, string> sourceValueField, char split)
         {
@@ -107,7 +119,7 @@ namespace DwrUtility.Lists
         /// <param name="sourceIdField">Source.Id字段</param>
         /// <param name="sourceValueField">Source.Value字段</param>
         /// <param name="split">字符串分割符</param>
-        public static List<TList> SetListValuesByIdsString<TList, TSource>(this List<TList> list, List<TSource> source,
+        public static IEnumerable<TList> SetListValuesByIdsString<TList, TSource>(this IEnumerable<TList> list, IEnumerable<TSource> source,
             Func<TList, string> listIdField, Expression<Func<TList, string>> listValueField, Func<TSource, int> sourceIdField,
             Func<TSource, string> sourceValueField, char split)
         {
@@ -135,7 +147,7 @@ namespace DwrUtility.Lists
         /// <param name="sourceIdField">Source.Id字段</param>
         /// <param name="sourceValueField">Source.Value字段</param>
         /// <param name="split">字符串分割符</param>
-        public static List<TList> SetListValuesByIdsString<TList, TSource>(this List<TList> list, List<TSource> source,
+        public static IEnumerable<TList> SetListValuesByIdsString<TList, TSource>(this IEnumerable<TList> list, IEnumerable<TSource> source,
             Func<TList, string> listIdField, Expression<Func<TList, string>> listValueField, Func<TSource, long> sourceIdField,
             Func<TSource, string> sourceValueField, char split)
         {
@@ -165,8 +177,8 @@ namespace DwrUtility.Lists
         /// <param name="sourceIdField">Source.Id字段</param>
         /// <param name="sourceValueField">Source.Value字段</param>
         /// <returns></returns>
-        public static List<TList> SetListValuesByIds<TList, TSource, TIdType, TValueType>(this List<TList> list, List<TSource> source,
-            Func<TList, List<TIdType>> listIdField, Expression<Func<TList, List<TValueType>>> listValueField, Func<TSource, TIdType> sourceIdField, Func<TSource, TValueType> sourceValueField)
+        public static IEnumerable<TList> SetListValuesByIds<TList, TSource, TIdType, TValueType>(this IEnumerable<TList> list, IEnumerable<TSource> source,
+            Func<TList, IEnumerable<TIdType>> listIdField, Expression<Func<TList, IEnumerable<TValueType>>> listValueField, Func<TSource, TIdType> sourceIdField, Func<TSource, TValueType> sourceValueField)
         {
             return ListHelper.SetListValues(new ListValueByIds<TList, TSource, TIdType, TValueType>()
             {
@@ -194,7 +206,7 @@ namespace DwrUtility.Lists
         /// <param name="sourceValueField">Source.Value字段</param>
         /// <param name="useSourceFirstValue">一对多时（TSource有多个值）取值规则：true使用Source第一个值，false使用最后一个值</param>
         /// <returns></returns>
-        public static List<TList> SetListValue<TList, TSource, TIdType, TValueType>(this List<TList> list, List<TSource> source,
+        public static IEnumerable<TList> SetListValue<TList, TSource, TIdType, TValueType>(this IEnumerable<TList> list, IEnumerable<TSource> source,
             Func<TList, TIdType> listIdField, Expression<Func<TList, TValueType>> listValueField, Func<TSource, TIdType> sourceIdField,
             Func<TSource, TValueType> sourceValueField, bool useSourceFirstValue)
         {
@@ -222,7 +234,7 @@ namespace DwrUtility.Lists
         /// <param name="rightFunc"></param>
         /// <param name="isBigData">是否是处理大数据</param>
         /// <returns></returns>
-        public static bool IsEquals<TLeft, TRight, TEquals>(this List<TLeft> leftList, List<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc, bool isBigData)
+        public static bool IsEquals<TLeft, TRight, TEquals>(this IEnumerable<TLeft> leftList, IEnumerable<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc, bool isBigData)
         {
             var param = new ListComparerParam<TLeft, TRight, TEquals>(leftList, rightList, leftFunc, rightFunc);
             return ListHelper.IsEquals(param, isBigData);
@@ -240,7 +252,7 @@ namespace DwrUtility.Lists
         /// <param name="rightFunc"></param>
         /// <param name="isBigData">是否是处理大数据</param>
         /// <returns></returns>
-        public static ListDiffResult<TLeft, TRight, TEquals> GetDiffList<TLeft, TRight, TEquals>(this List<TLeft> leftList, List<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc, bool isBigData)
+        public static ListDiffResult<TLeft, TRight, TEquals> GetDiffList<TLeft, TRight, TEquals>(this IEnumerable<TLeft> leftList, IEnumerable<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc, bool isBigData)
         {
             var param = new ListComparerParam<TLeft, TRight, TEquals>(leftList, rightList, leftFunc, rightFunc);
             return ListHelper.GetDiffList(param, isBigData);
@@ -257,7 +269,7 @@ namespace DwrUtility.Lists
         /// <param name="leftFunc"></param>
         /// <param name="rightFunc"></param>
         /// <returns></returns>
-        public static ListComparerParam<TLeft, TRight, TEquals> RemoveSameOneRecord<TLeft, TRight, TEquals>(this List<TLeft> leftList, List<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc)
+        public static ListComparerParam<TLeft, TRight, TEquals> RemoveSameOneRecord<TLeft, TRight, TEquals>(this IEnumerable<TLeft> leftList, IEnumerable<TRight> rightList, Func<TLeft, TEquals> leftFunc, Func<TRight, TEquals> rightFunc)
         {
             var param = new ListComparerParam<TLeft, TRight, TEquals>(leftList, rightList, leftFunc, rightFunc);
             return ListHelper.RemoveSameOneRecord(param);
@@ -272,7 +284,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static bool HasRepeat<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static bool HasRepeat<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.HasRepeat(list, key, comparer);
         }
@@ -286,7 +298,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static HashSet<TKey> GetRepeatKeys<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static HashSet<TKey> GetRepeatKeys<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.GetRepeatKeys(list, key, comparer);
         }
@@ -300,7 +312,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<T> GetRepeatLists<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static IEnumerable<T> GetRepeatLists<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.GetRepeatLists(list, key, comparer);
         }
@@ -314,7 +326,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> ToDist<T, TKey>(this List<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static IEnumerable<TKey> ToDist<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.ToDist(list, key, comparer);
         }
@@ -331,7 +343,7 @@ namespace DwrUtility.Lists
         /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(this List<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
+        public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(this IEnumerable<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.ToDict(list, key, value, useFirstValue, comparer);
         }

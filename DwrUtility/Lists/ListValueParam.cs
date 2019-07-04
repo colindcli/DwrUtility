@@ -16,11 +16,11 @@ namespace DwrUtility.Lists
         /// <summary>
         /// 被设置Value字段值的列表
         /// </summary>
-        public List<T> List { get; set; }
+        public IEnumerable<T> List { get; set; }
         /// <summary>
         /// Id和Value对应的数据源
         /// </summary>
-        public List<TSource> Source { get; set; }
+        public IEnumerable<TSource> Source { get; set; }
         /// <summary>
         /// List.Id字段
         /// </summary>
@@ -54,11 +54,11 @@ namespace DwrUtility.Lists
         /// <summary>
         /// 被设置Value字段值的列表
         /// </summary>
-        public List<T> List { get; set; }
+        public IEnumerable<T> List { get; set; }
         /// <summary>
         /// Id和Value对应的数据源
         /// </summary>
-        public List<TSource> Source { get; set; }
+        public IEnumerable<TSource> Source { get; set; }
         /// <summary>
         /// List.Id字段，字符串集合（多个用split分割）
         /// </summary>
@@ -93,19 +93,19 @@ namespace DwrUtility.Lists
         /// <summary>
         /// 被设置Value字段值的列表
         /// </summary>
-        public List<T> List { get; set; }
+        public IEnumerable<T> List { get; set; }
         /// <summary>
         /// Id和Value对应的数据源
         /// </summary>
-        public List<TSource> Source { get; set; }
+        public IEnumerable<TSource> Source { get; set; }
         /// <summary>
         /// List.Id字段
         /// </summary>
-        public Func<T, List<TIdType>> ListIdField { get; set; }
+        public Func<T, IEnumerable<TIdType>> ListIdField { get; set; }
         /// <summary>
         /// List.Value被设置值字段
         /// </summary>
-        public Expression<Func<T, List<TValueType>>> ListValueField { get; set; }
+        public Expression<Func<T, IEnumerable<TValueType>>> ListValueField { get; set; }
         /// <summary>
         /// Source.Id字段 (此字段值唯一)
         /// </summary>
