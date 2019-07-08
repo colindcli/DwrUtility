@@ -64,5 +64,28 @@ namespace DwrUtility.Strings
 
             return StringUtility.ToKeywordHighlighting(input, keys, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal, className);
         }
+
+        /// <summary>
+        /// 是否包含搜索关键词
+        /// </summary>
+        /// <param name="input">输入字符串</param>
+        /// <param name="keys">搜索关键词</param>
+        /// <param name="comparison"></param>
+        /// <param name="isClearHtml">是否删除html标签</param>
+        /// <returns></returns>
+        public static bool HasSearchKeys(this string input, List<string> keys, StringComparison comparison, bool isClearHtml)
+        {
+            if (isClearHtml)
+            {
+                input = input.ClearHtml();
+            }
+
+            if (keys == null || keys.Count == 0 || string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            return StringUtility.HasSearchKeys(input, keys, comparison);
+        }
     }
 }

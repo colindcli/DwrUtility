@@ -56,5 +56,25 @@ namespace DwrUtility.Strings
 
             return input;
         }
+
+        /// <summary>
+        /// 是否包含搜索关键词
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="keys"></param>
+        /// <param name="comparison"></param>
+        /// <returns></returns>
+        internal static bool HasSearchKeys(string input, List<string> keys, StringComparison comparison)
+        {
+            var flag = true;
+            foreach (var key in keys)
+            {
+                if (input.IndexOf(key, comparison) == -1)
+                {
+                    flag = false;
+                }
+            }
+            return flag;
+        }
     }
 }

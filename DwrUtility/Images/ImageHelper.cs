@@ -402,18 +402,20 @@ namespace DwrUtility.Images
             }
 
             Image imgPhoto = null;
+            Image newImgPhoto = null;
             try
             {
                 imgPhoto = Image.FromFile(sourceFilename);
-                imgPhoto = AddImageLogoDeal(waterFilename, position, alpha, imgPhoto);
-                imgPhoto.Save(outFilename, ImageFormat.Jpeg);
+                newImgPhoto = AddImageLogoDeal(waterFilename, position, alpha, imgPhoto);
+                newImgPhoto.Save(outFilename, ImageFormat.Jpeg);
                 imgPhoto.Dispose();
-
+                newImgPhoto.Dispose();
                 return true;
             }
             catch
             {
                 imgPhoto?.Dispose();
+                newImgPhoto?.Dispose();
                 return false;
             }
         }
@@ -434,19 +436,24 @@ namespace DwrUtility.Images
             }
 
             Image imgPhoto = null;
+            Image newImgPhoto = null;
             try
             {
                 imgPhoto = Image.FromStream(memoryStream);
-                imgPhoto = AddImageLogoDeal(waterFilename, position, alpha, imgPhoto);
+                newImgPhoto = AddImageLogoDeal(waterFilename, position, alpha, imgPhoto);
+
                 memoryStream = new MemoryStream();
-                imgPhoto.Save(memoryStream, ImageFormat.Jpeg);
+                newImgPhoto.Save(memoryStream, ImageFormat.Jpeg);
+
                 imgPhoto.Dispose();
+                newImgPhoto.Dispose();
 
                 return true;
             }
             catch
             {
                 imgPhoto?.Dispose();
+                newImgPhoto?.Dispose();
                 return false;
             }
         }

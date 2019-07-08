@@ -75,6 +75,10 @@ namespace DwrUtility
         /// <returns></returns>
         public static void CreateDir(string dirPath)
         {
+            if (dirPath.IsWhiteSpace())
+            {
+                return;
+            }
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -87,6 +91,10 @@ namespace DwrUtility
         /// <returns></returns>
         public static void CreateDirByFilePath(string filePath)
         {
+            if (filePath.IsWhiteSpace())
+            {
+                return;
+            }
             var dirPath = Path.GetDirectoryName(filePath);
             CreateDir(dirPath);
         }
@@ -179,6 +187,25 @@ namespace DwrUtility
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 批量删除文件（全部删除成功true，否则false）
+        /// </summary>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        public static bool DeleteFiles(params string[] paths)
+        {
+            var flag = true;
+            foreach (var path in paths)
+            {
+                if (!DeleteFile(path))
+                {
+                    flag = false;
+                }
+            }
+
+            return flag;
         }
 
         /// <summary>

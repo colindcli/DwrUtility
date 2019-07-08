@@ -11,6 +11,26 @@ namespace DwrUtility
     public static class ObjectExt
     {
         /// <summary>
+        /// 调用IsNullOrWhiteSpace (null; string.Empty; ""; "  ")
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static bool IsWhiteSpace(this string input)
+        {
+            return string.IsNullOrWhiteSpace(input);
+        }
+
+        /// <summary>
+        /// 调用IsNullOrEmpty (null; string.Empty; "")
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static bool IsEmpty(this string input)
+        {
+            return string.IsNullOrEmpty(input);
+        }
+
+        /// <summary>
         /// Unix时间戳（13位数Ticks(精确到毫秒)）转时间
         /// </summary>
         /// <param name="millisecondTicks">Unix时间戳: 13位数Ticks(精确到毫秒)，如：1557040736000</param>
@@ -46,7 +66,7 @@ namespace DwrUtility
         /// <returns></returns>
         public static Uri ToUri(this string url)
         {
-            if (string.IsNullOrWhiteSpace(url))
+            if (url.IsWhiteSpace())
             {
                 return null;
             }

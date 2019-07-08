@@ -646,6 +646,34 @@ namespace DwrUtility.Test
             Assert.IsTrue(res.IsEquals(""));
         }
 
+        [TestMethod]
+        public void TestMethod16()
+        {
+            string s1 = null;
+            var s2 = string.Empty;
+            var s3 = "";
+
+            var b1 = s1.IsWhiteSpace() && s2.IsWhiteSpace() && s3.IsWhiteSpace() && " ".IsWhiteSpace();
+            var b2 = s1.IsEmpty() && s2.IsEmpty();
+            var b3 = s3.IsEmpty();
+            var b4 = !(" ".IsEmpty());
+
+            Assert.IsTrue(b1 && b2 && b3 && b4);
+        }
+
+        [TestMethod]
+        public void TestMethod17()
+        {
+            string s1 = null;
+            var s2 = string.Empty;
+
+            var b1 = s2.IsContains(s2);
+            var b2 = s1.IsContains(s2);
+            var b3 = s2.IsContains(s1);
+
+            Assert.IsTrue(b1 && b2 && b3);
+        }
+
         public class Row
         {
             public int Id { get; set; }
