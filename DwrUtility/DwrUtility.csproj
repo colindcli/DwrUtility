@@ -62,6 +62,7 @@
     <Compile Include="Strings\StringUtility.cs" />
     <Compile Include="TaskExt\TaskExtension.cs" />
     <Compile Include="TaskExt\TaskHelper.cs" />
+    <Compile Include="TaskExt\TimeoutResult.cs" />
     <Compile Include="Trees\DeleteNodeParam.cs" />
     <Compile Include="Lists\ListValueParam.cs" />
     <Compile Include="Trees\TreeIdParam.cs" />

@@ -35,15 +35,15 @@ namespace DwrUtility.Test
             {
                 Thread.Sleep(200);
                 return 1;
-            }).SetTimeout(100, out var to1);
-            var b1 = t1.Result == 0 && to1;
+            }).SetTimeoutResult(100);
+            var b1 = t1.Result.Value == 0 && t1.Result.IsTimeout;
 
             var t2 = Task.Run(() =>
             {
                 Thread.Sleep(100);
                 return 1;
-            }).SetTimeout(200, out var to2);
-            var b2 = t2.Result == 1 && !to2;
+            }).SetTimeoutResult(200);
+            var b2 = t2.Result.Value == 1 && !t2.Result.IsTimeout;
 
             Assert.IsTrue(b1 && b2);
         }
