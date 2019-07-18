@@ -21,6 +21,7 @@ namespace DwrUtility
             {
                 return null;
             }
+
             try
             {
                 var md5 = new MD5CryptoServiceProvider();
@@ -92,9 +93,9 @@ namespace DwrUtility
                 }
                 return ret.ToString();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return null;
             }
         }
         /// <summary>
@@ -122,9 +123,9 @@ namespace DwrUtility
                 cStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(mStream.ToArray());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return null;
             }
         }
         #endregion

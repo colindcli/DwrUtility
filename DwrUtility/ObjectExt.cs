@@ -60,7 +60,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 转Uri
+        /// 转Uri，转换失败返回null
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 转Guid
+        /// 转Guid，转换失败返回默认值
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -144,7 +144,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 转Int
+        /// 转Int，转换失败返回默认值
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -159,7 +159,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 转Long
+        /// 转Long，转换失败返回默认值
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -174,26 +174,33 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 强制转换
+        /// 转Decimal，转换失败返回默认值
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static T To<T>(this object id)
+        public static decimal ToDecimal(this string id)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(id))
             {
-                return default(T);
+                return default(decimal);
             }
 
-            try
+            return decimal.TryParse(id, out var g) ? g : default(decimal);
+        }
+
+        /// <summary>
+        /// 转DateTime，转换失败返回默认值
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(this string dt)
+        {
+            if (string.IsNullOrWhiteSpace(dt))
             {
-                return (T)id;
+                return default(DateTime);
             }
-            catch (Exception)
-            {
-                return default(T);
-            }
+
+            return DateTime.TryParse(dt, out var g) ? g : default(DateTime);
         }
 
         /// <summary>

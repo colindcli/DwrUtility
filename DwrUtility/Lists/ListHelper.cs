@@ -10,6 +10,26 @@ namespace DwrUtility.Lists
     public class ListHelper
     {
         /// <summary>
+        /// 本列表排除另外一个列表数据
+        /// </summary>
+        /// <typeparam name="TSource">数据源类型</typeparam>
+        /// <typeparam name="TTarget">排除数据类型</typeparam>
+        /// <typeparam name="TType">对比类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="target">排除数据</param>
+        /// <param name="sourceFunc"></param>
+        /// <param name="targetFunc"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Except<TSource, TTarget, TType>(IEnumerable<TSource> source, IEnumerable<TTarget> target,
+            Func<TSource, TType> sourceFunc, Func<TTarget, TType> targetFunc)
+        {
+            return from s in source
+                join t in target on sourceFunc.Invoke(s) equals targetFunc.Invoke(t) into temps
+                where !temps.Any()
+                select s;
+        }
+
+        /// <summary>
         /// 分批循环数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
