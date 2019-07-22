@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="CacheHelper.cs" />
+    <Compile Include="CompressHelper.cs" />
+    <Compile Include="Converts\ByteExtension.cs" />
+    <Compile Include="Converts\ConvertHelper.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="CreanFiles\CreanFileHelper.cs" />
     <Compile Include="CreanFiles\CreanFileParam.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="Lists\ListEquals.cs" />
     <Compile Include="Lists\ListRepeatResult.cs" />
     <Compile Include="StartStopwatch.cs" />
+    <Compile Include="Converts\StreamExtension.cs" />
     <Compile Include="Strings\StringExtension.cs" />
     <Compile Include="Strings\StringUtility.cs" />
     <Compile Include="TaskExt\TaskExtension.cs" />

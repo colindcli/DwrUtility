@@ -58,7 +58,8 @@ namespace DwrUtility
         public void ConsoleTime(string title = null)
         {
             Sw.Stop();
-            Console.WriteLine($"{title}{(title != null ? ": " : "")}{Sw.ElapsedMilliseconds}ms");
+            var ms = Sw.ElapsedMilliseconds;
+            Console.WriteLine($"{title}{(title != null ? ": " : "")}{ms}ms");
         }
 
         /// <summary>
@@ -67,7 +68,8 @@ namespace DwrUtility
         public void ConsoleTimeRestart(string title = null)
         {
             Sw.Stop();
-            Console.WriteLine($"{title}{(title != null ? ": " : "")}{Sw.ElapsedMilliseconds}ms");
+            var ms = Sw.ElapsedMilliseconds;
+            Console.WriteLine($"{title}{(title != null ? ": " : "")}{ms}ms");
             Sw.Restart();
         }
 
@@ -77,7 +79,8 @@ namespace DwrUtility
         public void LogTime(string title = null)
         {
             Sw.Stop();
-            Log?.Invoke($"{title}{(title != null ? ": " : "")}{Sw.ElapsedMilliseconds}ms", null);
+            var ms = Sw.ElapsedMilliseconds;
+            Log?.Invoke($"{title}{(title != null ? ": " : "")}{ms}ms", null);
         }
 
         /// <summary>
@@ -86,7 +89,8 @@ namespace DwrUtility
         public void LogTimeRestart(string title = null)
         {
             Sw.Stop();
-            Log?.Invoke($"{title}{(title != null ? ": " : "")}{Sw.ElapsedMilliseconds}ms", null);
+            var ms = Sw.ElapsedMilliseconds;
+            Log?.Invoke($"{title}{(title != null ? ": " : "")}{ms}ms", null);
             Sw.Restart();
         }
     }
