@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace DwrUtility.CreanFiles
 {
+    /// <summary>
+    /// 清理文件参数
+    /// </summary>
     public class CreanFileParam
     {
         /// <summary>

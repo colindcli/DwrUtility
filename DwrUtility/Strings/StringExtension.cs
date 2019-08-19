@@ -87,5 +87,25 @@ namespace DwrUtility.Strings
 
             return StringUtility.HasSearchKeys(input, keys, comparison);
         }
+
+        /// <summary>
+        /// 是否包含汉语
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static bool IsContainChinese(this string input)
+        {
+            return StringUtility.IsContainChinese(input);
+        }
+
+        /// <summary>
+        /// 汉语数量
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static int CountChinese(this string input)
+        {
+            return StringUtility.CountChinese(input);
+        }
     }
 }

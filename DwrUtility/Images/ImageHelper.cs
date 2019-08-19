@@ -83,8 +83,9 @@ namespace DwrUtility.Images
 
                 return File.Exists(outPath);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 objPic?.Dispose();
                 objNewPic?.Dispose();
 
@@ -135,8 +136,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgSource?.Dispose();
                 bmp?.Dispose();
                 gr?.Dispose();
@@ -191,8 +193,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgSource?.Dispose();
                 bmp?.Dispose();
                 gr?.Dispose();
@@ -271,8 +274,9 @@ namespace DwrUtility.Images
                 }
                 flag = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 flag = false;
             }
             finally
@@ -333,8 +337,9 @@ namespace DwrUtility.Images
 
                 return File.Exists(outPath);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 bmp?.Dispose();
                 g?.Dispose();
                 return false;
@@ -376,8 +381,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 bmp?.Dispose();
                 ms?.Close();
                 ms?.Dispose();
@@ -412,8 +418,9 @@ namespace DwrUtility.Images
                 newImgPhoto.Dispose();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgPhoto?.Dispose();
                 newImgPhoto?.Dispose();
                 return false;
@@ -450,8 +457,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgPhoto?.Dispose();
                 newImgPhoto?.Dispose();
                 return false;
@@ -484,8 +492,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgPhoto?.Dispose();
                 return false;
             }
@@ -517,8 +526,9 @@ namespace DwrUtility.Images
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 imgPhoto?.Dispose();
                 return false;
             }

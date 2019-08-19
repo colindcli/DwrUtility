@@ -2,6 +2,9 @@
 
 namespace DwrUtility.Email
 {
+    /// <summary>
+    /// 邮件参数类
+    /// </summary>
     public class EmailParam
     {
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace DwrUtility.Test
@@ -28,6 +29,19 @@ namespace DwrUtility.Test
             var b3 = t3 >= 1000 && t3 < 1005;
 
             Assert.IsTrue(b1 && b2 && b3);
+        }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            var list = new List<string>();
+            var sw = new StartStopwatch((obj, ex) => list.Add(obj.ToString()));
+            Thread.Sleep(100);
+            sw.LogTimeRestart("11");
+            Thread.Sleep(100);
+            sw.LogTime("22");
+
+            Assert.IsTrue(list.Count == 2);
         }
     }
 }

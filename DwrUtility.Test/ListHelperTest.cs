@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DwrUtility.Lists;
+﻿using DwrUtility.Lists;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace DwrUtility.Test
 {
@@ -204,6 +204,28 @@ namespace DwrUtility.Test
             var resultOk = JsonConvert.DeserializeObject<List<Source>>(File.ReadAllText(pathResult));
 
             var eq = new CompareLogic().Compare(result, resultOk);
+            Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            var list = new List<Source>();
+            for (var i = 0; i < 10; i++)
+            {
+                list.Add(new Source()
+                {
+                    Id = i,
+                    Name = $"Name_{i}"
+                });
+            }
+
+            var table = list.ToDataTable();
+            Assert.IsTrue(table.Rows.Count == 10);
+
+
+            var items = table.ToList<Source>();
+            var eq = new CompareLogic().Compare(list, items);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
         }
 

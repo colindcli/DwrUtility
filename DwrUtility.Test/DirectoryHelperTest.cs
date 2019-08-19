@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DwrUtility.Test
 {
@@ -47,6 +47,15 @@ namespace DwrUtility.Test
 
             DirectoryHelper.DeleteDirectory(t);
             Assert.IsTrue(!Directory.Exists(t));
+        }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            var dir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../Html/");
+            DirectoryHelper.GetDirectoryFiles(dir, out var dirs, out var files);
+
+            Assert.IsTrue(dirs.Count == 3 && files.Count == 4);
         }
     }
 }

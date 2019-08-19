@@ -63,8 +63,9 @@ namespace DwrUtility
             {
                 return new FileInfo(path).Length;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return 0;
             }
         }
@@ -108,9 +109,7 @@ namespace DwrUtility
         {
             try
             {
-                var dirs = new List<string>();
-                var files = new List<string>();
-                GetDirectoryFiles(dir, ref dirs, ref files);
+                GetDirectoryFiles(dir, out var dirs, out var files);
                 var success = true;
                 foreach (var p in files)
                 {
@@ -136,8 +135,9 @@ namespace DwrUtility
 
                 return success;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return false;
             }
         }
@@ -154,10 +154,8 @@ namespace DwrUtility
             {
                 Directory.Move(dir, newDir);
                 dir = newDir;
-
-                var dirs = new List<string>();
-                var files = new List<string>();
-                GetDirectoryFiles(dir, ref dirs, ref files);
+                
+                GetDirectoryFiles(dir, out var dirs, out var files);
                 var success = true;
                 foreach (var p in files)
                 {
@@ -183,8 +181,9 @@ namespace DwrUtility
 
                 return success;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return false;
             }
         }
@@ -230,8 +229,9 @@ namespace DwrUtility
                 File.Delete(path);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return false;
             }
         }
@@ -253,8 +253,9 @@ namespace DwrUtility
                 Directory.Delete(dir);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return false;
             }
         }
@@ -265,19 +266,14 @@ namespace DwrUtility
         /// <param name="dir"></param>
         /// <param name="dirs"></param>
         /// <param name="files"></param>
-        public static void GetDirectoryFiles(string dir, ref List<string> dirs, ref List<string> files)
+        public static void GetDirectoryFiles(string dir, out List<string> dirs, out List<string> files)
         {
-            if (dirs == null)
-            {
-                dirs = new List<string>();
-            };
-            if (files == null)
-            {
-                files = new List<string>();
-            }
-            files.AddRange(Directory.GetFiles(dir));
+            dirs = new List<string>();
+            files = new List<string>();
+
             dirs = GetDirectorys(dir);
             dirs.Add(dir);
+
             foreach (var d in dirs)
             {
                 files.AddRange(Directory.GetFiles(d));

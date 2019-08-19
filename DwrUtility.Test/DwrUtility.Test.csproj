@@ -54,6 +54,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NewTreeHelperTest.cs" />
@@ -81,6 +83,8 @@
     <Compile Include="CompressHelperTest.cs" />
     <Compile Include="StartStopwatchTest.cs" />
     <Compile Include="ConvertHelperTest.cs" />
+    <Compile Include="DateTest.cs" />
+    <Compile Include="RegisterHelperTest.cs" />
     <Compile Include="UrlTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +172,10 @@
   <ItemGroup>
     <Content Include="DataFiles\logo.jpg" />
     <Content Include="DataFiles\xft.jpg" />
+    <Content Include="Html\css\main.css" />
+    <Content Include="Html\Index.html" />
+    <Content Include="Html\Index2.html" />
+    <Content Include="Html\js\default.js" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace DwrUtility.Strings
 {
@@ -75,6 +76,28 @@ namespace DwrUtility.Strings
                 }
             }
             return flag;
+        }
+
+        private static readonly Regex Reg = new Regex("[\u4e00-\u9fbb]", RegexOptions.Singleline);
+
+        /// <summary>
+        /// 是否包含汉语
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        internal static bool IsContainChinese(string input)
+        {
+            return Reg.IsMatch(input);
+        }
+
+        /// <summary>
+        /// 汉语数量
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        internal static int CountChinese(string input)
+        {
+            return Reg.Matches(input).Count;
         }
     }
 }

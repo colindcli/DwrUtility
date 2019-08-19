@@ -36,8 +36,9 @@ namespace DwrUtility
 
                 return sb.ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return null;
             }
         }
@@ -93,8 +94,9 @@ namespace DwrUtility
                 }
                 return ret.ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return null;
             }
         }
@@ -123,8 +125,9 @@ namespace DwrUtility
                 cStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(mStream.ToArray());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return null;
             }
         }

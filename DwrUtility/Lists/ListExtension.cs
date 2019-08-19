@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -10,6 +11,28 @@ namespace DwrUtility.Lists
     /// </summary>
     public static class ListExtension
     {
+        /// <summary>
+        /// DataTable转List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<T> ToList<T>(this DataTable dt) where T : new()
+        {
+            return ListHelper.ToList<T>(dt);
+        }
+
+        /// <summary>
+        /// List转DataTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source)
+        {
+            return ListHelper.ToDataTable(source);
+        }
+
         /// <summary>
         /// 本列表排除另外一个列表数据
         /// </summary>

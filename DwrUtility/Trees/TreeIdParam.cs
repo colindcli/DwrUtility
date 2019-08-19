@@ -34,7 +34,11 @@ namespace DwrUtility.Trees
         /// </summary>
         private int Index { get; set; }
 
-        public TPk GetNewId()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal TPk GetNewId()
         {
             var m = NewIds[Index];
             Index++;

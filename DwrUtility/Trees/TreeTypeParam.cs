@@ -43,7 +43,11 @@ namespace DwrUtility.Trees
         /// </summary>
         private int Index { get; set; }
 
-        public TToType GetNewId()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal TToType GetNewId()
         {
             var m = NewIds[Index];
             Index++;

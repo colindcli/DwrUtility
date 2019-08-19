@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace DwrUtility.Lists
@@ -9,6 +11,74 @@ namespace DwrUtility.Lists
     /// </summary>
     public class ListHelper
     {
+        /// <summary>
+        /// DataTable转List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<T> ToList<T>(DataTable dt) where T : new()
+        {
+            if (dt == null)
+            {
+                return null;
+            }
+
+            var ts = new List<T>();
+            var propertys = typeof(T).GetProperties();
+            foreach (DataRow dr in dt.Rows)
+            {
+                var t = new T();
+                foreach (var pi in propertys)
+                {
+                    var colName = pi.Name;
+                    if (!dt.Columns.Contains(colName))
+                    {
+                        continue;
+                    }
+
+                    var value = dr[colName];
+                    if (value != DBNull.Value)
+                    {
+                        pi.SetValue(t, value, null);
+                    }
+                }
+                ts.Add(t);
+            }
+            return ts;
+        }
+
+        /// <summary>
+        /// List转DataTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static DataTable ToDataTable<T>(IEnumerable<T> source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var props = typeof(T).GetProperties();
+            var dt = new DataTable();
+            dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+            // ReSharper disable once PossibleMultipleEnumeration
+            for (var i = 0; i < source.Count(); i++)
+            {
+                var arrayList = new ArrayList();
+                foreach (var pi in props)
+                {
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    var obj = pi.GetValue(source.ElementAt(i), null);
+                    arrayList.Add(obj);
+                }
+                dt.LoadDataRow(arrayList.ToArray(), true);
+            }
+            return dt;
+        }
+
         /// <summary>
         /// 本列表排除另外一个列表数据
         /// </summary>
@@ -24,9 +94,9 @@ namespace DwrUtility.Lists
             Func<TSource, TType> sourceFunc, Func<TTarget, TType> targetFunc)
         {
             return from s in source
-                join t in target on sourceFunc.Invoke(s) equals targetFunc.Invoke(t) into temps
-                where !temps.Any()
-                select s;
+                   join t in target on sourceFunc.Invoke(s) equals targetFunc.Invoke(t) into temps
+                   where !temps.Any()
+                   select s;
         }
 
         /// <summary>
@@ -426,12 +496,14 @@ namespace DwrUtility.Lists
         public static List<T> GetRepeatLists<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var rows = new List<T>();
+            // ReSharper disable once PossibleMultipleEnumeration
             var repeatKeys = GetRepeatKeys(list, key, comparer);
             if (repeatKeys.Count == 0)
             {
                 return rows;
             }
 
+            // ReSharper disable once PossibleMultipleEnumeration
             foreach (var item in list)
             {
                 if (repeatKeys.Contains(key.Invoke(item)))

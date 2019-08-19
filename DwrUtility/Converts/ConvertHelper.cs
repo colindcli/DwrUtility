@@ -3,6 +3,9 @@ using System.Text;
 
 namespace DwrUtility.Converts
 {
+    /// <summary>
+    /// 转换类
+    /// </summary>
     public class ConvertHelper
     {
         /// <summary>

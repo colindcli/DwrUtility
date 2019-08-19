@@ -234,8 +234,8 @@ namespace DwrUtility
                 return "";
             }
             var strText = RegexHtml1.Replace(html, "");
-            strText = RegexHtml2.Replace(strText,  "");
-            return RegexHtml3.Replace(strText,  "");
+            strText = RegexHtml2.Replace(strText, "");
+            return RegexHtml3.Replace(strText, "");
         }
 
         /// <summary>

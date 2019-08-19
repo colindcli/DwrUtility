@@ -105,9 +105,7 @@ namespace DwrUtility.CreanFiles
             {
                 foreach (var dir in ft.Directories)
                 {
-                    var dirs = new List<string>();
-                    var files = new List<string>();
-                    DirectoryHelper.GetDirectoryFiles(dir, ref dirs, ref files);
+                    DirectoryHelper.GetDirectoryFiles(dir, out var dirs, out var files);
                     foreach (var file in files)
                     {
                         var fi = new FileInfo(file);

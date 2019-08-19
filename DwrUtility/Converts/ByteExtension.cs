@@ -1,5 +1,8 @@
 ﻿namespace DwrUtility.Converts
 {
+    /// <summary>
+    /// 字节扩展类
+    /// </summary>
     public static class ByteExtension
     {
         /// <summary>

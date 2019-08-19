@@ -2,6 +2,12 @@
 
 namespace DwrUtility.Lists
 {
+    /// <summary>
+    /// 差异数据结果
+    /// </summary>
+    /// <typeparam name="TLeft"></typeparam>
+    /// <typeparam name="TRight"></typeparam>
+    /// <typeparam name="TEquals"></typeparam>
     public class ListDiffResult<TLeft, TRight, TEquals>
     {
         /// <summary>

@@ -21,8 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\DwrUtility.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,10 +49,15 @@
     <Compile Include="CreanFiles\CreanFileHelper.cs" />
     <Compile Include="CreanFiles\CreanFileParam.cs" />
     <Compile Include="CreanFiles\FileTime.cs" />
+    <Compile Include="Dates\DateEnum.cs" />
+    <Compile Include="Dates\DateExtension.cs" />
+    <Compile Include="Dates\DateHelper.cs" />
     <Compile Include="DirectoryHelper.cs" />
+    <Compile Include="DwrUtilitySetting.cs" />
     <Compile Include="Email\EmailHelper.cs" />
     <Compile Include="Email\EmailParam.cs" />
     <Compile Include="EncryptionHelper.cs" />
+    <Compile Include="Entitys\KeyValue.cs" />
     <Compile Include="Images\ImagePosition.cs" />
     <Compile Include="Images\ImageHelper.cs" />
     <Compile Include="Images\ThumbnailType.cs" />
@@ -60,6 +65,9 @@
     <Compile Include="Lists\ListDiffResult.cs" />
     <Compile Include="Lists\ListEquals.cs" />
     <Compile Include="Lists\ListRepeatResult.cs" />
+    <Compile Include="Registers\KeyValueResult.cs" />
+    <Compile Include="Registers\RegisterKeyType.cs" />
+    <Compile Include="Registers\RegisterHelper.cs" />
     <Compile Include="StartStopwatch.cs" />
     <Compile Include="Converts\StreamExtension.cs" />
     <Compile Include="Strings\StringExtension.cs" />

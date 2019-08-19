@@ -30,8 +30,9 @@ namespace DwrUtility
             {
                 return Path.GetFullPath($"{basePath}{relativePath}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return "";
             }
         }
@@ -113,8 +114,9 @@ namespace DwrUtility
                 var relativeUri = baseUri.MakeRelativeUri(uri);
                 return relativeUri.OriginalString;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                DwrUtilitySetting.Log?.Invoke(ex);
                 return "";
             }
         }
