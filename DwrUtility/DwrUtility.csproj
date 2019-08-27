@@ -61,6 +61,7 @@
     <Compile Include="Images\ImagePosition.cs" />
     <Compile Include="Images\ImageHelper.cs" />
     <Compile Include="Images\ThumbnailType.cs" />
+    <Compile Include="Entitys\EqualityComparer.cs" />
     <Compile Include="Lists\ListComparerParam.cs" />
     <Compile Include="Lists\ListDiffResult.cs" />
     <Compile Include="Lists\ListEquals.cs" />

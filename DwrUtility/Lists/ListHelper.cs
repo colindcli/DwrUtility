@@ -524,7 +524,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static List<TKey> ToDist<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
+        public static IEnumerable<TKey> ToDist<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
             foreach (var item in list)
@@ -532,7 +532,20 @@ namespace DwrUtility.Lists
                 dict.Add(key.Invoke(item));
             }
 
-            return dict.ToList();
+            return dict;
+        }
+
+        /// <summary>
+        /// 对象去重
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> ToDist<T>(IEnumerable<T> list, Func<T, T, bool> func) where T : new()
+        {
+            var obj = new EqualityComparer<T>(func);
+            return list.Distinct(obj);
         }
 
         /// <summary>

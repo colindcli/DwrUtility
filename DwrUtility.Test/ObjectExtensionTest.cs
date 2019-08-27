@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DwrUtility.Test
 {
@@ -246,6 +247,61 @@ namespace DwrUtility.Test
             var resultOk = JsonConvert.DeserializeObject<List<RowTwo>>(File.ReadAllText(pathResult));
 
             var eq = new CompareLogic().Compare(result, resultOk);
+            Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod5B()
+        {
+            var rows = new List<RowTwo>();
+            for (var i = 0; i < 2; i++)
+            {
+                rows.Add(new RowTwo()
+                {
+                    Id = i,
+                    Name = $"Value_{i}",
+                    Desc = $"Desc_{i}"
+                });
+            }
+
+            rows.Add(new RowTwo()
+            {
+                Id = 1,
+                Name = $"Value_1",
+                Desc = "111"
+            });
+
+            rows.Add(new RowTwo()
+            {
+                Id = 2,
+                Name = $"Value_2",
+                Desc = "222"
+            });
+
+            var obj = rows.ToDist((p, q) => p.Id == q.Id && p.Name == q.Name).ToList();
+            var str = JsonConvert.SerializeObject(obj);
+            var result = JsonConvert.DeserializeObject<List<RowTwo>>(str);
+
+            //正确结果
+            var pathResult = $"{FileDir}test_37_result_B.json";
+            var resultOk = JsonConvert.DeserializeObject<List<RowTwo>>(File.ReadAllText(pathResult));
+
+            var eq = new CompareLogic().Compare(result, resultOk);
+            Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod5C()
+        {
+            var rows = new List<string>() { "111", "111", "222" };
+
+            var obj = rows.Distinct().ToList();
+
+            //正确结果
+            var pathResult = $"{FileDir}test_37_result_C.json";
+            var resultOk = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(pathResult));
+
+            var eq = new CompareLogic().Compare(obj, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
         }
 

@@ -99,6 +99,8 @@
     <None Include="DataFiles\test_13_result.json" />
     <None Include="DataFiles\test_1_result.json" />
     <None Include="DataFiles\test_2.json" />
+    <None Include="DataFiles\test_37_Result_C.json" />
+    <None Include="DataFiles\test_37_Result_B.json" />
     <None Include="DataFiles\test_40.json" />
     <None Include="DataFiles\test_28_Result2.json" />
     <None Include="DataFiles\test_30_1.json" />

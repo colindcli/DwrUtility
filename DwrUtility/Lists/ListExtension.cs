@@ -351,6 +351,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IEnumerable<T> GetRepeatLists<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.GetRepeatLists(list, key, comparer);
@@ -368,6 +369,18 @@ namespace DwrUtility.Lists
         public static IEnumerable<TKey> ToDist<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.ToDist(list, key, comparer);
+        }
+
+        /// <summary>
+        /// 对象去重
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="comparer">对比委托</param>
+        /// <returns></returns>
+        public static IEnumerable<T> ToDist<T>(this IEnumerable<T> list, Func<T, T, bool> comparer) where T : new()
+        {
+            return ListHelper.ToDist(list, comparer);
         }
 
         /// <summary>
