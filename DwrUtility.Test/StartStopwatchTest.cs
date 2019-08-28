@@ -1,6 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DwrUtility.TaskExt;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DwrUtility.Test
 {
@@ -42,6 +44,28 @@ namespace DwrUtility.Test
             sw.LogTime("22");
 
             Assert.IsTrue(list.Count == 2);
+        }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var sw = new StartStopwatch();
+
+            var t1 = Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                return 1;
+            }).SetTimeoutResult(100);
+
+            var t2 = Task.Run(() =>
+            {
+                Thread.Sleep(100);
+                return 1;
+            }).SetTimeoutResult(200);
+
+            var str = sw.GetTaskTime(() => t1, () => t2);
+
+            Assert.IsTrue(str.IsContains("t1") && str.IsContains("t2"));
         }
     }
 }

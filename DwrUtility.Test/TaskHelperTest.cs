@@ -47,27 +47,5 @@ namespace DwrUtility.Test
 
             Assert.IsTrue(b1 && b2);
         }
-
-        [TestMethod]
-        public void TestMethod3()
-        {
-            var sw = new StartStopwatch();
-
-            var t1 = Task.Run(() =>
-            {
-                Thread.Sleep(200);
-                return 1;
-            }).SetTimeoutResult(100);
-
-            var t2 = Task.Run(() =>
-            {
-                Thread.Sleep(100);
-                return 1;
-            }).SetTimeoutResult(200);
-
-            var str = sw.GetTaskTime(() => t1, () => t2);
-
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(str));
-        }
     }
 }
