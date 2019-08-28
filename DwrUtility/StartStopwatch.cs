@@ -1,5 +1,8 @@
-﻿using System;
+﻿using DwrUtility.TaskExt;
+using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DwrUtility
 {
@@ -92,6 +95,38 @@ namespace DwrUtility
             var ms = Sw.ElapsedMilliseconds;
             Log?.Invoke($"{title}{(title != null ? ": " : "")}{ms}ms", null);
             Sw.Restart();
+        }
+
+        /// <summary>
+        /// 获取各线程任务运行时间（有误差）
+        /// </summary>
+        /// <param name="memberExpression"></param>
+        /// <returns></returns>
+        public string GetTaskTime(params Expression<Func<Task>>[] memberExpression)
+        {
+            return TaskHelper.GetTaskTime(Sw, memberExpression);
+        }
+
+        /// <summary>
+        /// 获取各线程任务运行时间（有误差）
+        /// </summary>
+        /// <param name="memberExpression"></param>
+        /// <returns></returns>
+        public void LogTaskTime(params Expression<Func<Task>>[] memberExpression)
+        {
+            var result = TaskHelper.GetTaskTime(Sw, memberExpression);
+            Log?.Invoke(result, null);
+        }
+
+        /// <summary>
+        /// 获取各线程任务运行时间（有误差）
+        /// </summary>
+        /// <param name="memberExpression"></param>
+        /// <returns></returns>
+        public void ConsoleTaskTime(params Expression<Func<Task>>[] memberExpression)
+        {
+            var result = TaskHelper.GetTaskTime(Sw, memberExpression);
+            Console.WriteLine(result);
         }
     }
 }
