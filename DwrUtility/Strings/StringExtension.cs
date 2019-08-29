@@ -38,7 +38,7 @@ namespace DwrUtility.Strings
         public static IEnumerable<string> ToKeys(this string keyword, StringComparer comparer)
         {
             var keys = keyword.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            return keys.ToDist(p => p.Trim(), comparer);
+            return keys.Distinct(comparer);
         }
 
         /// <summary>

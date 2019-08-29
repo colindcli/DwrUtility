@@ -98,35 +98,35 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 获取各线程任务运行时间（有误差）
+        /// 获取各线程任务运行时间（1、有误；2、生成环境必须移除）
         /// </summary>
         /// <param name="memberExpression"></param>
         /// <returns></returns>
         public string GetTaskTime(params Expression<Func<Task>>[] memberExpression)
         {
-            return TaskHelper.GetTaskTime(Sw, memberExpression);
+            var str = string.Empty;
+            TaskHelper.GetTaskTime(Sw, s => str = s, memberExpression);
+            return str;
         }
 
         /// <summary>
-        /// 获取各线程任务运行时间（有误差）
+        /// 获取各线程任务运行时间（1、有误；2、生成环境必须移除）
         /// </summary>
         /// <param name="memberExpression"></param>
         /// <returns></returns>
         public void LogTaskTime(params Expression<Func<Task>>[] memberExpression)
         {
-            var result = TaskHelper.GetTaskTime(Sw, memberExpression);
-            Log?.Invoke(result, null);
+            TaskHelper.GetTaskTime(Sw, s => Log?.Invoke(s, null), memberExpression);
         }
 
         /// <summary>
-        /// 获取各线程任务运行时间（有误差）
+        /// 获取各线程任务运行时间（1、有误；2、生成环境必须移除）
         /// </summary>
         /// <param name="memberExpression"></param>
         /// <returns></returns>
         public void ConsoleTaskTime(params Expression<Func<Task>>[] memberExpression)
         {
-            var result = TaskHelper.GetTaskTime(Sw, memberExpression);
-            Console.WriteLine(result);
+            TaskHelper.GetTaskTime(Sw, Console.WriteLine, memberExpression);
         }
     }
 }

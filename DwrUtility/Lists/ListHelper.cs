@@ -524,6 +524,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IEnumerable<TKey> ToDist<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);

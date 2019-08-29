@@ -13,12 +13,31 @@ namespace DwrUtility.TaskExt
     public class TaskHelper
     {
         /// <summary>
-        /// 获取各线程任务运行时间
+        /// 代替Task.WaitAll()，抛出异常明细
+        /// </summary>
+        /// <param name="tasks"></param>
+        public static void WaitAll(params Task[] tasks)
+        {
+            try
+            {
+                Task.WaitAll(tasks);
+            }
+            catch (Exception)
+            {
+                var exs = (from task in tasks where task.IsFaulted where task.Exception != null select task.Exception.ToString()).ToList();
+                throw new Exception(string.Join("\r\n", exs));
+            }
+        }
+
+        /// <summary>
+        /// 获取各线程任务运行时间 (生成环境必须移除)
         /// </summary>
         /// <param name="sw">new Stopwatch()，且必须启动了</param>
+        /// <param name="log"></param>
         /// <param name="memberExpression"></param>
         /// <returns></returns>
-        internal static string GetTaskTime(Stopwatch sw, params Expression<Func<Task>>[] memberExpression)
+        //[Conditional("DEBUG")]
+        internal static void GetTaskTime(Stopwatch sw, Action<string> log, params Expression<Func<Task>>[] memberExpression)
         {
             var ts = memberExpression.Select(item => item.Compile().Invoke()).ToList();
             var lts = new List<KeyValue<long, Task>>();
@@ -54,7 +73,7 @@ namespace DwrUtility.TaskExt
                 dict.Add(id, name);
             }
 
-            return string.Join("\r\n", lts.Select(p => $"{dict[p.Value.Id]} => {p.Key}ms"));
+            log?.Invoke(string.Join("\r\n", lts.Select(p => $"{dict[p.Value.Id]} => {p.Key}ms")));
         }
 
         /// <summary>
