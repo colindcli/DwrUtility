@@ -85,6 +85,7 @@
     <Compile Include="ConvertHelperTest.cs" />
     <Compile Include="DateTest.cs" />
     <Compile Include="RegisterHelperTest.cs" />
+    <Compile Include="RandomHelperTest.cs" />
     <Compile Include="UrlTest.cs" />
   </ItemGroup>
   <ItemGroup>

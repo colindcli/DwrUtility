@@ -6,7 +6,7 @@
     public static class RandomExtension
     {
         /// <summary>
-        /// 产生随机数
+        /// 从source字符中随机产生指定长度len的字符串
         /// </summary>
         /// <param name="source">随机源</param>
         /// <param name="len">长度</param>

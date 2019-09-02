@@ -22,7 +22,7 @@ namespace DwrUtility.Randoms
         public static readonly string NumberChar = "0123456789";
 
         /// <summary>
-        /// 产生随机数
+        /// 从枚举设定字符中随机产生指定长度len的字符串
         /// </summary>
         /// <param name="len">长度</param>
         /// <param name="rde">随机源</param>
@@ -57,7 +57,7 @@ namespace DwrUtility.Randoms
         }
 
         /// <summary>
-        /// 产生随机数
+        /// 从source字符中随机产生指定长度len的字符串
         /// </summary>
         /// <param name="source">随机源</param>
         /// <param name="len">长度</param>
