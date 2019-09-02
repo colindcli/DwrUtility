@@ -66,6 +66,9 @@
     <Compile Include="Lists\ListDiffResult.cs" />
     <Compile Include="Lists\ListEquals.cs" />
     <Compile Include="Lists\ListRepeatResult.cs" />
+    <Compile Include="Randoms\RandomEnum.cs" />
+    <Compile Include="Randoms\RandomExtension.cs" />
+    <Compile Include="Randoms\RandomHelper.cs" />
     <Compile Include="Registers\KeyValueResult.cs" />
     <Compile Include="Registers\RegisterKeyType.cs" />
     <Compile Include="Registers\RegisterHelper.cs" />
