@@ -49,14 +49,27 @@ namespace DwrUtility.Lists
         {
             return ListHelper.Except(source, target, sourceFunc, targetFunc);
         }
+
         /// <summary>
         /// 分批循环数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
-        /// <param name="action"></param>
+        /// <param name="action">分批集合</param>
         public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
+        {
+            ListHelper.ForBatch(source, size, action);
+        }
+
+        /// <summary>
+        /// 分批循环数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="size">分批大小</param>
+        /// <param name="action">分批集合, 第几条开始, 到第几天结束</param>
+        public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
         {
             ListHelper.ForBatch(source, size, action);
         }

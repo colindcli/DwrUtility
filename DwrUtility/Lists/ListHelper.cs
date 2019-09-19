@@ -100,12 +100,12 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 分批循环数据
+        /// 分批遍历集合
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
-        /// <param name="action"></param>
+        /// <param name="action">分批集合</param>
         public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
         {
             if (source == null)
@@ -120,6 +120,31 @@ namespace DwrUtility.Lists
                 // ReSharper disable once PossibleMultipleEnumeration
                 var rows = source.Skip(index * size).Take(size);
                 action?.Invoke(rows);
+            }
+        }
+
+        /// <summary>
+        /// 分批遍历集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="size">分批大小</param>
+        /// <param name="action">分批集合, 第几条开始, 到第几天结束</param>
+        public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
+        {
+            if (source == null)
+            {
+                return;
+            }
+            // ReSharper disable once PossibleMultipleEnumeration
+            var count = source.Count();
+            var total = count / size + (count % size > 0 ? 1 : 0);
+            for (var index = 0; index < total; index++)
+            {
+                // ReSharper disable once PossibleMultipleEnumeration
+                var rows = source.Skip(index * size).Take(size);
+                var end = (index + 1) * size;
+                action?.Invoke(rows, index * size + 1, end > count ? count : end);
             }
         }
 
