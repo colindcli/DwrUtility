@@ -86,9 +86,13 @@
     <Compile Include="DateTest.cs" />
     <Compile Include="RegisterHelperTest.cs" />
     <Compile Include="RandomHelperTest.cs" />
+    <Compile Include="ConfigHelperTest.cs" />
     <Compile Include="UrlTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DataFiles\config\data_1.config" />
+    <None Include="DataFiles\config\data_2.config" />
+    <None Include="DataFiles\config\data_3.config" />
     <None Include="DataFiles\test_1.json" />
     <None Include="DataFiles\test_10.json" />
     <None Include="DataFiles\test_10_result.json" />

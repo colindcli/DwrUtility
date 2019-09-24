@@ -35,14 +35,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="CacheHelper.cs" />
     <Compile Include="CompressHelper.cs" />
+    <Compile Include="ConfigHelper.cs" />
     <Compile Include="Converts\ByteExtension.cs" />
     <Compile Include="Converts\ConvertHelper.cs" />
     <Compile Include="CookieHelper.cs" />
