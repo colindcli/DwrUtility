@@ -730,6 +730,31 @@ namespace DwrUtility.Test
             Assert.IsTrue(b1 && b2 && b3);
         }
 
+        [TestMethod]
+        public void TestMethod18()
+        {
+            Assert.IsTrue(" /11/22   ".TrimSlash() == "11/22");
+            Assert.IsTrue(" /11/22/   ".TrimSlash() == "11/22");
+            Assert.IsTrue("   /11/22\\   ".TrimSlash() == "11/22");
+            Assert.IsTrue(" \\11/22   ".TrimSlash() == "11/22");
+            Assert.IsTrue("   \\11/22/   ".TrimSlash() == "11/22");
+            Assert.IsTrue(" \\11/22\\      ".TrimSlash() == "11/22");
+
+            Assert.IsTrue(" /11/22   ".TrimStartSlash() == "11/22   ");
+            Assert.IsTrue(" /11/22/   ".TrimStartSlash() == "11/22/   ");
+            Assert.IsTrue("  /11/22\\   ".TrimStartSlash() == "11/22\\   ");
+            Assert.IsTrue(" \\11/22   ".TrimStartSlash() == "11/22   ");
+            Assert.IsTrue(" \\11/22/   ".TrimStartSlash() == "11/22/   ");
+            Assert.IsTrue("   \\11/22\\      ".TrimStartSlash() == "11/22\\      ");
+
+            Assert.IsTrue(" /11/22   ".TrimEndSlash() == " /11/22");
+            Assert.IsTrue(" /11/22/   ".TrimEndSlash() == " /11/22");
+            Assert.IsTrue("   /11/22\\   ".TrimEndSlash() == "   /11/22");
+            Assert.IsTrue(" \\11/22   ".TrimEndSlash() == " \\11/22");
+            Assert.IsTrue("   \\11/22/   ".TrimEndSlash() == "   \\11/22");
+            Assert.IsTrue(" \\11/22\\      ".TrimEndSlash() == " \\11/22");
+        }
+
         public class Row
         {
             public int Id { get; set; }

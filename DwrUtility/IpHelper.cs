@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System;
+using System.Linq;
+using System.Web;
 
 namespace DwrUtility
 {
@@ -9,33 +11,51 @@ namespace DwrUtility
     {
         /// <summary>
         /// 获取Web客户端IP地址(有反向代理是跳过代理获取客户端IP)
+        /// Nginx http节点下配置：
+        /// proxy_set_header Host $host;
+        /// proxy_set_header X-Real-IP $remote_addr;
+        /// proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         /// </summary>
-        /// <param name="current">System.Web.HttpContext.Current</param>
         /// <returns></returns>
-        public static string GetWebClientIpWithProxy(HttpContext current)
+        public static string GetWebClientIpWithProxy()
         {
-            if (current?.Request.ServerVariables == null)
+            if (HttpContext.Current == null)
             {
                 return null;
             }
 
-            var request = current.Request;
-            return request.Headers["Cdn-Src-Ip"] ?? request.ServerVariables["HTTP_X_FORWARDED_FOR"] ?? request.ServerVariables["REMOTE_ADDR"] ?? request.UserHostAddress;
+            var request = HttpContext.Current.Request;
+            var xForwardedFor = request.Headers["X-Forwarded-For"];
+            if (!string.IsNullOrWhiteSpace(xForwardedFor))
+            {
+                var ip = xForwardedFor.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(ip))
+                {
+                    return ip;
+                }
+            }
+
+            var xRealIp = request.Headers["X-Real-IP"];
+            if (!string.IsNullOrWhiteSpace(xRealIp))
+            {
+                return xRealIp;
+            }
+
+            return GetWebClientIp();
         }
 
         /// <summary>
         /// 获取Web客户端IP地址(直接获取REMOTE_ADDR的IP地址)
         /// </summary>
-        /// <param name="current">System.Web.HttpContext.Current</param>
         /// <returns></returns>
-        public static string GetWebClientIp(HttpContext current)
+        public static string GetWebClientIp()
         {
-            if (current?.Request.ServerVariables == null)
+            if (HttpContext.Current?.Request.ServerVariables == null)
             {
                 return null;
             }
 
-            var request = current.Request;
+            var request = HttpContext.Current.Request;
             return request.ServerVariables["REMOTE_ADDR"] ?? request.UserHostAddress;
         }
 

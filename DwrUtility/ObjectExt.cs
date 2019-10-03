@@ -11,6 +11,36 @@ namespace DwrUtility
     public static class ObjectExt
     {
         /// <summary>
+        /// 删除前后“/”，“\”，“ ”
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string TrimSlash(this string str)
+        {
+            return str.Trim('/', '\\', ' ');
+        }
+
+        /// <summary>
+        /// 删除后“/”，“\”，“ ”
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string TrimEndSlash(this string str)
+        {
+            return str.TrimEnd('/', '\\', ' ');
+        }
+
+        /// <summary>
+        /// 删除前“/”，“\”，“ ”
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string TrimStartSlash(this string str)
+        {
+            return str.TrimStart('/', '\\', ' ');
+        }
+
+        /// <summary>
         /// 调用IsNullOrWhiteSpace (null; string.Empty; ""; "  ")
         /// </summary>
         /// <param name="input"></param>
