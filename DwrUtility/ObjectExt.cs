@@ -105,16 +105,26 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 对比是否相等
+        /// 对比是否相等（不区分大小写，如果字符串为null则设为空字符串）
         /// </summary>
-        /// <param name="s1"></param>
-        /// <param name="s2"></param>
+        /// <param name="s1">如果字符串为null则设为空字符串</param>
+        /// <param name="s2">如果字符串为null则设为空字符串</param>
         /// <returns></returns>
         public static bool IsEquals(this string s1, string s2)
         {
-            if (s1 == null || s2 == null)
+            if (s1 == null && s2 == null)
             {
-                return false;
+                return true;
+            }
+
+            if (s1 == null)
+            {
+                s1 = "";
+            }
+
+            if (s2 == null)
+            {
+                s2 = "";
             }
 
             return string.Equals(s1, s2, StringComparison.OrdinalIgnoreCase);

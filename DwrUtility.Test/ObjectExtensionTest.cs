@@ -755,6 +755,32 @@ namespace DwrUtility.Test
             Assert.IsTrue(" \\11/22\\      ".TrimEndSlash() == " \\11/22");
         }
 
+        /// <summary>
+        /// 两个null相等
+        /// </summary>
+        [TestMethod]
+        public void TestMethod19()
+        {
+            string s1 = null;
+            string s2 = null;
+
+            var b = s1.IsEquals(s2);
+            Assert.IsTrue(b);
+        }
+
+        /// <summary>
+        /// 空或者null相等
+        /// </summary>
+        [TestMethod]
+        public void TestMethod20()
+        {
+            string s1 = null;
+            string s2 = "";
+
+            var b = s1.IsEquals(s2);
+            Assert.IsTrue(b);
+        }
+
         public class Row
         {
             public int Id { get; set; }
