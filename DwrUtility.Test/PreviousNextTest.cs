@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DwrUtility.Lists;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DwrUtility.Lists;
-using KellermanSoftware.CompareNetObjects;
-using Newtonsoft.Json;
 
 namespace DwrUtility.Test
 {
@@ -23,7 +23,7 @@ namespace DwrUtility.Test
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
             var result = list.GetPrevious(0);
-            
+
             Assert.IsTrue(result == null);
         }
 
@@ -97,7 +97,7 @@ namespace DwrUtility.Test
 
             var result = list.GetNextList(3, 5).ToList();
             var s = JsonConvert.SerializeObject(result);
-            
+
             //正确结果
             var pathResult = $"{FileDir}test_25_result2.json";
             var resultOk = JsonConvert.DeserializeObject<List<Team>>(File.ReadAllText(pathResult));
@@ -105,6 +105,20 @@ namespace DwrUtility.Test
 
             var eq = new CompareLogic().Compare(result, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod8A()
+        {
+            var ids = new List<Guid>
+            {
+                Guid.Parse("16eb0000-00a4-5254-a80f-08d74de15c87"),
+                Guid.Parse("16eb0000-00a4-5254-a80f-08d74de15c88")
+            };
+
+            Assert.IsTrue(ids.GetNext(0) == Guid.Parse("16eb0000-00a4-5254-a80f-08d74de15c88"));
+
+            Assert.IsTrue(ids.GetNext(1) == Guid.Empty);
         }
 
         [TestMethod]

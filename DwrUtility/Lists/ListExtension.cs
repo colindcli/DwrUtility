@@ -68,10 +68,21 @@ namespace DwrUtility.Lists
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
-        /// <param name="action">分批集合, 第几条开始, 到第几天结束</param>
+        /// <param name="action">分批集合, 第几条开始, 到第几条结束</param>
         public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
         {
             ListHelper.ForBatch(source, size, action);
+        }
+
+        /// <summary>
+        /// 多线程遍历
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action">委托方法</param>
+        public static void ForeachAsync<T>(this IEnumerable<T> source, Action<T> action) where T : new()
+        {
+            ListHelper.ForeachAsync(source, action);
         }
 
         /// <summary>
@@ -80,9 +91,9 @@ namespace DwrUtility.Lists
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
         /// <returns></returns>
-        public static T GetPrevious<T>(this List<T> list, int index) where T : class
+        public static T GetPrevious<T>(this List<T> list, int index) where T : new()
         {
-            return index - 1 < 0 ? null : list[index - 1];
+            return index - 1 < 0 ? default(T) : list[index - 1];
         }
 
         /// <summary>
@@ -91,9 +102,9 @@ namespace DwrUtility.Lists
         /// <param name="list"></param>
         /// <param name="index">当前索引值</param>
         /// <returns></returns>
-        public static T GetNext<T>(this List<T> list, int index) where T : class
+        public static T GetNext<T>(this List<T> list, int index) where T : new()
         {
-            return index + 1 > list.Count - 1 ? null : list[index + 1];
+            return index + 1 > list.Count - 1 ? default(T) : list[index + 1];
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DwrUtility.Lists
 {
@@ -129,7 +130,7 @@ namespace DwrUtility.Lists
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
-        /// <param name="action">分批集合, 第几条开始, 到第几天结束</param>
+        /// <param name="action">分批集合, 第几条开始, 到第几条结束</param>
         public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
         {
             if (source == null)
@@ -146,6 +147,22 @@ namespace DwrUtility.Lists
                 var end = (index + 1) * size;
                 action?.Invoke(rows, index * size + 1, end > count ? count : end);
             }
+        }
+
+        /// <summary>
+        /// 多线程遍历
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action">委托方法</param>
+        public static void ForeachAsync<T>(IEnumerable<T> source, Action<T> action) where T : new()
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            Task.WaitAll(source.Select(item => Task.Run(() => { action?.Invoke(item); })).ToArray());
         }
 
         #region ids -> values

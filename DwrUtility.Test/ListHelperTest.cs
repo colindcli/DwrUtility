@@ -4,8 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace DwrUtility.Test
 {
@@ -229,6 +231,41 @@ namespace DwrUtility.Test
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
         }
 
+        [TestMethod]
+        public void TestMethod6()
+        {
+            var list = new List<Source2>();
+            list.Add(new Source2()
+            {
+                Index = 1000,
+                Sleep = 1000,
+                Url = $"https://www.baidu.com/"
+            });
+            list.Add(new Source2()
+            {
+                Index = 10,
+                Sleep = 10,
+                Url = $"https://www.baidu.com/"
+            });
+
+            var sw = new Stopwatch();
+            sw.Start();
+            //
+            list.ForeachAsync(p =>
+            {
+                Thread.Sleep(p.Sleep);
+                p.Content = DateTime.Now.Ticks / 10000000;
+            });
+
+            sw.Stop();
+            var ms = sw.ElapsedMilliseconds;
+            Assert.IsTrue(ms >= 1000 && ms < 1500, $"使用时间：{ms}");
+
+            var s = string.Join(";", list.OrderBy(p => p.Content).Select(p => p.Index));
+
+            Assert.IsTrue(s.IsEquals("10;1000"), s);
+        }
+
         public class Source
         {
             public int Id { get; set; }
@@ -238,6 +275,15 @@ namespace DwrUtility.Test
         public class Target
         {
             public int Id { get; set; }
+        }
+
+        public class Source2
+        {
+            public int Index { get; set; }
+            public int Sleep { get; set; }
+            public string Url { get; set; }
+
+            public long Content { get; set; }
         }
     }
 }
