@@ -57,7 +57,7 @@ namespace DwrUtility.Lists
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
         /// <param name="action">分批集合</param>
-        public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
+        public static void ForBatch<T>(this List<T> source, int size, Action<List<T>> action)
         {
             ListHelper.ForBatch(source, size, action);
         }
@@ -69,7 +69,7 @@ namespace DwrUtility.Lists
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
         /// <param name="action">分批集合, 第几条开始, 到第几条结束</param>
-        public static void ForBatch<T>(this IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
+        public static void ForBatch<T>(this List<T> source, int size, Action<List<T>, int, int> action)
         {
             ListHelper.ForBatch(source, size, action);
         }

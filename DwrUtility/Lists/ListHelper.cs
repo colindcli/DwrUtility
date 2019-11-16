@@ -107,19 +107,17 @@ namespace DwrUtility.Lists
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
         /// <param name="action">分批集合</param>
-        public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>> action)
+        public static void ForBatch<T>(List<T> source, int size, Action<List<T>> action)
         {
             if (source == null)
             {
                 return;
             }
-            // ReSharper disable once PossibleMultipleEnumeration
-            var count = source.Count();
+            var count = source.Count;
             var total = count / size + (count % size > 0 ? 1 : 0);
             for (var index = 0; index < total; index++)
             {
-                // ReSharper disable once PossibleMultipleEnumeration
-                var rows = source.Skip(index * size).Take(size);
+                var rows = source.Skip(index * size).Take(size).ToList();
                 action?.Invoke(rows);
             }
         }
@@ -131,19 +129,17 @@ namespace DwrUtility.Lists
         /// <param name="source"></param>
         /// <param name="size">分批大小</param>
         /// <param name="action">分批集合, 第几条开始, 到第几条结束</param>
-        public static void ForBatch<T>(IEnumerable<T> source, int size, Action<IEnumerable<T>, int, int> action)
+        public static void ForBatch<T>(List<T> source, int size, Action<List<T>, int, int> action)
         {
             if (source == null)
             {
                 return;
             }
-            // ReSharper disable once PossibleMultipleEnumeration
-            var count = source.Count();
+            var count = source.Count;
             var total = count / size + (count % size > 0 ? 1 : 0);
             for (var index = 0; index < total; index++)
             {
-                // ReSharper disable once PossibleMultipleEnumeration
-                var rows = source.Skip(index * size).Take(size);
+                var rows = source.Skip(index * size).Take(size).ToList();
                 var end = (index + 1) * size;
                 action?.Invoke(rows, index * size + 1, end > count ? count : end);
             }

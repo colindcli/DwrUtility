@@ -482,12 +482,14 @@ namespace DwrUtility.Images
                 return false;
             }
 
+            Image sourceImg = null;
             Image imgPhoto = null;
             try
             {
-                imgPhoto = Image.FromFile(sourceFilename);
-                imgPhoto = AddImageTextDeal(waterText, position, alpha, imgPhoto);
+                sourceImg = Image.FromFile(sourceFilename);
+                imgPhoto = AddImageTextDeal(waterText, position, alpha, sourceImg);
                 imgPhoto.Save(outFilename, ImageFormat.Jpeg);
+                sourceImg.Dispose();
                 imgPhoto.Dispose();
 
                 return true;
@@ -495,6 +497,7 @@ namespace DwrUtility.Images
             catch (Exception ex)
             {
                 DwrUtilitySetting.Log?.Invoke(ex);
+                sourceImg?.Dispose();
                 imgPhoto?.Dispose();
                 return false;
             }
@@ -515,13 +518,15 @@ namespace DwrUtility.Images
                 return false;
             }
 
+            Image sourceImg = null;
             Image imgPhoto = null;
             try
             {
-                imgPhoto = Image.FromStream(memoryStream);
-                imgPhoto = AddImageTextDeal(waterText, position, alpha, imgPhoto);
+                sourceImg = Image.FromStream(memoryStream);
+                imgPhoto = AddImageTextDeal(waterText, position, alpha, sourceImg);
                 memoryStream = new MemoryStream();
                 imgPhoto.Save(memoryStream, ImageFormat.Jpeg);
+                sourceImg.Dispose();
                 imgPhoto.Dispose();
 
                 return true;
@@ -529,6 +534,7 @@ namespace DwrUtility.Images
             catch (Exception ex)
             {
                 DwrUtilitySetting.Log?.Invoke(ex);
+                sourceImg?.Dispose();
                 imgPhoto?.Dispose();
                 return false;
             }
