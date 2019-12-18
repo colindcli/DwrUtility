@@ -22,6 +22,32 @@ namespace DwrUtility.Randoms
         public static readonly string NumberChar = "0123456789";
 
         /// <summary>
+        /// 
+        /// </summary>
+        private static readonly Random Rd = new Random();
+
+        /// <summary>
+        /// 随机数（最小数为0，最大数为maxValue-1）
+        /// </summary>
+        /// <param name="maxValue">比如：输入值5，最大值则为4</param>
+        /// <returns></returns>
+        public static int New(int maxValue)
+        {
+            return Rd.Next(maxValue);
+        }
+
+        /// <summary>
+        /// 随机数（最小数为minValue，最大数为maxValue-1）
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        public static int New(int minValue, int maxValue)
+        {
+            return Rd.Next(minValue, maxValue);
+        }
+
+        /// <summary>
         /// 从枚举设定字符中随机产生指定长度len的字符串
         /// </summary>
         /// <param name="len">长度</param>
@@ -75,11 +101,10 @@ namespace DwrUtility.Randoms
             }
 
             var length = source.Length;
-            var rd = new Random();
             var sb = new StringBuilder();
             for (var i = 0; i < len; i++)
             {
-                var index = rd.Next(0, length);
+                var index = Rd.Next(0, length);
                 sb.Append(source[index]);
             }
 
