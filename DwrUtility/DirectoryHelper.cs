@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace DwrUtility
 {
@@ -101,142 +101,12 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 删除文件夹内容
+        /// 删除文件夹下内容 (删除文件夹+创建一个空文件夹)
         /// </summary>
         /// <param name="dir"></param>
+        /// <param name="toRecycleBin">是否移入回收站</param>
         /// <returns></returns>
-        public static bool DeleteDirectoryContent(string dir)
-        {
-            try
-            {
-                GetDirectoryFiles(dir, out var dirs, out var files);
-                var success = true;
-                foreach (var p in files)
-                {
-                    success = DeleteFile(p);
-                    if (!success)
-                    {
-                        break;
-                    }
-                }
-
-                if (success)
-                {
-                    dirs = dirs.Where(p => !p.IsEquals(dir)).OrderByDescending(p => p.Length).ToList();
-                    foreach (var p in dirs)
-                    {
-                        success = DeleteDir(p);
-                        if (!success)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                DwrUtilitySetting.Log?.Invoke(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 删除文件夹 (包含子文件夹)
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <returns></returns>
-        public static bool DeleteDirectory(string dir)
-        {
-            var newDir = dir.TrimEnd('/', '\\') + "Temp";
-            try
-            {
-                Directory.Move(dir, newDir);
-                dir = newDir;
-                
-                GetDirectoryFiles(dir, out var dirs, out var files);
-                var success = true;
-                foreach (var p in files)
-                {
-                    success = DeleteFile(p);
-                    if (!success)
-                    {
-                        break;
-                    }
-                }
-
-                if (success)
-                {
-                    dirs = dirs.OrderByDescending(p => p.Length).ToList();
-                    foreach (var p in dirs)
-                    {
-                        success = DeleteDir(p);
-                        if (!success)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                DwrUtilitySetting.Log?.Invoke(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 批量删除文件（全部删除成功true，否则false）
-        /// </summary>
-        /// <param name="paths"></param>
-        /// <returns></returns>
-        public static bool DeleteFiles(params string[] paths)
-        {
-            var flag = true;
-            foreach (var path in paths)
-            {
-                if (!DeleteFile(path))
-                {
-                    flag = false;
-                }
-            }
-
-            return flag;
-        }
-
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static bool DeleteFile(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return true;
-            }
-
-            if (!File.Exists(path))
-            {
-                return true;
-            }
-
-            try
-            {
-                File.Delete(path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                DwrUtilitySetting.Log?.Invoke(ex);
-                return false;
-            }
-        }
-
-        private static bool DeleteDir(string dir)
+        public static bool DeleteDirectoryContent(string dir, bool toRecycleBin)
         {
             if (string.IsNullOrWhiteSpace(dir))
             {
@@ -250,7 +120,111 @@ namespace DwrUtility
 
             try
             {
-                Directory.Delete(dir);
+                var b = DeleteDirectory(dir, toRecycleBin);
+                if (!b)
+                {
+                    return false;
+                }
+
+                Directory.CreateDirectory(dir);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除文件夹 (包含子文件夹)
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <param name="toRecycleBin">是否移入回收站</param>
+        /// <returns></returns>
+        public static bool DeleteDirectory(string dir, bool toRecycleBin)
+        {
+            if (string.IsNullOrWhiteSpace(dir))
+            {
+                return true;
+            }
+
+            if (!Directory.Exists(dir))
+            {
+                return true;
+            }
+
+            try
+            {
+                FileSystem.DeleteDirectory(dir, UIOption.OnlyErrorDialogs, toRecycleBin ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 批量删除文件（全部删除成功true，否则false）
+        /// </summary>
+        /// <param name="paths"></param>
+        /// <returns>全部删除成功true，否则false</returns>
+        public static bool DeleteFiles(params string[] paths)
+        {
+            var flag = true;
+            foreach (var path in paths)
+            {
+                if (!DeleteFile(path, false))
+                {
+                    flag = false;
+                }
+            }
+
+            return flag;
+        }
+
+        /// <summary>
+        /// 批量删除文件（全部删除成功true，否则false）
+        /// </summary>
+        /// <param name="paths"></param>
+        /// <returns>全部删除成功true，否则false</returns>
+        public static bool DeleteFilesToRecycleBin(params string[] paths)
+        {
+            var flag = true;
+            foreach (var path in paths)
+            {
+                if (!DeleteFile(path, true))
+                {
+                    flag = false;
+                }
+            }
+
+            return flag;
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="toRecycleBin">是否移入回收站</param>
+        /// <returns></returns>
+        public static bool DeleteFile(string path, bool toRecycleBin)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return true;
+            }
+
+            if (!File.Exists(path))
+            {
+                return true;
+            }
+
+            try
+            {
+                FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, toRecycleBin ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently);
                 return true;
             }
             catch (Exception ex)
@@ -268,7 +242,6 @@ namespace DwrUtility
         /// <param name="files"></param>
         public static void GetDirectoryFiles(string dir, out List<string> dirs, out List<string> files)
         {
-            dirs = new List<string>();
             files = new List<string>();
 
             dirs = GetDirectorys(dir);

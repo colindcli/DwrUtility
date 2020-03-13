@@ -87,6 +87,7 @@
     <Compile Include="RegisterHelperTest.cs" />
     <Compile Include="RandomHelperTest.cs" />
     <Compile Include="ConfigHelperTest.cs" />
+    <Compile Include="HttpHelperTest.cs" />
     <Compile Include="UrlTest.cs" />
   </ItemGroup>
   <ItemGroup>

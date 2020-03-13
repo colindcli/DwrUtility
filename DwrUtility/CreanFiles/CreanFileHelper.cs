@@ -117,7 +117,7 @@ namespace DwrUtility.CreanFiles
                             continue;
                         }
 
-                        if (!DirectoryHelper.DeleteFile(file))
+                        if (!DirectoryHelper.DeleteFile(file, false))
                         {
                             model.Log?.Invoke(new Exception($"文件删除失败：{file}"));
                         }

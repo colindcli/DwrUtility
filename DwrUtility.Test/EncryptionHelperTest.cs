@@ -48,7 +48,7 @@ namespace DwrUtility.Test
 
             var md5 = path.ToFileMd5();
 
-            DirectoryHelper.DeleteDirectory(dir);
+            DirectoryHelper.DeleteDirectory(dir, false);
 
             Assert.IsTrue(!Directory.Exists(dir));
 
@@ -68,7 +68,7 @@ namespace DwrUtility.Test
                     Assert.IsTrue(false, "并行读文件冲突");
                 }
             });
-            DirectoryHelper.DeleteFile(path);
+            DirectoryHelper.DeleteFile(path, false);
         }
 
         [TestMethod]
