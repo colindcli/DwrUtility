@@ -62,7 +62,11 @@
     <Compile Include="Email\EmailParam.cs" />
     <Compile Include="EncryptionHelper.cs" />
     <Compile Include="Entitys\KeyValue.cs" />
+    <Compile Include="WhileHelper.cs" />
     <Compile Include="Https\HttpHelper.cs" />
+    <Compile Include="Https\HttpRequestHelper.cs" />
+    <Compile Include="Https\HttpRequestParam.cs" />
+    <Compile Include="Https\HttpResponseResult.cs" />
     <Compile Include="Images\ImagePosition.cs" />
     <Compile Include="Images\ImageHelper.cs" />
     <Compile Include="Images\ThumbnailType.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="SafeCodeHelper.cs" />
     <Compile Include="Trees\TreeExtension.cs" />
     <Compile Include="Trees\TreeHelper.cs" />
+    <Compile Include="WriteHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

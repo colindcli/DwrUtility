@@ -95,9 +95,24 @@ namespace DwrUtility.Test
 
             File.WriteAllText(path, "test");
             Assert.IsTrue(File.Exists(path));
-            
+
             DirectoryHelper.DeleteDirectory(t, true);
             Assert.IsTrue(!Directory.Exists(t));
+        }
+
+        /// <summary>
+        /// 获取不存在的文件夹报错
+        /// </summary>
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var dir = $"{AppDomain.CurrentDomain.BaseDirectory.TrimSlash()}/{Guid.NewGuid()}";
+            DirectoryHelper.GetDirectoryFiles(dir, out var dirs, out var files);
+            Assert.IsTrue(dirs.Count == 0 && files.Count == 0);
+
+            var ds1 = DirectoryHelper.GetDirectorys(dir);
+            var ds2 = DirectoryHelper.GetDirectorys(null);
+            Assert.IsTrue(ds1.Count == 0 && ds2.Count == 0);
         }
     }
 }

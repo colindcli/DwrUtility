@@ -11,7 +11,7 @@ namespace DwrUtility.CreanFiles
     public class CreanFileHelper
     {
         /// <summary>
-        /// 
+        /// 清理文件夹的文件（包含子文件夹的文件）
         /// </summary>
         /// <param name="model"></param>
         public static void Start(CreanFileParam model)

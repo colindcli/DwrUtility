@@ -242,6 +242,13 @@ namespace DwrUtility
         /// <param name="files"></param>
         public static void GetDirectoryFiles(string dir, out List<string> dirs, out List<string> files)
         {
+            if (dir.IsWhiteSpace() || !Directory.Exists(dir))
+            {
+                dirs = new List<string>();
+                files = new List<string>();
+                return;
+            }
+
             files = new List<string>();
 
             dirs = GetDirectorys(dir);
@@ -308,6 +315,11 @@ namespace DwrUtility
 
         private static void GetDirectorys(string dir, ref List<string> paths)
         {
+            if (!Directory.Exists(dir))
+            {
+                return;
+            }
+
             var dirs = Directory.GetDirectories(dir);
             if (dirs.Length == 0)
             {

@@ -54,12 +54,22 @@ namespace DwrUtility.Https
         public static Encoding GetEncoding(string url, out byte[] buf, string body = null)
         {
             buf = GetByte(url, out var response, body);
+            return GetEncoding(buf, response.ContentType);
+        }
 
+        /// <summary>
+        /// 获取编码
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <param name="contentType"></param>
+        /// <returns></returns>
+        public static Encoding GetEncoding(byte[] buf, string contentType)
+        {
             //编码
             var code = GetEncodingByByte(buf);
             if (code == null)
             {
-                code = GetEncodingByResponseContentType(response.ContentType);
+                code = GetEncodingByResponseContentType(contentType);
                 if (code == null)
                 {
                     var content = Encoding.UTF8.GetString(buf);
@@ -119,7 +129,7 @@ namespace DwrUtility.Https
                     return null;
                 }
 
-                var count = (int) response.ContentLength;
+                var count = (int)response.ContentLength;
                 if (count != -1)
                 {
                     var offset = 0;

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace DwrUtility
 {
@@ -343,6 +345,21 @@ namespace DwrUtility
         public static string ToFileMd5(this string fileName)
         {
             return EncryptionHelper.FileMd5(fileName);
+        }
+
+        /// <summary>
+        /// 获取请求payload内容
+        /// 在Controller获取var payload = HttpContext.GetPayloadData();
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="encoding">默认utf-8</param>
+        /// <returns></returns>
+        public static string GetPayloadData(this HttpRequestBase request, Encoding encoding = null)
+        {
+            var bt = new byte[request.InputStream.Length];
+            request.InputStream.Position = 0;
+            request.InputStream.Read(bt, 0, bt.Length);
+            return (encoding ?? Encoding.UTF8).GetString(bt);
         }
     }
 }

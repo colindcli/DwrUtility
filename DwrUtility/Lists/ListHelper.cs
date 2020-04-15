@@ -123,7 +123,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 分批遍历集合
+        /// 分批循环数据 (分批集合, 第1条开始, 到第size条结束)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -588,16 +588,16 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 转Dictionary（去重处理，TKey必须是匿名对象）
+        /// 转Dictionary（去重处理）
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
+        /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="list"></param>
-        /// <param name="key"></param>
+        /// <param name="key">字段：p=>p.string</param>
         /// <param name="value"></param>
         /// <param name="useFirstValue">重复使用值规则：true使用第一个值；false使用最后一个值</param>
-        /// <param name="comparer"></param>
+        /// <param name="comparer">不区分大小写：StringComparer.OrdinalIgnoreCase；区分大小写：StringComparer.Ordinal</param>
         /// <returns></returns>
         public static Dictionary<TKey, TValue> ToDict<T, TKey, TValue>(IEnumerable<T> list, Func<T, TKey> key, Func<T, TValue> value, bool useFirstValue, IEqualityComparer<TKey> comparer = null)
         {

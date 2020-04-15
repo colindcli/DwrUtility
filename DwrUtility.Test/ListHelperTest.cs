@@ -266,6 +266,47 @@ namespace DwrUtility.Test
             Assert.IsTrue(s.IsEquals("10;1000"), s);
         }
 
+        /// <summary>
+        /// 测试按某字段去重，取第一个记录对象
+        /// </summary>
+        [TestMethod]
+        public void TestMethod7()
+        {
+            var list = new List<Source2>()
+            {
+                new Source2()
+                {
+                    Index = 1,
+                    Sleep = 1,
+                    //小写
+                    Url = "http://public.cdn.viposs.com/code/jquery/1.10.2/jquery.min.js",
+                    Content = 1,
+                },
+                new Source2()
+                {
+                    Index = 2,
+                    Sleep = 2,
+                    //与1同，但最后两个大些
+                    Url = "http://public.cdn.viposs.com/code/jquery/1.10.2/jquery.min.JS",
+                    Content = 2,
+                },
+                new Source2()
+                {
+                    Index = 3,
+                    Sleep = 3,
+                    //与1同，但最后两个大些
+                    Url = "http://public.cdn.viposs.com/code/layui/2.5.6/layui.js",
+                    Content = 3,
+                }
+            };
+
+            var dict1 = list.ToDict(p => p.Url, p => p, true, StringComparer.OrdinalIgnoreCase);
+            Assert.IsTrue(dict1.Count == 2);
+
+            var dict2 = list.ToDict(p => p.Url, p => p, true, StringComparer.Ordinal);
+            Assert.IsTrue(dict2.Count == 3);
+        }
+
         public class Source
         {
             public int Id { get; set; }

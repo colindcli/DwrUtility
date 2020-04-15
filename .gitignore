@@ -3,5 +3,8 @@ DwrUtility.Test/bin/*
 DwrUtility.Test/obj/*
 DwrUtility/bin/*
 DwrUtility/obj/*
+DwrUtility.Web/bin/*
+DwrUtility.Web/obj/*
 packages/*
 TestResults/*
+DwrUtility.Web/DwrUtility.Web.csproj.user

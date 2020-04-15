@@ -30,15 +30,25 @@ namespace DwrUtility.Strings
         }
 
         /// <summary>
-        /// 空格分隔关键词并去重复
+        /// 空格分隔关键词并去重复，始终返回List对象
         /// </summary>
         /// <param name="keyword"></param>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> ToKeys(this string keyword, StringComparer comparer)
+        /// <param name="comparer">不区分大小写</param>
+        /// <returns>始终返回List对象，不会为null</returns>
+        public static List<string> ToKeys(this string keyword, StringComparer comparer = null)
         {
-            var keys = keyword.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            return keys.Distinct(comparer);
+            if (keyword.IsWhiteSpace())
+            {
+                return new List<string>();
+            }
+
+            if (comparer == null)
+            {
+                comparer = StringComparer.OrdinalIgnoreCase;
+            }
+
+            var keys = keyword.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            return keys.Distinct(comparer).ToList();
         }
 
         /// <summary>
