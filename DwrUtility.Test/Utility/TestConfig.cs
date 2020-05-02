@@ -6,9 +6,9 @@ namespace DwrUtility.Test.Utility
     public class TestConfig
     {
         /// <summary>
-        /// 请求地址: http://localhost:7000
+        /// 请求地址: http://localhost:7080
         /// </summary>
-        public static readonly string WebUrl = "http://localhost:7000";
+        public static readonly string WebUrl = "http://localhost:7080";
 
         /// <summary>
         /// Test/Debug/bin/Debug/目录，包含“/”

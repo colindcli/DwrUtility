@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -41,6 +42,25 @@ namespace DwrUtility.Web.Controllers
             var name = Request.Form["Name"];
 
             return Content($"Guid：{guid}；Name：{name}");
+        }
+
+        /// <summary>
+        /// /Product/PostFile
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult PostFile()
+        {
+            var files = Request.Files;
+            var content = $"{Request.Form["Name"]}；{Request.Form["Content"]}";
+
+            var stream = Request.InputStream;
+            stream.Position = 0;
+            var bt = new byte[stream.Length];
+            stream.Read(bt, 0, bt.Length);
+            var str = Encoding.UTF8.GetString(bt);
+            
+            return Content($"文件数：{files.Count}；内容：{content}；内容2：{str}");
         }
     }
 

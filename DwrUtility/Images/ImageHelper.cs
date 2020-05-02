@@ -353,28 +353,31 @@ namespace DwrUtility.Images
         /// <returns></returns>
         public static bool IsImage(string fileTitle)
         {
-            const string exts = ".jpg;.png;.gif;.jpeg;.bmp";
+            var array = new[] { ".jpg", ".png", ".gif", ".jpeg", ".bmp", ".svg" };
             var fileType = Path.GetExtension(fileTitle);
-            return !string.IsNullOrWhiteSpace(fileType) && exts.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(fileType, StringComparer.OrdinalIgnoreCase);
+            return !string.IsNullOrWhiteSpace(fileType) && array.Contains(fileType, StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// Base64编码的字符串转为图片
         /// </summary>
         /// <param name="base64Str">base64字符串</param>
-        /// <param name="outPath">输出路径</param>
+        /// <param name="toPath">输出路径</param>
         /// <returns></returns>
-        public static bool Base64StringToImage(string base64Str, string outPath)
+        public static bool Base64StringToImage(string base64Str, string toPath)
         {
             MemoryStream ms = null;
             Bitmap bmp = null;
             try
             {
-                var arr = Convert.FromBase64String(base64Str);
-                ms = new MemoryStream(arr);
+                var array = base64Str.Split(',');
+                var str = array.Length > 1 ? array[1].Trim() : array[0].Trim();
+
+                var bt = Convert.FromBase64String(str);
+                ms = new MemoryStream(bt);
                 bmp = new Bitmap(ms);
 
-                bmp.Save(outPath, ImageFormat.Jpeg);
+                bmp.Save(toPath, ImageFormat.Jpeg);
                 bmp.Dispose();
                 ms.Close();
                 ms.Dispose();
@@ -389,6 +392,64 @@ namespace DwrUtility.Images
                 ms?.Dispose();
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 图片转成base64编码
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <param name="base64String"></param>
+        /// <param name="imageFormat"></param>
+        /// <returns></returns>
+        public static bool ImageToBase64String(string imagePath, out string base64String, ImageFormat imageFormat)
+        {
+            Bitmap bmp = null;
+            MemoryStream ms = null;
+            try
+            {
+                bmp = new Bitmap(imagePath);
+                ms = new MemoryStream();
+                bmp.Save(ms, imageFormat);
+                bmp.Dispose();
+                var contentType = "image/jpeg";
+                if (Equals(imageFormat, ImageFormat.Jpeg))
+                {
+                    contentType = "image/jpeg";
+                }
+                else if (Equals(imageFormat, ImageFormat.Bmp))
+                {
+                    contentType = "image/bmp";
+                }
+                else if (Equals(imageFormat, ImageFormat.Png))
+                {
+                    contentType = "image/png";
+                }
+                else if (Equals(imageFormat, ImageFormat.Gif))
+                {
+                    contentType = "image/gif";
+                }
+                else if (Equals(imageFormat, ImageFormat.Icon))
+                {
+                    contentType = "image/x-icon";
+                }
+                else if (Equals(imageFormat, ImageFormat.Tiff))
+                {
+                    contentType = "image/tiff";
+                }
+
+                base64String = $"data:{contentType};base64,{Convert.ToBase64String(ms.ToArray())}";
+                ms.Dispose();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                bmp?.Dispose();
+                ms?.Dispose();
+                base64String = null;
+                return false;
+            }
+
         }
 
         /// <summary>

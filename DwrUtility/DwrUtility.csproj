@@ -38,6 +38,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -62,6 +64,8 @@
     <Compile Include="Email\EmailParam.cs" />
     <Compile Include="EncryptionHelper.cs" />
     <Compile Include="Entitys\KeyValue.cs" />
+    <Compile Include="FileHelper.cs" />
+    <Compile Include="Https\HttpRequestFileModel.cs" />
     <Compile Include="WhileHelper.cs" />
     <Compile Include="Https\HttpHelper.cs" />
     <Compile Include="Https\HttpRequestHelper.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Trees\TreeExtension.cs" />
     <Compile Include="Trees\TreeHelper.cs" />
     <Compile Include="WriteHelper.cs" />
+    <Compile Include="ZipHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

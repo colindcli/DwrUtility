@@ -26,7 +26,7 @@ namespace DwrUtility.Test
 
             var t3 = sw.GetTime();
 
-            var b1 = t1 >= 100 && t1 < 110;
+            var b1 = t1 >= 99 && t1 < 110;
             var b2 = t2 >= 199 && t2 < 205;
             var b3 = t3 >= 1000 && t3 < 1005;
 
@@ -49,23 +49,76 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod3()
         {
-            var sw = new StartStopwatch();
-
             var t1 = Task.Run(() =>
             {
                 Thread.Sleep(200);
                 return 1;
-            }).SetTimeoutResult(100);
+            });
 
             var t2 = Task.Run(() =>
             {
                 Thread.Sleep(100);
                 return 1;
-            }).SetTimeoutResult(200);
+            });
 
-            var str = sw.GetTaskTime(() => t1, () => t2);
+            var tasks = new List<Task<int>>()
+            {
+                t1, t2
+            };
 
-            Assert.IsTrue(str.IsContains("t1") && str.IsContains("t2"));
+            var res = tasks.GetTaskTime();
+
+            Assert.IsTrue(res[0] > res[1]);
+        }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            var t1 = Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                return 1;
+            });
+
+            var time = t1.GetTaskTime();
+
+            Assert.IsTrue(time < 300);
+        }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            var t1 = Task.Run(() =>
+            {
+                Thread.Sleep(200);
+            });
+
+            var t2 = Task.Run(() =>
+            {
+                Thread.Sleep(100);
+            });
+
+            var tasks = new List<Task>()
+            {
+                t1, t2
+            };
+
+            var res = tasks.GetTaskTime();
+
+            Assert.IsTrue(res[0] > res[1]);
+        }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+            var t1 = Task.Run(() =>
+            {
+                Thread.Sleep(200);
+            });
+
+            var time = t1.GetTaskTime();
+
+            Assert.IsTrue(time < 300);
         }
     }
 }

@@ -80,5 +80,53 @@ namespace DwrUtility.Test
 
             Assert.IsTrue(res == str);
         }
+
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var enStr = EncryptionHelper.Sha1(str);
+            Assert.IsTrue(enStr == "15439f0652d173ce9710eb0f526af83ea31e7931");
+        }
+
+        [TestMethod]
+        public void TestMethod9()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var enStr = EncryptionHelper.Sha256(str);
+            Assert.IsTrue(enStr == "130e55df557abf6781dccc482586b774556763830b6d4abfda22e00dabe42a32");
+        }
+
+        [TestMethod]
+        public void TestMethod10()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var enStr = EncryptionHelper.Sha384(str);
+            Assert.IsTrue(enStr == "54a29e0e136a6195f2313f0c08c121c8dc57ada7e71b4bd45b3a981f2327b60f3c7be53925846fdebe8693c49eb12881");
+        }
+
+        [TestMethod]
+        public void TestMethod11()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var enStr = EncryptionHelper.Sha512(str);
+            Assert.IsTrue(enStr == "0ec324ece017ede3e713517de8257119dbd2fe1d4efcdc8e76ce7753c0e90a85fd3c9448e134240c5a2af9bf97aaa48e3aebf0542f9cbe2b324814fb3648091b");
+        }
+
+        [TestMethod]
+        public void TestMethod12()
+        {
+            var str = "中文en中国語중국어จีนこんにちは語言";
+            var enStr = EncryptionHelper.EncryptBase64(str);
+            Assert.IsTrue(enStr == "5Lit5paHZW7kuK3lm73oqp7spJHqta3slrTguIjguLXguJnjgZPjgpPjgavjgaHjga/oqp7oqIA=");
+        }
+
+        [TestMethod]
+        public void TestMethod13()
+        {
+            var str = "5Lit5paHZW7kuK3lm73oqp7spJHqta3slrTguIjguLXguJnjgZPjgpPjgavjgaHjga/oqp7oqIA=";
+            var enStr = EncryptionHelper.DecryptBase64(str);
+            Assert.IsTrue(enStr == "中文en中国語중국어จีนこんにちは語言");
+        }
     }
 }

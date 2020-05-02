@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace DwrUtility.TaskExt
@@ -12,6 +11,102 @@ namespace DwrUtility.TaskExt
     /// </summary>
     public class TaskHelper
     {
+        /// <summary>
+        /// 批量运行任务
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static List<Task> RunTask<T>(List<T> list, Action<T> action)
+        {
+            return list.Select(li => Task.Run(() => action?.Invoke(li))).ToList();
+        }
+
+        /// <summary>
+        /// 批量运行任务
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TReturn"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static List<Task<TReturn>> RunTask<T, TReturn>(List<T> list, Func<T, TReturn> func)
+        {
+            return list.Select(li => Task.Run(() => func.Invoke(li))).ToList();
+        }
+
+        /// <summary>
+        /// 运行多个线程，定时返回结果，直到完成为止；action(int, List)(已完成总数，在这批waitTime内完成的任务)
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <param name="waitTimeMilliseconds">等待时间</param>
+        /// <param name="action">(int, List)(已完成总数，这在等待时间内完成的线程)</param>
+        public static void TaskStatus<T>(List<Task<T>> tasks, int waitTimeMilliseconds, Action<int, List<T>> action)
+        {
+            var array = tasks.ToArray();
+            var completes = new List<Task<T>>();
+            while (true)
+            {
+                // ReSharper disable once CoVariantArrayConversion
+                var b = Task.WaitAll(array, waitTimeMilliseconds);
+                var rs = tasks.Where(p => p.IsCompleted || p.IsCanceled || p.IsFaulted).ToList();
+                var news = (from r in rs
+                            join c in completes on r.Id equals c.Id into temp
+                            where temp == null || !temp.Any()
+                            join task in tasks on r.Id equals task.Id
+                            select task).ToList();
+                completes.AddRange(news);
+                action?.Invoke(completes.Count, news.Select(p => p.Result).ToList());
+                if (b || tasks.Count == completes.Count)
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 运行多个线程，定时返回结果，直到完成为止；action(int)(已完成总数)
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <param name="waitTimeMilliseconds">等待时间</param>
+        /// <param name="action">已完成总数</param>
+        public static void TaskStatus(List<Task> tasks, int waitTimeMilliseconds, Action<int> action)
+        {
+            var array = tasks.ToArray();
+            while (true)
+            {
+                // ReSharper disable once CoVariantArrayConversion
+                var b = Task.WaitAll(array, waitTimeMilliseconds);
+                var count = tasks.Count(p => p.IsCompleted || p.IsCanceled || p.IsFaulted);
+                action?.Invoke(count);
+                if (b || tasks.Count == count)
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 运行单个线程，定时返回结果，直到完成为止；
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="waitTimeMilliseconds">等待时间</param>
+        /// <param name="action"></param>
+        public static void TaskStatus(Task task, int waitTimeMilliseconds, Action action)
+        {
+            var array = new[] { task };
+            while (true)
+            {
+                var b = Task.WaitAll(array, waitTimeMilliseconds);
+                action?.Invoke();
+                if (b)
+                {
+                    break;
+                }
+            }
+        }
+
         /// <summary>
         /// 代替Task.WaitAll()，抛出异常明细
         /// </summary>
@@ -30,62 +125,33 @@ namespace DwrUtility.TaskExt
         }
 
         /// <summary>
-        /// 获取各线程任务运行时间 (生成环境必须移除)
+        /// 获取各线程任务运行时间
         /// </summary>
-        /// <param name="sw">new Stopwatch()，且必须启动了</param>
-        /// <param name="log"></param>
-        /// <param name="memberExpression"></param>
-        /// <returns></returns>
-        //[Conditional("DEBUG")]
-        internal static void GetTaskTime(Stopwatch sw, Action<string> log, params Expression<Func<Task>>[] memberExpression)
+        /// <returns>按顺序返回个线程运行时间</returns>
+        public static List<long> GetTaskTime(List<Task> ts)
         {
-            var ts = memberExpression.Select(item => item.Compile().Invoke()).ToList();
-            var lts = new List<KeyValue<long, Task>>();
-            while (ts.Count > 0)
+            var list = ts.Select(p => p).ToList();
+            var sw = new Stopwatch();
+            sw.Start();
+            var res = new List<KeyValue<int, long>>();
+            while (list.Count > 0)
             {
-                Task.WaitAny(ts.ToArray());
-
-                var lt = ts.Where(p => p.IsCompleted).ToList();
-                ts.RemoveAll(p => p.IsCompleted);
-
+                Task.WaitAny(list.ToArray());
+                var lt = list.Where(p => p.IsCompleted || p.IsCanceled || p.IsFaulted).ToList();
+                list.RemoveAll(p => p.IsCompleted);
                 sw.Stop();
                 var sc = sw.ElapsedMilliseconds;
                 sw.Start();
 
-                foreach (var it in lt)
+                res.AddRange(lt.Select(it => new KeyValue<int, long>()
                 {
-                    lts.Add(new KeyValue<long, Task>()
-                    {
-                        Key = sc,
-                        Value = it
-                    });
-                }
+                    Key = it.Id,
+                    Value = sc
+                }));
             }
             sw.Stop();
 
-            //计算名称
-            var dict = new Dictionary<int, string>();
-            foreach (var item in memberExpression)
-            {
-                var t = item.Compile().Invoke();
-                var id = t.Id;
-                var name = GetMemberName(item);
-                dict.Add(id, name);
-            }
-
-            log?.Invoke(string.Join("\r\n", lts.Select(p => $"{dict[p.Value.Id]} => {p.Key}ms")));
-        }
-
-        /// <summary>
-        /// 获取变量名称
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="memberExpression"></param>
-        /// <returns></returns>
-        private static string GetMemberName<T>(Expression<Func<T>> memberExpression)
-        {
-            var expressionBody = (MemberExpression)memberExpression.Body;
-            return expressionBody.Member.Name;
+            return ts.Join(res, p => p.Id, p => p.Key, (p, q) => q.Value).ToList();
         }
 
         /// <summary>

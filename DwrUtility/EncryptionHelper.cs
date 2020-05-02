@@ -10,6 +10,7 @@ namespace DwrUtility
     /// </summary>
     public class EncryptionHelper
     {
+        #region Md5
         /// <summary>
         /// 文件MD5值
         /// </summary>
@@ -67,6 +68,7 @@ namespace DwrUtility
             }
             return sbd.ToString();
         }
+        #endregion
 
         #region DES加密/解密
         /// <summary>
@@ -124,6 +126,112 @@ namespace DwrUtility
                 cStream.Write(inputByteArray, 0, inputByteArray.Length);
                 cStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(mStream.ToArray());
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return null;
+            }
+        }
+        #endregion
+
+        #region SHA
+        /// <summary>
+        /// SHA1加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string Sha1(string s)
+        {
+            return GetSha(s, new SHA1CryptoServiceProvider());
+        }
+
+        /// <summary>
+        /// SHA256加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string Sha256(string s)
+        {
+            return GetSha(s, new SHA256CryptoServiceProvider());
+        }
+
+        /// <summary>
+        /// SHA256加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string Sha384(string s)
+        {
+            return GetSha(s, new SHA384CryptoServiceProvider());
+        }
+
+        /// <summary>
+        /// SHA256加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string Sha512(string s)
+        {
+            return GetSha(s, new SHA512CryptoServiceProvider());
+        }
+
+        /// <summary>
+        /// SHA加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="provider"></param>
+        /// <returns>失败返回null</returns>
+        private static string GetSha(string s, ICryptoTransform provider)
+        {
+            try
+            {
+                var bytesIn = Encoding.UTF8.GetBytes(s);
+                var bytesOut = ((HashAlgorithm)provider).ComputeHash(bytesIn);
+                provider.Dispose();
+                var result = BitConverter.ToString(bytesOut);
+                result = result.Replace("-", "");
+                return result.ToLower();
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return null;
+            }
+        }
+        #endregion
+
+        #region Base64
+        /// <summary>
+        /// Base64加密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string EncryptBase64(string s)
+        {
+            try
+            {
+                var array = Encoding.UTF8.GetBytes(s);
+                return Convert.ToBase64String(array);
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Base64解密
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>失败返回null</returns>
+        public static string DecryptBase64(string s)
+        {
+            try
+            {
+                var bytes = Convert.FromBase64String(s);
+                return Encoding.UTF8.GetString(bytes);
             }
             catch (Exception ex)
             {

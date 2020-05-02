@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,51 +12,6 @@ namespace DwrUtility.Https
     public class HttpHelper
     {
         /// <summary>
-        /// 获取页面内容
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <param name="encoding">如果传编码就使用此编码，否则使用猜测编码</param>
-        /// <returns></returns>
-        public static string GetHtml(string url, string body = null, Encoding encoding = null)
-        {
-            if (encoding == null)
-            {
-                var coding = GetEncoding(url, out var buf, body);
-                return coding.GetString(buf);
-            }
-            else
-            {
-                var buf = GetByte(url, out var _, body);
-                return encoding.GetString(buf);
-            }
-        }
-
-        /// <summary>
-        /// 获取网址字节
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public static byte[] GetByte(string url, string body = null)
-        {
-            return GetByte(url, out var _, body);
-        }
-
-        /// <summary>
-        /// 获取网站编码
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="buf"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public static Encoding GetEncoding(string url, out byte[] buf, string body = null)
-        {
-            buf = GetByte(url, out var response, body);
-            return GetEncoding(buf, response.ContentType);
-        }
-
-        /// <summary>
         /// 获取编码
         /// </summary>
         /// <param name="buf"></param>
@@ -65,15 +19,29 @@ namespace DwrUtility.Https
         /// <returns></returns>
         public static Encoding GetEncoding(byte[] buf, string contentType)
         {
-            //编码
+            //从字节中获取编码
             var code = GetEncodingByByte(buf);
             if (code == null)
             {
+                //从Header中获取编码
                 code = GetEncodingByResponseContentType(contentType);
+
                 if (code == null)
                 {
-                    var content = Encoding.UTF8.GetString(buf);
-                    code = GetEncodingByHtml(content) ?? (content.Contains("�") ? "gb2312" : "utf-8");
+                    //从内容中获取编码
+                    code = GetEncodingByHtml(Encoding.UTF8.GetString(buf));
+                    if (code == null)
+                    {
+                        //猜测编码
+                        if (Encoding.UTF8.GetString(buf).Contains("�") || Encoding.BigEndianUnicode.GetString(buf).Contains("�"))
+                        {
+                            code = "gb2312";
+                        }
+                        else
+                        {
+                            code = "utf-8";
+                        }
+                    }
                 }
             }
             var coding = Encoding.UTF8;
@@ -83,82 +51,19 @@ namespace DwrUtility.Https
             }
             catch (Exception)
             {
-                // ignored
+                // 报错默认utf-8编码
             }
 
             return coding;
         }
 
-        /// <summary>
-        /// 获取字节
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="response"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        private static byte[] GetByte(string url, out HttpWebResponse response, string body = null)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "get";
-            request.ContentType = "*.*";
-
-            if (!string.IsNullOrEmpty(body))
-            {
-                var requestStream = request.GetRequestStream();
-                var bytes = Encoding.UTF8.GetBytes(body);
-                requestStream.Write(bytes, 0, bytes.Length);
-                requestStream.Close();
-            }
-
-            //读取字节
-            response = (HttpWebResponse)request.GetResponse();
-            return GetResponseBytes(response);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        private static byte[] GetResponseBytes(HttpWebResponse response)
-        {
-            using (var responseStream = response.GetResponseStream())
-            {
-                if (responseStream == null)
-                {
-                    return null;
-                }
-
-                var count = (int)response.ContentLength;
-                if (count != -1)
-                {
-                    var offset = 0;
-                    var buf = new byte[count];
-                    while (count > 0)
-                    {
-                        var n = responseStream.Read(buf, offset, count);
-                        if (n == 0)
-                        {
-                            break;
-                        }
-                        count -= n;
-                        offset += n;
-                    }
-
-                    return buf;
-                }
-
-                //Transfer-Encoding: chunked
-                var list = new List<byte>();
-                var bt = new byte[4096];
-                int m;
-                while ((m = responseStream.Read(bt, 0, bt.Length)) != 0)
-                {
-                    list.AddRange(bt.Take(m));
-                }
-                return list.ToArray();
-            }
-        }
+        /*
+         * 对应在记事本的编码为
+         * gb2312  ANSI
+         * gbk  ANSI
+         * Unicode  UCS-2 LE BOM
+         * BigEndianUnicode  UCS-2 BE BOM
+         */
 
         /// <summary>
         /// 从字节流判断编码（返回null是不能判断出编码）
@@ -263,7 +168,6 @@ namespace DwrUtility.Https
             }
             return encoding;
         }
-
 
         /// <summary>
         /// 从Html中获取编码

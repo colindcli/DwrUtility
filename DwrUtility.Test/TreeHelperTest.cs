@@ -1,11 +1,11 @@
-﻿using KellermanSoftware.CompareNetObjects;
+﻿using DwrUtility.Trees;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using DwrUtility.Trees;
+using System.Windows.Forms;
 
 namespace DwrUtility.Test
 {
@@ -135,6 +135,40 @@ namespace DwrUtility.Test
 
             var eq = new CompareLogic().Compare(result, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        /// <summary>
+        /// 未能实现 TODO
+        /// </summary>
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var ns = new[]
+            {
+                Cn(new UserControl()),
+                Cn(new UserControl(), new []
+                {
+                    Cn(new UserControl())
+                }),
+            };
+
+            //var list = ns.ToList().ToTreeList(p => p.Nodes).ToList();
+        }
+
+        /// <summary>
+        /// 创建节点
+        /// </summary>
+        /// <param name="uc"></param>
+        /// <param name="ns"></param>
+        /// <returns></returns>
+        private TreeNode Cn(UserControl uc, TreeNode[] ns = null)
+        {
+            var text = uc.Text;
+            var name = uc.Name;
+            var tn = ns == null ? new TreeNode(text) : new TreeNode(text, ns);
+            tn.Name = name;
+            tn.ExpandAll();
+            return tn;
         }
 
         public class Team

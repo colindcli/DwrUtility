@@ -327,5 +327,31 @@ namespace DwrUtility.Test
                 b6
                 );
         }
+
+        [TestMethod]
+        public void TestMethod13()
+        {
+            var url = $"{TestConfig.WebUrl}/Product/PostFile";
+            var name = "测试&名称=哈#哈";
+            var dict = new Dictionary<string, string>()
+            {
+                {"Name", name },
+                {"Content", "Content" },
+            };
+
+            var path = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory.TrimSlash()}/../../DataFiles/");
+            var files = new List<HttpRequestFileModel>()
+            {
+                new HttpRequestFileModel($"{path}test_1.json"),
+                new HttpRequestFileModel($"{path}test_1_result.json"),
+            };
+
+            var result = HttpRequestHelper.PostFormFile(url, files, dict);
+
+            var b1 = result.IsSuccessful && result.StatusCode == HttpStatusCode.OK;
+            var content = result.Content;
+
+            Assert.IsTrue(content.IsContains("文件数：2；内容：测试&名称=哈#哈；Content；"));
+        }
     }
 }

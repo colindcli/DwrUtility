@@ -33,12 +33,13 @@ namespace DwrUtility.Test
                         Directories = new List<string>() { dir },
                     }
                 },
-                Period = TimeSpan.FromMilliseconds(200)
+                Period = TimeSpan.FromMilliseconds(200),
+                DueTime = TimeSpan.FromSeconds(0),
             });
 
             Assert.IsTrue(File.Exists(path));
 
-            Thread.Sleep(1500);
+            Thread.Sleep(3000);
 
             Assert.IsTrue(!File.Exists(path));
         }
