@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DwrUtility.Converts;
+using System;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using System.Text;
@@ -13,13 +14,23 @@ namespace DwrUtility
     public static class ObjectExt
     {
         /// <summary>
+        /// 汉字转拼音
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ToPingYin(this string str)
+        {
+            return ConvertHelper.ToPingYin(str);
+        }
+
+        /// <summary>
         /// 删除前后“/”，“\”，“ ”
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         public static string TrimSlash(this string str)
         {
-            return str.Trim('/', '\\', ' ');
+            return str?.Trim('/', '\\', ' ');
         }
 
         /// <summary>
@@ -29,7 +40,7 @@ namespace DwrUtility
         /// <returns></returns>
         public static string TrimEndSlash(this string str)
         {
-            return str.TrimEnd('/', '\\', ' ');
+            return str?.TrimEnd('/', '\\', ' ');
         }
 
         /// <summary>
@@ -39,7 +50,7 @@ namespace DwrUtility
         /// <returns></returns>
         public static string TrimStartSlash(this string str)
         {
-            return str.TrimStart('/', '\\', ' ');
+            return str?.TrimStart('/', '\\', ' ');
         }
 
         /// <summary>

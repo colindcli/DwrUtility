@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace DwrUtility
 {
@@ -330,6 +331,40 @@ namespace DwrUtility
             foreach (var d in dirs)
             {
                 GetDirectorys(d, ref paths);
+            }
+        }
+
+        /// <summary>
+        /// 给文件夹加只读权限，如果已存在不做处理
+        /// </summary>
+        /// <param name="dirs"></param>
+        public static void AddDirectoryReadAuth(params string[] dirs)
+        {
+            var config = string.Empty;
+            foreach (var dir in dirs)
+            {
+                var path = $"{dir.TrimSlash()}/web.config";
+
+                //已经设置则跳过
+                if (File.Exists(path))
+                {
+                    continue;
+                }
+
+                //没设置则设置
+                if (config.IsWhiteSpace())
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                    sb.AppendLine("<configuration>");
+                    sb.AppendLine("    <system.webServer>");
+                    sb.AppendLine("        <handlers accessPolicy=\"Read\" />");
+                    sb.AppendLine("    </system.webServer>");
+                    sb.AppendLine("</configuration>");
+                    config = sb.ToString();
+                }
+
+                File.WriteAllText(path, config, Encoding.UTF8);
             }
         }
     }

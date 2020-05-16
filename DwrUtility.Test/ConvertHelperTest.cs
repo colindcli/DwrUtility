@@ -123,5 +123,12 @@ namespace DwrUtility.Test
 
             Assert.IsTrue(md5 == result);
         }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var py = "中华人民共和国".ToPingYin();
+            Assert.IsTrue(py == "ZhongHuaRenMinGongHeGuo");
+        }
     }
 }

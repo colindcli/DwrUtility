@@ -84,8 +84,9 @@ namespace DwrUtility.Trees
         /// <param name="idField">Id字段</param>
         /// <param name="parentIdField">父Id字段</param>
         /// <param name="childField">子孙字段</param>
+        /// <param name="noChildrenSetNull">true没有子节点设置为null，false设置为空数组</param>
         /// <returns></returns>
-        public static List<T> ToTreeView<T, TIdType>(List<T> treeLists, Func<T, TIdType> idField, Func<T, TIdType> parentIdField, Expression<Func<T, List<T>>> childField) where T : new()
+        public static List<T> ToTreeView<T, TIdType>(List<T> treeLists, Func<T, TIdType> idField, Func<T, TIdType> parentIdField, Expression<Func<T, List<T>>> childField, bool noChildrenSetNull) where T : new()
         {
             if (treeLists == null)
             {
@@ -109,7 +110,21 @@ namespace DwrUtility.Trees
 
             var setChild = typeof(T).GetProperty(childField.GetPropertyName());
 
-            treeLists.ForEach(row => setChild?.SetValue(row, treeLists.Where(item => parentIdField.Invoke(item).Equals(idField.Invoke(row))).ToList()));
+            treeLists.ForEach(row =>
+            {
+                var children = treeLists.Where(item => parentIdField.Invoke(item).Equals(idField.Invoke(row))).ToList();
+                if (children.Count == 0)
+                {
+                    if (!noChildrenSetNull)
+                    {
+                        setChild?.SetValue(row, children);
+                    }
+                }
+                else
+                {
+                    setChild?.SetValue(row, children);
+                }
+            });
             return treeLists.Where(j => !treeLists.Exists(i => idField.Invoke(i).Equals(parentIdField.Invoke(j)))).ToList();
         }
 

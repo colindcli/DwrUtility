@@ -12,11 +12,10 @@ namespace DwrUtility
     /// </summary>
     public class EnumHelper
     {
-
         /// <summary>
-        /// 检查枚举值是否重复
+        /// 检查整个项目的枚举值是否重复
         /// </summary>
-        /// <param name="assemblyString"></param>
+        /// <param name="assemblyString">一般是Dll名称(不带后缀名)</param>
         public static void CheckEnum(string assemblyString)
         {
             var enumList = Assembly.Load(assemblyString).GetTypes().Where(p => p.IsEnum).ToList();

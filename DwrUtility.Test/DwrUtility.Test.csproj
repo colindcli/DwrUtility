@@ -92,6 +92,8 @@
     <Compile Include="HttpHelperTest.cs" />
     <Compile Include="HttpRequestHelperTest.cs" />
     <Compile Include="FileHelperTest.cs" />
+    <Compile Include="MapperHelperTest.cs" />
+    <Compile Include="EqualityComparerTest.cs" />
     <Compile Include="ZipHelperTest.cs" />
     <Compile Include="Utility\TestConfig.cs" />
     <Compile Include="WriteHelperTest.cs" />
@@ -112,6 +114,7 @@
     <None Include="DataFiles\test_13_result.json" />
     <None Include="DataFiles\test_1_result.json" />
     <None Include="DataFiles\test_2.json" />
+    <None Include="DataFiles\test_22_resultA.json" />
     <None Include="DataFiles\test_37_Result_C.json" />
     <None Include="DataFiles\test_37_Result_B.json" />
     <None Include="DataFiles\test_40.json" />

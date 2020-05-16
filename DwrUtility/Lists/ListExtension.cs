@@ -255,7 +255,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// Source.Value赋值给List.Value
+        /// Source.Value赋值给List.Value (大数据量>10W或Source的Id有多个相同的)
         /// </summary>
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TSource"></typeparam>
@@ -381,7 +381,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 去重（TKey必须是匿名对象）
+        /// 去重（TKey是匿名对象字段区分大小写 或 TKey非匿名对象时为一个字段，可以设置StringComparer）
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
@@ -389,7 +389,7 @@ namespace DwrUtility.Lists
         /// <param name="key"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("过时了")]
         public static IEnumerable<TKey> ToDist<T, TKey>(this IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
         {
             return ListHelper.ToDist(list, key, comparer);
@@ -408,7 +408,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 转Dictionary（去重处理）
+        /// 转Dictionary（可以做去重处理）
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TKey"></typeparam>
@@ -424,5 +424,62 @@ namespace DwrUtility.Lists
             return ListHelper.ToDict(list, key, value, useFirstValue, comparer);
         }
 
+        /// <summary>
+        /// Left Join (result(left,right)的right返回值可能为null)
+        /// </summary>
+        /// <typeparam name="TLeft"></typeparam>
+        /// <typeparam name="TRight"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="leftKey"></param>
+        /// <param name="rightKey"></param>
+        /// <param name="result">result(left,right)的right返回值可能为null，所以需要特别注意</param>
+        /// <returns></returns>
+        public static List<TResult> LeftJoin<TLeft, TRight, TKey, TResult>(this List<TLeft> left,
+            List<TRight> right,
+            Func<TLeft, TKey> leftKey,
+            Func<TRight, TKey> rightKey,
+            Func<TLeft, TRight, TResult> result)
+        {
+            return ListHelper.LeftJoin(left, right, leftKey, rightKey, result);
+        }
+
+        /// <summary>
+        /// Full Join (result(key,left,right)的left和right值有可能为null)
+        /// </summary>
+        /// <typeparam name="TLeft"></typeparam>
+        /// <typeparam name="TRight"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="leftKey"></param>
+        /// <param name="rightKey"></param>
+        /// <param name="result">result(key,left,right)的left和right值有可能为null，所以需要特别注意</param>
+        /// <returns></returns>
+        public static List<TResult> FullJoin<TLeft, TRight, TKey, TResult>(this List<TLeft> left,
+            List<TRight> right,
+            Func<TLeft, TKey> leftKey,
+            Func<TRight, TKey> rightKey,
+            Func<TKey, TLeft, TRight, TResult> result)
+        {
+            return ListHelper.FullJoin(left, right, leftKey, rightKey, result);
+        }
+
+        /// <summary>
+        /// list的字段filed集合任意包含ids
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="filed"></param>
+        /// <param name="ids"></param>
+        /// <param name="split">默认值：new[] { ';' }</param>
+        /// <returns></returns>
+        public static List<T> IsContains<T>(this List<T> list, Func<T, string> filed, List<string> ids, char[] split = null)
+        {
+            return ListHelper.IsContains(list, filed, ids, split);
+        }
     }
 }

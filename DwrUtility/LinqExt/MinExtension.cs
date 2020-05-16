@@ -16,11 +16,13 @@ namespace DwrUtility.LinqExt
                 return default(T);
             }
 
+            // ReSharper disable once PossibleMultipleEnumeration
             if (!source.Any())
             {
                 return default(T);
             }
 
+            // ReSharper disable once PossibleMultipleEnumeration
             return source.Min();
         }
 
@@ -31,11 +33,13 @@ namespace DwrUtility.LinqExt
                 return default(TTarget);
             }
 
+            // ReSharper disable once PossibleMultipleEnumeration
             if (!source.Any())
             {
                 return default(TTarget);
             }
 
+            // ReSharper disable once PossibleMultipleEnumeration
             return source.Min(selector);
         }
 

@@ -23,7 +23,7 @@ namespace DwrUtility.Test
 
             list.DeleteNodes(new List<long>() { 6 }, p => p.Id, p => p.ParentId);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
             //正确结果
@@ -44,7 +44,7 @@ namespace DwrUtility.Test
 
             list.DeleteNodes(new List<long>() { 2, 6 }, p => p.Id, p => p.ParentId);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
             //正确结果

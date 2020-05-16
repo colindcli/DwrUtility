@@ -353,5 +353,17 @@ namespace DwrUtility.Test
 
             Assert.IsTrue(content.IsContains("文件数：2；内容：测试&名称=哈#哈；Content；"));
         }
+
+        [TestMethod]
+        public void TestMethod14()
+        {
+            Assert.Inconclusive("请求被中止: 未能创建 SSL/TLS 安全通道。");
+
+            var url = "https://www.ddun.com/";
+            var result = HttpRequestHelper.GetData(url);
+
+            var b1 = result.IsSuccessful && result.StatusCode == HttpStatusCode.OK;
+            Assert.IsTrue(b1);
+        }
     }
 }

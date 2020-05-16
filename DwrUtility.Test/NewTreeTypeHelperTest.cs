@@ -43,7 +43,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToTreeNewIdType(convertParam);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -80,7 +80,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToTreeNewIdType(convertParam);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
             //正确结果
@@ -117,7 +117,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToTreeNewIdType(convertParam);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
             //正确结果

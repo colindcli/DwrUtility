@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DwrUtility.Test.Utility;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace DwrUtility.Test
 {
@@ -113,6 +116,24 @@ namespace DwrUtility.Test
             var ds1 = DirectoryHelper.GetDirectorys(dir);
             var ds2 = DirectoryHelper.GetDirectorys(null);
             Assert.IsTrue(ds1.Count == 0 && ds2.Count == 0);
+        }
+
+        /// <summary>
+        /// 没有system.webServer
+        /// </summary>
+        [TestMethod]
+        public void TestMethod9()
+        {
+            var dir = $"{TestConfig.BinDir}Files/config/";
+            dir.CreateDir();
+
+            DirectoryHelper.AddDirectoryReadAuth(dir);
+
+            var path = $"{dir}web.config";
+            Assert.IsTrue(File.Exists(path));
+
+            //删除文件
+            FileHelper.DeleteFile(path, false);
         }
     }
 }

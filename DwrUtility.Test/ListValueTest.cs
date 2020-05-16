@@ -112,6 +112,60 @@ namespace DwrUtility.Test
         }
 
         [TestMethod]
+        public void TestMethod2A()
+        {
+            var rows = new List<RowTwo>();
+            var sources = new List<SourceTwo>();
+
+            for (var i = 0; i < 3; i++)
+            {
+                var id = Guid.NewGuid();
+                rows.Add(new RowTwo()
+                {
+                    Id = id
+                });
+
+                if (i != 1)
+                {
+                    sources.Add(new SourceTwo()
+                    {
+                        Id = id,
+                        Value = i
+                    });
+                    sources.Add(new SourceTwo()
+                    {
+                        Id = id,
+                        Value = i + 1
+                    });
+                }
+            }
+
+            rows.Add(new RowTwo()
+            {
+                Id = Guid.Empty
+            });
+
+            var items = ListHelper.SetListValue(new ListValueById<RowTwo, SourceTwo, Guid, int?>()
+            {
+                List = rows,
+                Source = sources,
+                ListIdField = p => p.Id,
+                ListValueField = p => p.Value,
+                SourceIdField = p => p.Id,
+                SourceValueField = p => p.Value,
+                UseSourceFirstValue = true
+            }).ToList();
+
+            var b = rows.Count == 4;
+            var b0 = items[0].Value == 0;
+            var b1 = items[1].Value == null;
+            var b2 = items[2].Value == 2;
+            var b3 = items[3].Value == null;
+
+            Assert.IsTrue(b && b0 && b1 && b2 && b3);
+        }
+
+        [TestMethod]
         public void TestMethod3()
         {
             var rows = new List<RowTwo>();
@@ -156,6 +210,59 @@ namespace DwrUtility.Test
             var b2 = items[2].Value == 3;
 
             Assert.IsTrue(b && b0 && b1 && b2);
+        }
+
+        [TestMethod]
+        public void TestMethod3A()
+        {
+            var rows = new List<RowTwo>();
+            var sources = new List<SourceTwo>();
+
+            for (var i = 0; i < 3; i++)
+            {
+                var id = Guid.NewGuid();
+                rows.Add(new RowTwo()
+                {
+                    Id = id
+                });
+                if (i != 1)
+                {
+                    sources.Add(new SourceTwo()
+                    {
+                        Id = id,
+                        Value = i
+                    });
+                    sources.Add(new SourceTwo()
+                    {
+                        Id = id,
+                        Value = i + 1
+                    });
+                }
+            }
+
+            rows.Add(new RowTwo()
+            {
+                Id = Guid.Empty
+            });
+
+            var items = ListHelper.SetListValue(new ListValueById<RowTwo, SourceTwo, Guid, int?>()
+            {
+                List = rows,
+                Source = sources,
+                ListIdField = p => p.Id,
+                ListValueField = p => p.Value,
+                SourceIdField = p => p.Id,
+                SourceValueField = p => p.Value,
+                UseSourceFirstValue = false
+            }).ToList();
+
+            var b = rows.Count == items.Count;
+            var b0 = items[0].Value == 1;
+            var b1 = items[1].Value == null;
+            var b2 = items[2].Value == 3;
+            var b3 = items[3].Value == null;
+
+            Assert.IsTrue(b && b0 && b1 && b2 && b3);
         }
 
         [TestMethod]
@@ -233,7 +340,7 @@ namespace DwrUtility.Test
                     });
                 }
             }
-            
+
             var items = lists.SetListValuesByIds(sources, p => p.Id, p => p.Value, p => p.Id, p => p.Value);
 
             var str = JsonConvert.SerializeObject(items);

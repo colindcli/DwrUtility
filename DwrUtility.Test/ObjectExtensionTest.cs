@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DwrUtility.Test
 {
@@ -779,6 +780,14 @@ namespace DwrUtility.Test
 
             var b = s1.IsEquals(s2);
             Assert.IsTrue(b);
+        }
+
+        [TestMethod]
+        public void TestMethod21()
+        {
+            Func<Row, bool> func = m => true;
+            
+
         }
 
         public class Row

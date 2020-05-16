@@ -1,4 +1,4 @@
-﻿using DwrUtility.Https;
+﻿using DwrUtility.Converts;
 using System.IO;
 using System.Text;
 
@@ -68,7 +68,7 @@ namespace DwrUtility
             fs.Close();
             fs.Dispose();
 
-            var encoding = HttpHelper.GetEncodingByByte(bt);
+            var encoding = bt.GetEncoding();
             if (encoding != null)
             {
                 return File.ReadAllText(path, Encoding.GetEncoding(encoding));

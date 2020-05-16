@@ -307,6 +307,234 @@ namespace DwrUtility.Test
             Assert.IsTrue(dict2.Count == 3);
         }
 
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var list = new List<Source>()
+            {
+                new Source()
+                {
+                    Id = 1,
+                    Name = $"Name_1"
+                },
+                new Source()
+                {
+                    Id = 2,
+                    Name = $"Name_2"
+                },
+            };
+
+            var row = new List<Target2>
+            {
+                new Target2()
+                {
+                    Id = 2,
+                    TypeName = "Type2"
+                },
+                new Target2()
+                {
+                    Id = 3,
+                    TypeName = "Type3"
+                }
+            };
+
+            var result = list.LeftJoin(row, p => p.Id, p => p.Id, (p, q) => new Result()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                TypeName = q?.TypeName
+            }).OrderBy(p => p.Id).ToList();
+
+            var b1 = result.Count == 2;
+            var b2 = result[0].Id == 1 && result[0].Name == "Name_1" && result[0].TypeName == null;
+            var b3 = result[1].Id == 2 && result[1].Name == "Name_2" && result[1].TypeName == "Type2";
+            Assert.IsTrue(b1 && b2 && b3);
+        }
+
+        [TestMethod]
+        public void TestMethod8A()
+        {
+            var list = new List<int>()
+            {
+                1,2
+            };
+
+            var row = new List<int>
+            {
+                2,3
+            };
+
+            var result = list.LeftJoin(row, p => p, p => p, (p, q) => new Result()
+            {
+                Id = p
+            }).OrderBy(p => p.Id).ToList();
+
+            var b1 = result.Count == 2;
+            var b2 = result[0].Id == 1;
+            var b3 = result[1].Id == 2;
+            Assert.IsTrue(b1 && b2 && b3);
+        }
+
+        [TestMethod]
+        public void TestMethod9()
+        {
+            var list = new List<Source>()
+            {
+                new Source()
+                {
+                    Id = 1,
+                    Name = $"Name_1"
+                },
+                new Source()
+                {
+                    Id = 2,
+                    Name = $"Name_2"
+                },
+            };
+
+            var row = new List<Target2>
+            {
+                new Target2()
+                {
+                    Id = 2,
+                    TypeName = "Type2"
+                },
+                new Target2()
+                {
+                    Id = 3,
+                    TypeName = "Type3"
+                }
+            };
+
+            var result = list.FullJoin(row, p => p.Id, p => p.Id, (id, p, q) => new Result()
+            {
+                Id = id,
+                Name = p?.Name,
+                TypeName = q?.TypeName
+            }).OrderBy(p => p.Id).ToList();
+
+            var b1 = result.Count == 3;
+            var b2 = result[0].Id == 1 && result[0].Name == "Name_1" && result[0].TypeName == null;
+            var b3 = result[1].Id == 2 && result[1].Name == "Name_2" && result[1].TypeName == "Type2";
+            var b4 = result[2].Id == 3 && result[2].Name == null && result[2].TypeName == "Type3";
+
+            Assert.IsTrue(b1 && b2 && b3 && b4);
+        }
+
+        [TestMethod]
+        public void TestMethod9A()
+        {
+            var list = new List<int>()
+            {
+                1,2
+            };
+
+            var row = new List<int>
+            {
+                2,3
+            };
+
+            var result = list.FullJoin(row, p => p, p => p, (id, p, q) => new Result()
+            {
+                Id = id,
+            }).OrderBy(p => p.Id).ToList();
+
+            var b1 = result.Count == 3;
+            var b2 = result[0].Id == 1;
+            var b3 = result[1].Id == 2;
+            var b4 = result[2].Id == 3;
+
+            Assert.IsTrue(b1 && b2 && b3 && b4);
+        }
+
+        [TestMethod]
+        public void TestMethod9B()
+        {
+            var list = new List<int>()
+            {
+                1,2
+            };
+
+            var row = new List<Target2>
+            {
+                new Target2()
+                {
+                    Id = 2,
+                    TypeName = "Type2"
+                },
+                new Target2()
+                {
+                    Id = 3,
+                    TypeName = "Type3"
+                }
+            };
+
+            var result = list.FullJoin(row, p => p, p => p.Id, (id, p, q) => new Result()
+            {
+                Id = id,
+                TypeName = q?.TypeName
+            }).OrderBy(p => p.Id).ToList();
+
+            var b1 = result.Count == 3;
+            var b2 = result[0].Id == 1 && result[0].TypeName == null;
+            var b3 = result[1].Id == 2 && result[1].TypeName == "Type2";
+            var b4 = result[2].Id == 3 && result[2].TypeName == "Type3";
+
+            Assert.IsTrue(b1 && b2 && b3 && b4);
+        }
+
+        [TestMethod]
+        public void TestMethod10()
+        {
+            var list = new List<Source>
+            {
+                new Source()
+                {
+                    Name = "1;2;3"
+                },
+                new Source()
+                {
+                    Name = "2;3"
+                },
+                new Source()
+                {
+                    Name = "1;3"
+                },
+                new Source()
+                {
+                    Name = "4"
+                }
+            };
+
+            var ids = new List<string>() { "1", "2", "3" };
+            var res = list.IsContains(p => p.Name, ids);
+
+            Assert.IsTrue(res.Count == 3);
+        }
+
+        [TestMethod]
+        public void TestMethod11()
+        {
+            var list = new List<Source>();
+            for (var i = 0; i < 2000; i++)
+            {
+                list.Add(new Source()
+                {
+                    Name = $"{i + 1};{i + 2};{i + 3}"
+                });
+            }
+
+            var ids2 = new List<string>() { "10", "2", "38" };
+
+            var sw = new Stopwatch();
+            sw.Start();
+            var res1 = ListHelper.IsContains(list, p => p.Name, ids2, new[] { ';' });
+            sw.Stop();
+            var ms1 = sw.ElapsedMilliseconds;
+
+            Assert.IsTrue(res1.Count == 8);
+        }
+
         public class Source
         {
             public int Id { get; set; }
@@ -316,6 +544,19 @@ namespace DwrUtility.Test
         public class Target
         {
             public int Id { get; set; }
+        }
+
+        public class Target2
+        {
+            public int Id { get; set; }
+            public string TypeName { get; set; }
+        }
+
+        public class Result
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string TypeName { get; set; }
         }
 
         public class Source2

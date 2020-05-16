@@ -86,7 +86,7 @@ namespace DwrUtility.Test
             {
                 6,7,8,9,
                 4,5,
-                1,2,3,
+                1,2,3,10,11,12,13,14,15,16,17,18,19,20
             };
 
             //线程运行
@@ -104,7 +104,7 @@ namespace DwrUtility.Test
                 row.AddRange(rs);
             });
 
-            var b = row.Distinct().Count() == 9;
+            var b = row.Distinct().Count() == 20;
             Assert.IsTrue(b);
         }
 

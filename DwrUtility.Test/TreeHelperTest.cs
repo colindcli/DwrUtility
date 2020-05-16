@@ -22,7 +22,7 @@ namespace DwrUtility.Test
             var json = File.ReadAllText(path);
             var list = JsonConvert.DeserializeObject<List<Team>>(json);
 
-            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -30,6 +30,26 @@ namespace DwrUtility.Test
             var pathResult = $"{FileDir}test_22_result.json";
             var resultOk = JsonConvert.DeserializeObject<List<Team>>(File.ReadAllText(pathResult));
 
+
+            var eq = new CompareLogic().Compare(result, resultOk);
+            Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
+        }
+
+        [TestMethod]
+        public void TestMethod1A()
+        {
+            //待验证
+            var path = $"{FileDir}test_22.json";
+            var json = File.ReadAllText(path);
+            var list = JsonConvert.DeserializeObject<List<Team>>(json);
+
+            var result = list.ToTreeView(p => p.Id, p => p.ParentId, p => p.Childs, true);
+            var s = JsonConvert.SerializeObject(result);
+
+
+            //正确结果
+            var pathResult = $"{FileDir}test_22_resultA.json";
+            var resultOk = JsonConvert.DeserializeObject<List<Team>>(File.ReadAllText(pathResult));
 
             var eq = new CompareLogic().Compare(result, resultOk);
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));

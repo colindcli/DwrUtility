@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 namespace DwrUtility
 {
     /// <summary>
-    /// 循环执行方法
+    /// 一直循环执行方法
     /// </summary>
     public class WhileHelper
     {
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <param name="executeImmediately">是否马上执行</param>
         /// <param name="millisecondsTimeout"></param>
@@ -42,7 +42,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="executeImmediately">是否马上执行</param>
@@ -76,7 +76,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -112,7 +112,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -150,7 +150,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -190,7 +190,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -232,7 +232,7 @@ namespace DwrUtility
         }
 
         /// <summary>
-        /// 循环执行方法
+        /// 一直循环执行方法
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>

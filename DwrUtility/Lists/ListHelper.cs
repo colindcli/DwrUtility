@@ -246,7 +246,7 @@ namespace DwrUtility.Lists
         #region id -> value
 
         /// <summary>
-        /// Source.Value赋值给List.Value
+        /// Source.Value赋值给List.Value (大数据量>10W或Source的Id有多个相同的)
         /// </summary>
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TSource"></typeparam>
@@ -622,5 +622,101 @@ namespace DwrUtility.Lists
         }
 
         #endregion
+
+        /// <summary>
+        /// Left Join (result(left,right)的right返回值可能为null)
+        /// </summary>
+        /// <typeparam name="TLeft"></typeparam>
+        /// <typeparam name="TRight"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="leftKey"></param>
+        /// <param name="rightKey"></param>
+        /// <param name="result">result(left,right)的right返回值可能为null，所以需要特别注意</param>
+        /// <returns></returns>
+        public static List<TResult> LeftJoin<TLeft, TRight, TKey, TResult>(List<TLeft> left,
+            List<TRight> right,
+            Func<TLeft, TKey> leftKey,
+            Func<TRight, TKey> rightKey,
+            Func<TLeft, TRight, TResult> result)
+        {
+            return (from s in left
+                    join i in right
+                    on leftKey(s) equals rightKey(i) into temp
+                    from r in temp.DefaultIfEmpty()
+                    select result(s, r)).ToList();
+        }
+
+        /// <summary>
+        /// Full Join (result(key,left,right)的left和right值有可能为null)
+        /// </summary>
+        /// <typeparam name="TLeft"></typeparam>
+        /// <typeparam name="TRight"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="leftKey"></param>
+        /// <param name="rightKey"></param>
+        /// <param name="result">result(key,left,right)的left和right值有可能为null，所以需要特别注意</param>
+        /// <returns></returns>
+        public static List<TResult> FullJoin<TLeft, TRight, TKey, TResult>(List<TLeft> left,
+            List<TRight> right,
+            Func<TLeft, TKey> leftKey,
+            Func<TRight, TKey> rightKey,
+            Func<TKey, TLeft, TRight, TResult> result)
+        {
+            var list1 = from l in left
+                        join r in right
+                        on leftKey(l) equals rightKey(r) into temp
+                        from t in temp.DefaultIfEmpty()
+                        select result(leftKey(l), l, t);
+
+            var def = default(TLeft);
+            var list2 = (from r in right
+                         join l in left
+                         on rightKey(r) equals leftKey(l) into temp
+                         from t in temp.DefaultIfEmpty()
+                         where Equals(t, def)
+                         select result(rightKey(r), t, r)).ToList();
+
+            return list1.Union(list2).ToList();
+        }
+
+        /// <summary>
+        /// list的字段filed集合任意包含ids
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="filed"></param>
+        /// <param name="ids"></param>
+        /// <param name="split">默认值：new[] { ';' }</param>
+        /// <returns></returns>
+        public static List<T> IsContains<T>(List<T> list, Func<T, string> filed, List<string> ids, char[] split = null)
+        {
+            if (split == null)
+            {
+                split = new[] { ';' };
+            }
+
+            var res = new List<T>();
+            foreach (var li in list)
+            {
+                var str = filed.Invoke(li);
+                if (str.IsWhiteSpace())
+                {
+                    continue;
+                }
+
+                var arr = str.Split(split, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (arr.Any(ids.Contains))
+                {
+                    res.Add(li);
+                }
+            }
+            return res;
+        }
     }
 }

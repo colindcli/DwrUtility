@@ -32,7 +32,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToParentsDepth(param);
 
-            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -66,7 +66,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToParentsDepth(param);
 
-            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -100,7 +100,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToParentsDepth(param);
 
-            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 
@@ -135,7 +135,7 @@ namespace DwrUtility.Test
             };
             TreeHelper.ToParentsDepth(param);
 
-            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs);
+            var result = list.ToTreeView(p => p.TeamId, p => p.ParentId, p => p.Childs, false);
             var s = JsonConvert.SerializeObject(result);
 
 

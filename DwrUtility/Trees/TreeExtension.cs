@@ -62,10 +62,11 @@ namespace DwrUtility.Trees
         /// <param name="idField">Id字段</param>
         /// <param name="parentIdField">父Id字段</param>
         /// <param name="childField">子孙字段</param>
+        /// <param name="noChildrenSetNull">true没有子节点设置为null，false设置为空数组</param>
         /// <returns></returns>
-        public static List<T> ToTreeView<T, TIdType>(this List<T> treeLists, Func<T, TIdType> idField, Func<T, TIdType> parentIdField, Expression<Func<T, List<T>>> childField) where T : new()
+        public static List<T> ToTreeView<T, TIdType>(this List<T> treeLists, Func<T, TIdType> idField, Func<T, TIdType> parentIdField, Expression<Func<T, List<T>>> childField, bool noChildrenSetNull) where T : new()
         {
-            return TreeHelper.ToTreeView(treeLists, idField, parentIdField, childField);
+            return TreeHelper.ToTreeView(treeLists, idField, parentIdField, childField, noChildrenSetNull);
         }
 
         /// <summary>

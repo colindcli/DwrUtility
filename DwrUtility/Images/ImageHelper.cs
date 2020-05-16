@@ -438,6 +438,7 @@ namespace DwrUtility.Images
                 }
 
                 base64String = $"data:{contentType};base64,{Convert.ToBase64String(ms.ToArray())}";
+                ms.Close();
                 ms.Dispose();
                 return true;
             }
@@ -445,6 +446,7 @@ namespace DwrUtility.Images
             {
                 DwrUtilitySetting.Log?.Invoke(ex);
                 bmp?.Dispose();
+                ms?.Close();
                 ms?.Dispose();
                 base64String = null;
                 return false;
