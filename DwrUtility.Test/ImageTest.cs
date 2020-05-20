@@ -157,5 +157,81 @@ namespace DwrUtility.Test
 
             Assert.IsTrue(b3);
         }
+
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var path = $"{FileDir}images/error.jpg";
+            var img = ImageHelper.GetImageInfo(path);
+
+            if (img.ImageFormat == ImgFormat.NotRecognised)
+            {
+                Assert.Inconclusive("无法识别图片");
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod9()
+        {
+            var path = $"{FileDir}images/ok.png";
+            var img = ImageHelper.GetImageInfo(path);
+
+            Assert.IsTrue(img.ImageFormat == ImgFormat.Png);
+
+            var width = 500;
+            var height = 500;
+            if (img.Width != width || img.Height != height)
+            {
+                Assert.Inconclusive($"真实为{width}*{height}；Width: {img.Width}；Height：{img.Height}");
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod10()
+        {
+            var path = $"{FileDir}images/ok.jpg";
+            var img = ImageHelper.GetImageInfo(path);
+
+            Assert.IsTrue(img.ImageFormat == ImgFormat.Png);
+
+            var width = 500;
+            var height = 500;
+            if (img.Width != width || img.Height != height)
+            {
+                Assert.Inconclusive($"真实为{width}*{height}；Width: {img.Width}；Height：{img.Height}");
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod11()
+        {
+            var path = $"{FileDir}images/xftbg.png";
+            var img = ImageHelper.GetImageInfo(path);
+
+            Assert.IsTrue(img.ImageFormat == ImgFormat.Jpeg);
+
+            var width = 1920;
+            var height = 1080;
+            if (img.Width != width || img.Height != height)
+            {
+                Assert.Inconclusive($"真实为{width}*{height}；Width: {img.Width}；Height：{img.Height}");
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod12()
+        {
+            var path = $"{FileDir}images/timg.gif";
+            var img = ImageHelper.GetImageInfo(path);
+
+            Assert.IsTrue(img.ImageFormat == ImgFormat.Gif);
+
+            var width = 658;
+            var height = 494;
+            if (img.Width != width || img.Height != height)
+            {
+                Assert.Inconclusive($"真实为{width}*{height}；Width: {img.Width}；Height：{img.Height}");
+            }
+        }
     }
 }

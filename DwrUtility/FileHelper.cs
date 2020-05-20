@@ -10,6 +10,26 @@ namespace DwrUtility
     public class FileHelper
     {
         /// <summary>
+        /// 获取文件扩展名
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>文件不存在返回null</returns>
+        public static string GetFileExtension(string path)
+        {
+            if (path.IsWhiteSpace())
+            {
+                return null;
+            }
+
+            if (!File.Exists(path))
+            {
+                return Path.GetExtension(path);
+            }
+
+            return new FileInfo(path).Extension;
+        }
+
+        /// <summary>
         /// 文件大小
         /// </summary>
         /// <param name="path"></param>
@@ -82,11 +102,11 @@ namespace DwrUtility
             }
 
             //gb2312
-            var txt2 = File.ReadAllText(path, Encoding.BigEndianUnicode);
-            if (txt2.Contains("�"))
-            {
-                return File.ReadAllText(path, Encoding.GetEncoding("gb2312"));
-            }
+            //var txt2 = File.ReadAllText(path, Encoding.BigEndianUnicode);
+            //if (txt2.Contains("�"))
+            //{
+            //    return File.ReadAllText(path, Encoding.GetEncoding("gb2312"));
+            //}
 
             //utf-8
             return File.ReadAllText(path, Encoding.UTF8);

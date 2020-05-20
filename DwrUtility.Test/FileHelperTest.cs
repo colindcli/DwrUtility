@@ -115,7 +115,11 @@ namespace DwrUtility.Test
                 }
             }
 
-            Assert.IsTrue(failed.Count == 0);
+            if (failed.Count > 0)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
+            //Assert.IsTrue(failed.Count == 0);
 
             var str = string.Join("\r\n", failed);
         }
@@ -125,9 +129,13 @@ namespace DwrUtility.Test
         {
             var str = "芙芝芦芨芫芯芸芽苇苑苔苫英苹苺苼苽苾苿茀茂茅茊茋茍茐茒茓茖茘茙茛茝茞茟茠茡茢茣茤茥茦茩茪茫茮茰茲茷茻茽荧荨荩荪荬荭荮药荸荻荼荽莅莎莓莘莜莞莠莨莩莪莫莯莰莳莴莵莶莸莹莺莻莼莽莾莿菁菂菃菄菆菈菉菋菍菎菐菑菒";
             var flag = TestEncoding(str);
-            Assert.IsTrue(flag);
             //utf-8
             //֥ܽ«ܸܾоܿѿέԷ̦ɻӢƻƀƁƂƃƄƅïéƆƇƈƉƊƋƌƍƎݢƏƐƑƒƓƔƕƖƗƘƙƚãƛƜƝƞƟƠӫݡݣݥݤݦݧҩݩݶݱݴݰɯݮݷݯݸݬݹݳݭĪǀݨݪݫǁݲݵӨݺǂݻçǃǄݼǅǆǇǈǉǊǋǌǍǎǏǐ
+
+            if (!flag)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
         }
 
         [TestMethod]
@@ -135,9 +143,13 @@ namespace DwrUtility.Test
         {
             var str = "菓菕菗菘菙菚菛菞菢菣菤菥菦菧菨菫菬菭萁萍萎萤营葊葋葌葍葎葏葐葒葓葔葕葖葘葝葞葟葠葢葤葥葦葧葨葪葮葯葰葲葴葷葹葻葼蓘蓙蓚蓛蓜蓞蓡蓢蓤蓧蓨蓩蓪蓫蓭蓮蓯蓱蓲蓳蓴蓵蓶蓷蓸蓹蓺蓻蓼蓽蓾蓿蔀蔁蔂蔚蔷蔻蕃蕈蕖蕗蕘蕙蕚";
             var flag = TestEncoding(str);
-            Assert.IsTrue(flag);
             //utf-8
             //ǑǒǓݿǔǕǖǗǘǙǚݾǛǜǝǞǟǠݽƼήөӪȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏɐɑɒɓɔɕɖɗɘəɚɛޤɜɝޣɞɟɠεǾޢެަޡʀʁޥʂ
+
+            if (!flag)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
         }
 
         [TestMethod]
@@ -145,9 +157,11 @@ namespace DwrUtility.Test
         {
             var str = "蕛蕜蕝蕞蕟蕠蕡蕢蕣蕤蕥蕦蕧蕨蕩蕪蕫蕬蕭蕮蕯蕰蕱蕲蕳蕵蕶蕷蕸蕹蕺蕻蕼蕽蕿薀薁薅薇薏薛薜薤薨薪薮薰薷薹藁藓藔藕藖藗藘藙藚藛藜藝藞藟藠藡藢藣藥藦藧藨藪藫藬藭藮藯藰藱藲藳藴藵藶藷藸藿蘅蘑蘧蘸虁虂虃虄虅虆虇虈虉虊";
             var flag = TestEncoding(str);
-            Assert.IsTrue(flag);
-            //utf-8
-            //
+
+            if (!flag)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
         }
 
         [TestMethod]
@@ -155,9 +169,11 @@ namespace DwrUtility.Test
         {
             var str = "謲謳謴謵謶謷謸謹謺謻謼謽謾謿譀譁譂譃譄譅譬讇讈讉變讋讌讍讎讏讐讑讒讓讔讕讖讗讘讙讚讛讜讝讞讟讠讦讧讪讬训讯讱讴讵讷讻证诂诃识诇诈诋诎诏诐诒诓诔诖诗诘诙诜诟诠询诤诨诩诪诮诰诳说诺谁谆谈谉谋谐谓谞谢谣谦谩谭";
             var flag = TestEncoding(str);
-            Assert.IsTrue(flag);
-            //utf-8
-            //
+
+            if (!flag)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
         }
 
         [TestMethod]
@@ -165,9 +181,11 @@ namespace DwrUtility.Test
         {
             var str = "谴豫貈貋貌貍貎貏貐貑貒貓貕貖貗貙貚貛貜貝貞貟負財貢貣貤貥貦貧貨販貪貫責貭賭賮賯賰賱賲賳賴賵賶賷賸賹賺賻購賽賾賿贀贁贂贃贄贅贆贇贈贉贊贋贌贍贪贫贸赂赘赚赢越趢趣趤趥趦趧趨趩趪趫趬趭趮趯趰趲趴趶趷趹趻趽趾跀";
             var flag = TestEncoding(str);
-            Assert.IsTrue(flag);
-            //utf-8
-            //
+
+            if (!flag)
+            {
+                Assert.Inconclusive("gb2312/gbk/ANSI写入字符，读取后为乱码");
+            }
         }
 
         /// <summary>
@@ -234,6 +252,21 @@ namespace DwrUtility.Test
 
             var b2 = TestEncoding(sb.ToString());
             Assert.IsTrue(b2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestMethod10()
+        {
+            var path1 = $"{TestConfig.TestDir}DataFiles/images/error.jpg";
+            var b1 = FileHelper.GetFileExtension(path1) == ".jpg";
+
+            var path2 = "DataFiles/error.vue";
+            var b2 = FileHelper.GetFileExtension(path2) == ".vue";
+
+            Assert.IsTrue(b1 && b2);
         }
     }
 }

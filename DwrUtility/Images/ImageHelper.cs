@@ -347,15 +347,14 @@ namespace DwrUtility.Images
         }
 
         /// <summary>
-        /// 是否图片 (.jpg;.png;.gif;.jpeg;.bmp)
+        /// 是否图片
         /// </summary>
-        /// <param name="fileTitle"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public static bool IsImage(string fileTitle)
+        public static bool IsPicture(string path)
         {
-            var array = new[] { ".jpg", ".png", ".gif", ".jpeg", ".bmp", ".svg" };
-            var fileType = Path.GetExtension(fileTitle);
-            return !string.IsNullOrWhiteSpace(fileType) && array.Contains(fileType, StringComparer.OrdinalIgnoreCase);
+            var type = GetImageInfo(path);
+            return type.ImageFormat != ImgFormat.NotRecognised;
         }
 
         /// <summary>
@@ -891,6 +890,36 @@ namespace DwrUtility.Images
             grPhoto.Dispose();
 
             return bmPhoto;
+        }
+
+        /// <summary>
+        /// 获取图片类型及宽高像素
+        /// 支持格式：Bmp、Gif、Jpeg、Png、Tiff、Webp、Svg、Psd、Pdf、Ico、Cur
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>图片不存在返回null</returns>
+        public static ImageInfo GetImageInfo(string path)
+        {
+            if (path.IsWhiteSpace() || !File.Exists(path))
+            {
+                return null;
+            }
+
+            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return FastImage.GetImageInfo(fs);
+            }
+        }
+
+        /// <summary>
+        /// 获取图片类型及宽高像素
+        /// 支持格式：Bmp、Gif、Jpeg、Png、Tiff、Webp、Svg、Psd、Pdf、Ico、Cur
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns>图片不存在返回null</returns>
+        public static ImageInfo GetImageInfo(Stream stream)
+        {
+            return FastImage.GetImageInfo(stream);
         }
     }
 }

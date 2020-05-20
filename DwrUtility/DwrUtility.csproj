@@ -68,6 +68,7 @@
     <Compile Include="Expressions\ExpressionHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Https\HttpRequestFileModel.cs" />
+    <Compile Include="Images\FastImage.cs" />
     <Compile Include="WhileHelper.cs" />
     <Compile Include="Https\HttpHelper.cs" />
     <Compile Include="Https\HttpRequestHelper.cs" />
