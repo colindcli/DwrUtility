@@ -72,7 +72,7 @@ namespace DwrUtility.Images
                 imageInfo.ImageFormat = ImgFormat.Webp;
                 //ParseSizeForWebp(stream, imageInfo);
             }
-            else if (c[0] == '<' && c[1] == 's')
+            else if (c[0] == '<' && c[1] == 's' && c[2] == 'v' && c[3] == 'g')
             {
                 imageInfo.ImageFormat = ImgFormat.Svg;
             }
