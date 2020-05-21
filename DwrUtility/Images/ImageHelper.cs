@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DwrUtility.Converts;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -349,12 +350,41 @@ namespace DwrUtility.Images
         /// <summary>
         /// 是否图片
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">路径</param>
+        /// <param name="extension">扩展名</param>
         /// <returns></returns>
-        public static bool IsPicture(string path)
+        public static bool IsPicture(string path, out string extension)
         {
-            var type = GetImageInfo(path);
-            return type.ImageFormat != ImgFormat.NotRecognised;
+            var img = GetImageInfo(path);
+            var b = img.ImageFormat != ImgFormat.NotRecognised;
+            if (!b)
+            {
+                extension = null;
+                return false;
+            }
+
+            extension = $".{img.ImageFormat.ToString().ToLower()}";
+            return true;
+        }
+
+        /// <summary>
+        /// 是否图片
+        /// </summary>
+        /// <param name="stream">流文件</param>
+        /// <param name="extension">扩展名</param>
+        /// <returns></returns>
+        public static bool IsPicture(Stream stream, out string extension)
+        {
+            var img = GetImageInfo(stream);
+            var b = img.ImageFormat != ImgFormat.NotRecognised;
+            if (!b)
+            {
+                extension = null;
+                return false;
+            }
+
+            extension = $".{img.ImageFormat.ToString().ToLower()}";
+            return true;
         }
 
         /// <summary>
@@ -398,59 +428,27 @@ namespace DwrUtility.Images
         /// </summary>
         /// <param name="imagePath"></param>
         /// <param name="base64String"></param>
-        /// <param name="imageFormat"></param>
         /// <returns></returns>
-        public static bool ImageToBase64String(string imagePath, out string base64String, ImageFormat imageFormat)
+        public static bool ImageToBase64String(string imagePath, out string base64String)
         {
-            Bitmap bmp = null;
-            MemoryStream ms = null;
-            try
+            if (!File.Exists(imagePath))
             {
-                bmp = new Bitmap(imagePath);
-                ms = new MemoryStream();
-                bmp.Save(ms, imageFormat);
-                bmp.Dispose();
-                var contentType = "image/jpeg";
-                if (Equals(imageFormat, ImageFormat.Jpeg))
-                {
-                    contentType = "image/jpeg";
-                }
-                else if (Equals(imageFormat, ImageFormat.Bmp))
-                {
-                    contentType = "image/bmp";
-                }
-                else if (Equals(imageFormat, ImageFormat.Png))
-                {
-                    contentType = "image/png";
-                }
-                else if (Equals(imageFormat, ImageFormat.Gif))
-                {
-                    contentType = "image/gif";
-                }
-                else if (Equals(imageFormat, ImageFormat.Icon))
-                {
-                    contentType = "image/x-icon";
-                }
-                else if (Equals(imageFormat, ImageFormat.Tiff))
-                {
-                    contentType = "image/tiff";
-                }
-
-                base64String = $"data:{contentType};base64,{Convert.ToBase64String(ms.ToArray())}";
-                ms.Close();
-                ms.Dispose();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                DwrUtilitySetting.Log?.Invoke(ex);
-                bmp?.Dispose();
-                ms?.Close();
-                ms?.Dispose();
                 base64String = null;
                 return false;
             }
 
+            using (var fs = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var bt = fs.ReadAsBytes(false);
+                var img = GetImageInfo(fs);
+                if (img.ImageFormat == ImgFormat.NotRecognised)
+                {
+                    base64String = null;
+                    return false;
+                }
+                base64String = $"data:{img.ContentType};base64,{Convert.ToBase64String(bt)}";
+                return true;
+            }
         }
 
         /// <summary>

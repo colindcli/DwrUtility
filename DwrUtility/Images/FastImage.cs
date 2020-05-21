@@ -19,26 +19,27 @@ namespace DwrUtility.Images
                 ImageFormat = ImgFormat.NotRecognised
             };
 
-            var c = GetBytes(stream, 7);
+            stream.Position = 0;
+            var c = GetBytes(stream, 12);
             if (c[0] == 'B' && c[1] == 'M')
             {
                 imageInfo.ImageFormat = ImgFormat.Bmp;
-                ParseSizeForBmp(stream, imageInfo);
+                //ParseSizeForBmp(stream, imageInfo);
             }
             else if (c[0] == 'G' && c[1] == 'I' && c[2] == 'F' && c[3] == '8')
             {
                 imageInfo.ImageFormat = ImgFormat.Gif;
-                ParseSizeForGif(stream, imageInfo);
+                //ParseSizeForGif(stream, imageInfo);
             }
             else if (c[0] == 0xff && c[1] == 0xd8 && c[2] == 0xff)
             {
-                imageInfo.ImageFormat = ImgFormat.Jpeg;
+                imageInfo.ImageFormat = ImgFormat.Jpg;
                 //ParseSizeForJpeg(stream, imageInfo);
             }
             else if (c[0] == 0x89 && c[1] == 'P' && c[2] == 'N')
             {
                 imageInfo.ImageFormat = ImgFormat.Png;
-                ParseSizeForPng(stream, imageInfo);
+                //ParseSizeForPng(stream, imageInfo);
             }
             else if ((c[0] == 0x49 && c[1] == 0x20 && c[2] == 0x49) ||
                 (c[0] == 0x49 && c[1] == 0x49 && c[2] == 0x2A) ||
@@ -48,7 +49,7 @@ namespace DwrUtility.Images
                 )
             {
                 imageInfo.ImageFormat = ImgFormat.Tiff;
-                ParseSizeForTiff(stream, imageInfo, false);
+                //ParseSizeForTiff(stream, imageInfo, false);
             }
             else if (c[0] == 0x25 && c[1] == 0x50 && c[2] == 0x44)
             {
@@ -66,14 +67,10 @@ namespace DwrUtility.Images
             {
                 imageInfo.ImageFormat = ImgFormat.Ico;
             }
-            else if (c[0] == 'R' && c[1] == 'I')
+            else if (c[0] == 'R' && c[1] == 'I' && c[8] == 'W' && c[9] == 'E' && c[10] == 'B' && c[11] == 'P')
             {
-                var str = GetPeekArray(stream, 12, 8, 11);
-                if (str == "WEBP")
-                {
-                    imageInfo.ImageFormat = ImgFormat.Webp;
-                    ParseSizeForWebp(stream, imageInfo);
-                }
+                imageInfo.ImageFormat = ImgFormat.Webp;
+                //ParseSizeForWebp(stream, imageInfo);
             }
             else if (c[0] == '<' && c[1] == 's')
             {
@@ -303,21 +300,6 @@ namespace DwrUtility.Images
         }
     }
 
-    internal static class ImageTypeExt
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bt"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        internal static byte[] SubByte(this byte[] bt, int start, int end)
-        {
-            return bt.Skip(start).Take(end - start).ToArray();
-        }
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -355,6 +337,11 @@ namespace DwrUtility.Images
         /// 图片高度（如果值为0是不支持取值）
         /// </summary>
         public int Height { get; set; }
+
+        /// <summary>
+        /// 获取ContentType
+        /// </summary>
+        public string ContentType => ImageFormat.GetContentType();
     }
 
     /// <summary>
@@ -373,7 +360,7 @@ namespace DwrUtility.Images
         /// <summary>
         /// 
         /// </summary>
-        Jpeg,
+        Jpg,
         /// <summary>
         /// 
         /// </summary>
