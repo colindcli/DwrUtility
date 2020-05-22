@@ -337,11 +337,14 @@ namespace DwrUtility.Images
         /// 图片高度（如果值为0是不支持取值）
         /// </summary>
         public int Height { get; set; }
-
         /// <summary>
         /// 获取ContentType
         /// </summary>
         public string ContentType => ImageFormat.GetContentType();
+        /// <summary>
+        /// 扩展名
+        /// </summary>
+        public string Extension => $".{ImageFormat.ToString().ToLower()}";
     }
 
     /// <summary>

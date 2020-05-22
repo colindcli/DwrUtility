@@ -363,7 +363,7 @@ namespace DwrUtility.Images
                 return false;
             }
 
-            extension = $".{img.ImageFormat.ToString().ToLower()}";
+            extension = img.Extension;
             return true;
         }
 
@@ -383,7 +383,7 @@ namespace DwrUtility.Images
                 return false;
             }
 
-            extension = $".{img.ImageFormat.ToString().ToLower()}";
+            extension = img.Extension;
             return true;
         }
 
