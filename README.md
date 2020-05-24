@@ -9,6 +9,8 @@
 Install-Package DwrUtility
 ```
 
+- Nuget: [https://www.nuget.org/packages/DwrUtility/](https://www.nuget.org/packages/DwrUtility/)
+
 ## 简要文档
 
 - 反射类
