@@ -1,6 +1,9 @@
-## DwrUtility
+# DwrUtility
 
-> NuGet Gallery安装
+- 本项目从2017年9月份开始，已经历过2个多年头，在两年多时间里不断丰富和完善，到目前为止共写了250+个单元测试。
+- 如果觉得项目不错，请给个star呗！
+
+## NuGet Gallery安装
 
 ```
 Install-Package DwrUtility
@@ -28,3 +31,4 @@ Install-Package DwrUtility
 - 字符串（拼音汉字互转、搜索字符串）
 - 多线程（批量运行任务、实时返回任务运行状态、设置线程超时）
 - 树形数据处理（删除中间树节点、复制树并生成新Id、List转生成树结构、获取所有父节点、获取所有子节点、获取叶节点）
+
