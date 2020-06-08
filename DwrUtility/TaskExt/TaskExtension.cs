@@ -11,6 +11,40 @@ namespace DwrUtility.TaskExt
     public static class TaskExtension
     {
         /// <summary>
+        /// 获取消息类型名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetReportTypeName(this ReportTypeEnum type)
+        {
+            var name = string.Empty;
+            switch (type)
+            {
+                case ReportTypeEnum.Start:
+                    {
+                        name = "加入列队";
+                        break;
+                    }
+                case ReportTypeEnum.Wait:
+                    {
+                        name = "正在进行";
+                        break;
+                    }
+                case ReportTypeEnum.Finished:
+                    {
+                        name = "已完成";
+                        break;
+                    }
+                default:
+                    {
+                        name = "-";
+                        break;
+                    }
+            }
+            return name;
+        }
+
+        /// <summary>
         /// 批量运行任务
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -36,6 +70,29 @@ namespace DwrUtility.TaskExt
         }
 
         /// <summary>
+        /// 批量运行任务（限制线程大小）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="param"></param>
+        public static void RunTaskLimite<T>(this List<T> list, TaskParam<T> param)
+        {
+            TaskHelper.RunTaskLimite(list, param);
+        }
+
+        /// <summary>
+        /// 批量运行任务（限制线程大小）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TReturn"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="param"></param>
+        public static List<KeyValue<T, TReturn>> RunTaskLimite<T, TReturn>(this List<T> list, TaskParam<T, TReturn> param)
+        {
+            return TaskHelper.RunTaskLimite(list, param);
+        }
+
+        /// <summary>
         /// 设置有返回值的线程超时，超时后返回默认值
         /// </summary>
         /// <typeparam name="T">返回类型</typeparam>
@@ -57,6 +114,18 @@ namespace DwrUtility.TaskExt
         public static Task<TimeoutResult<T>> SetTimeoutResult<T>(this Task<T> task, int millisecondsDelay)
         {
             return TaskHelper.SetTimeoutResult(task, millisecondsDelay);
+        }
+
+        /// <summary>
+        /// 设置有返回值的线程超时，超时后返回默认值（返回值和是否超时字段）
+        /// </summary>
+        /// <typeparam name="T">返回类型</typeparam>
+        /// <param name="task">线程任务</param>
+        /// <param name="millisecondsDelay">超时(毫秒)</param>
+        /// <returns></returns>
+        public static TimeoutResult<T> SetTimeoutResult2<T>(this Task<T> task, int millisecondsDelay)
+        {
+            return TaskHelper.SetTimeoutResult2(task, millisecondsDelay);
         }
 
         /// <summary>

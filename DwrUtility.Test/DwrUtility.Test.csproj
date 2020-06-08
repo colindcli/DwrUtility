@@ -95,6 +95,7 @@
     <Compile Include="MapperHelperTest.cs" />
     <Compile Include="EqualityComparerTest.cs" />
     <Compile Include="ImageTypeTest.cs" />
+    <Compile Include="NetSpeedTest.cs" />
     <Compile Include="ZipHelperTest.cs" />
     <Compile Include="Utility\TestConfig.cs" />
     <Compile Include="WriteHelperTest.cs" />

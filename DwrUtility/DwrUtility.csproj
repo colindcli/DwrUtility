@@ -49,6 +49,7 @@
     <Compile Include="CacheHelper.cs" />
     <Compile Include="CompressHelper.cs" />
     <Compile Include="ConfigHelper.cs" />
+    <Compile Include="ContentTypeHelper.cs" />
     <Compile Include="Converts\ByteExtension.cs" />
     <Compile Include="Converts\ConvertHelper.cs" />
     <Compile Include="CookieHelper.cs" />
@@ -64,6 +65,8 @@
     <Compile Include="Email\EmailParam.cs" />
     <Compile Include="EncryptionHelper.cs" />
     <Compile Include="Entitys\KeyValue.cs" />
+    <Compile Include="Nets\NetSpeed.cs" />
+    <Compile Include="TaskExt\TaskParam.cs" />
     <Compile Include="Expressions\ExpressionExt.cs" />
     <Compile Include="Expressions\ExpressionHelper.cs" />
     <Compile Include="FileHelper.cs" />

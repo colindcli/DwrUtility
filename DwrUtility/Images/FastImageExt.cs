@@ -20,52 +20,52 @@ namespace DwrUtility.Images
             {
                 case ImgFormat.Bmp:
                     {
-                        contentType = "image/bmp";
+                        contentType = ContentTypeHelper.ImageBmp;
                         break;
                     }
                 case ImgFormat.Gif:
                     {
-                        contentType = "image/gif";
+                        contentType = ContentTypeHelper.ImageGif;
                         break;
                     }
                 case ImgFormat.Jpg:
                     {
-                        contentType = "image/jpeg";
+                        contentType = ContentTypeHelper.ImageJpg;
                         break;
                     }
                 case ImgFormat.Png:
                     {
-                        contentType = "image/png";
+                        contentType = ContentTypeHelper.ImagePng;
                         break;
                     }
                 case ImgFormat.Tiff:
                     {
-                        contentType = "image/tiff";
+                        contentType = ContentTypeHelper.ImageTiff;
                         break;
                     }
                 case ImgFormat.Svg:
                     {
-                        contentType = "image/svg";
+                        contentType = ContentTypeHelper.ImageSvg;
                         break;
                     }
                 case ImgFormat.Pdf:
                     {
-                        contentType = "application/pdf";
+                        contentType = ContentTypeHelper.ApplicationPdf;
                         break;
                     }
                 case ImgFormat.Psd:
                     {
-                        contentType = "application/psd";
+                        contentType = ContentTypeHelper.ApplicationPsd;
                         break;
                     }
                 case ImgFormat.Ico:
                     {
-                        contentType = "image/x-icon";
+                        contentType = ContentTypeHelper.ImageIcon;
                         break;
                     }
                 case ImgFormat.Cur:
                     {
-                        contentType = "image/cur";
+                        contentType = ContentTypeHelper.ImageCur;
                         break;
                     }
                 default:
