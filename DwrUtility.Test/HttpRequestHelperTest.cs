@@ -363,7 +363,7 @@ namespace DwrUtility.Test
             var result = HttpRequestHelper.GetData(url);
 
             var b1 = result.IsSuccessful && result.StatusCode == HttpStatusCode.OK;
-            Assert.IsTrue(b1);
+            Assert.IsTrue(b1, result.Exception.Message);
         }
     }
 }

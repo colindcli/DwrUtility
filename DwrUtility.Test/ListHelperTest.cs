@@ -535,6 +535,58 @@ namespace DwrUtility.Test
             Assert.IsTrue(res1.Count == 8);
         }
 
+        [TestMethod]
+        public void TestMethod12()
+        {
+            var source = new List<Result>()
+            {
+                new Result()
+                {
+                    Id = 1,
+                    Name = "lucy",
+                    TypeName = "girl",
+                },
+                new Result()
+                {
+                    Id = 2,
+                    Name = "tony",
+                    TypeName = "Man",
+                },
+                new Result()
+                {
+                    Id = 3,
+                    Name = "pony",
+                    TypeName = "man",
+                },
+            };
+
+            var target = new List<Result>()
+            {
+                new Result()
+                {
+                    Id = 1,
+                    Name = "lucy",
+                    TypeName = "girl",
+                },
+                new Result()
+                {
+                    Id = 2,
+                    Name = "Tony",
+                    TypeName = "Man",
+                },
+                new Result()
+                {
+                    Id = 3,
+                    Name = "jack",
+                    TypeName = "man",
+                },
+            };
+
+            var result = source.Except(target, p => new { p.Id, Name = p.Name.ToLower(), p.TypeName }, p => new { p.Id, Name = p.Name.ToLower(), p.TypeName }).ToList();
+
+            Assert.IsTrue(result.Count == 1 && result[0].Id == 3);
+        }
+
         public class Source
         {
             public int Id { get; set; }

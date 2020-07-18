@@ -34,15 +34,15 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 本列表排除另外一个列表数据
+        /// 本列表排除另外一个列表数据（可以是匿名对象）
         /// </summary>
         /// <typeparam name="TSource">数据源类型</typeparam>
         /// <typeparam name="TTarget">排除数据类型</typeparam>
         /// <typeparam name="TType">对比类型</typeparam>
         /// <param name="source">数据源</param>
         /// <param name="target">排除数据</param>
-        /// <param name="sourceFunc"></param>
-        /// <param name="targetFunc"></param>
+        /// <param name="sourceFunc">可以是匿名对象</param>
+        /// <param name="targetFunc">可以是匿名对象</param>
         /// <returns></returns>
         public static IEnumerable<TSource> Except<TSource, TTarget, TType>(this IEnumerable<TSource> source,
             IEnumerable<TTarget> target, Func<TSource, TType> sourceFunc, Func<TTarget, TType> targetFunc)
