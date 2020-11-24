@@ -1,4 +1,5 @@
-﻿using DwrUtility.Lists;
+﻿#if NETFULL
+using DwrUtility.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,3 +113,5 @@ namespace DwrUtility
         }
     }
 }
+
+#endif

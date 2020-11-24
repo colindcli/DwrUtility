@@ -554,27 +554,6 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 去重（TKey必须是匿名对象）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey">TKey必须是匿名对象</typeparam>
-        /// <param name="list"></param>
-        /// <param name="key"></param>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public static IEnumerable<TKey> ToDist<T, TKey>(IEnumerable<T> list, Func<T, TKey> key, IEqualityComparer<TKey> comparer = null)
-        {
-            var dict = comparer == null ? new HashSet<TKey>() : new HashSet<TKey>(comparer);
-            foreach (var item in list)
-            {
-                dict.Add(key.Invoke(item));
-            }
-
-            return dict;
-        }
-
-        /// <summary>
         /// 对象去重
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -588,7 +567,7 @@ namespace DwrUtility.Lists
         }
 
         /// <summary>
-        /// 转Dictionary（去重处理）
+        /// 转Dictionary（可以做去重处理，Key可以是字段，也可以是匿名对象）
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TKey"></typeparam>

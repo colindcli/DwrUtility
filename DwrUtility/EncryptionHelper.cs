@@ -240,5 +240,130 @@ namespace DwrUtility
             }
         }
         #endregion
+
+        #region RSA
+
+        /// <summary>
+        /// RSA产生密钥
+        /// </summary>
+        /// <param name="privateKey">私钥</param>
+        /// <param name="publicKey">公钥</param>
+        /// <param name="dwKeySize"></param>
+        public static bool RsaGenerateKey(out string privateKey, out string publicKey, int dwKeySize = 1024)
+        {
+            try
+            {
+                var rsa = new RSACryptoServiceProvider(dwKeySize);
+                privateKey = rsa.ToXmlString(true);
+                publicKey = rsa.ToXmlString(false);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                privateKey = publicKey = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// RSA加密
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="publicKey"></param>
+        /// <param name="result">加密结果</param>
+        /// <returns></returns>
+        public static bool RsaEncrypt(string content, string publicKey, out string result)
+        {
+            try
+            {
+                var rsa = new RSACryptoServiceProvider();
+                rsa.FromXmlString(publicKey);
+                var bt = rsa.Encrypt(Encoding.UTF8.GetBytes(content), false);
+                result = Convert.ToBase64String(bt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                result = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// RSA解密
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="privateKey"></param>
+        /// <param name="result">解密结果</param>
+        /// <returns></returns>
+        public static bool RsaDecrypt(string content, string privateKey, out string result)
+        {
+            try
+            {
+                var rsa = new RSACryptoServiceProvider();
+                rsa.FromXmlString(privateKey);
+                var bt = rsa.Decrypt(Convert.FromBase64String(content), false);
+                result = Encoding.UTF8.GetString(bt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                result = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// RSA签名
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="privateKey">私钥</param>
+        /// <param name="signData">签名</param>
+        /// <returns>是否签名成功</returns>
+        public static bool RsaSignData(string content, string privateKey, out byte[] signData)
+        {
+            try
+            {
+                var bt = Encoding.UTF8.GetBytes(content);
+                var provider = new RSACryptoServiceProvider();
+                provider.FromXmlString(privateKey);
+                signData = provider.SignData(bt, "SHA512");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                signData = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// RSA验签
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="publicKey">公钥</param>
+        /// <param name="signData">签名</param>
+        /// <returns>签名是否正确</returns>
+        public static bool RsaVerify(string content, string publicKey, byte[] signData)
+        {
+            try
+            {
+                var bt = Encoding.UTF8.GetBytes(content);
+                var provider = new RSACryptoServiceProvider();
+                provider.FromXmlString(publicKey);
+                return provider.VerifyData(bt, "SHA512", signData);
+            }
+            catch (Exception ex)
+            {
+                DwrUtilitySetting.Log?.Invoke(ex);
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

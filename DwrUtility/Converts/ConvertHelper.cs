@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -139,6 +140,48 @@ namespace DwrUtility.Converts
             return new MemoryStream(encoding.GetBytes(str));
         }
 
+        /// <summary>
+        /// 转二进制，如100转二进制1100100
+        /// </summary>
+        /// <param name="bt"></param>
+        /// <param name="padLeft">不足8位是否补0</param>
+        /// <returns></returns>
+        public static string ToBinary(byte bt, bool padLeft)
+        {
+            return padLeft ? Convert.ToString(bt, 2).PadLeft(8, '0') : Convert.ToString(bt, 2);
+        }
+
+        /// <summary>
+        /// 转二进制，如999转二进制1111100111
+        /// </summary>
+        /// <param name="bt"></param>
+        /// <returns></returns>
+        public static string ToBinary(int bt)
+        {
+            return Convert.ToString(bt, 2);
+        }
+
+        /// <summary>
+        /// 转十六进制，如255转十六进制ff
+        /// </summary>
+        /// <param name="bt"></param>
+        /// <param name="capital">是否大写</param>
+        /// <returns></returns>
+        public static string ToHexadecimal(byte bt, bool capital)
+        {
+            return bt.ToString(capital ? "X2" : "x2");
+        }
+
+        /// <summary>
+        /// 转十六进制，如999转十六进制3e7
+        /// </summary>
+        /// <param name="bt"></param>
+        /// <returns></returns>
+        public static string ToHexadecimal(int bt)
+        {
+            return Convert.ToString(bt, 16);
+        }
+
         #region 汉字转拼音
 
         //定义拼音区编码数组
@@ -222,6 +265,10 @@ namespace DwrUtility.Converts
         /// <returns>转换后的拼音字符串</returns>
         public static string ToPingYin(string str)
         {
+#if NETSTANDARD
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
+
             var reg = new Regex("^[\u4e00-\u9fa5]$");//验证是否输入汉字
             // ReSharper disable once TooWideLocalVariableScope
             byte[] arr;
@@ -233,6 +280,7 @@ namespace DwrUtility.Converts
             // ReSharper disable once TooWideLocalVariableScope
             int m2;
             var mChar = str.ToCharArray();//获取汉字对应的字符数组
+            var encoding = Encoding.GetEncoding("gb2312");
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var j = 0; j < mChar.Length; j++)
             {
@@ -243,7 +291,7 @@ namespace DwrUtility.Converts
                 }
                 else
                 {
-                    arr = Encoding.Default.GetBytes(mChar[j].ToString());
+                    arr = encoding.GetBytes(mChar[j].ToString());
                     m1 = arr[0];
                     m2 = arr[1];
                     asc = m1 * 256 + m2 - 65536;
@@ -308,5 +356,32 @@ namespace DwrUtility.Converts
         }
 
         #endregion
+
+        /// <summary>
+        /// 字符串转Unicode编码
+        /// </summary>
+        /// <param name="str">源字符串</param>
+        /// <returns>Unicode编码后的字符串</returns>
+        public static string StringToUnicode(string str)
+        {
+            var bytes = Encoding.Unicode.GetBytes(str);
+            var stringBuilder = new StringBuilder();
+            for (var i = 0; i < bytes.Length; i += 2)
+            {
+                stringBuilder.AppendFormat("\\u{0}{1}", bytes[i + 1].ToString("x").PadLeft(2, '0'), bytes[i].ToString("x").PadLeft(2, '0'));
+            }
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Unicode解码成字符串
+        /// </summary>
+        /// <param name="unicode">经过Unicode编码的字符串</param>
+        /// <returns>解码后字符串</returns>
+        public static string UnicodeToString(string unicode)
+        {
+            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(
+                unicode, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
+        }
     }
 }

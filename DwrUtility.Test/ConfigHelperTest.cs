@@ -1,6 +1,7 @@
-﻿using System;
-using System.IO;
+﻿#if NETFULL
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
 
 namespace DwrUtility.Test
 {
@@ -8,9 +9,9 @@ namespace DwrUtility.Test
     public class ConfigHelperTest
     {
         private static readonly string Root =
-            Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/config/");
+            Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/config/");
 
-        private static readonly string Temp = $"{AppDomain.CurrentDomain.BaseDirectory}/Temp/";
+        private static readonly string Temp = $"{DwrUtilitySetting.Root}/Temp/";
 
         public ConfigHelperTest()
         {
@@ -121,3 +122,4 @@ namespace DwrUtility.Test
         }
     }
 }
+#endif

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
 namespace DwrUtility.Test
@@ -17,7 +16,7 @@ namespace DwrUtility.Test
 
             Task.WaitAll(t1, t2, t3);
 
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEndSlash()}/Logs/log.txt";
+            var path = $"{DwrUtilitySetting.Root}/Logs/log.txt";
             var b1 = File.Exists(path);
 
             Assert.IsTrue(b1);

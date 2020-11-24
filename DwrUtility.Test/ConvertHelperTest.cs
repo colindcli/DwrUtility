@@ -12,7 +12,7 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\', '/')}/a.txt";
+            var path = $"{DwrUtilitySetting.Root}/a.txt";
 
             var v1 = IsUtf8(path);
 
@@ -106,7 +106,7 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod2()
         {
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\', '/')}/{Guid.NewGuid()}.txt";
+            var path = $"{DwrUtilitySetting.Root}/{Guid.NewGuid()}.txt";
             File.WriteAllText(path, "测试", Encoding.UTF8);
             var md5 = path.ToFileMd5();
 
@@ -114,7 +114,7 @@ namespace DwrUtility.Test
 
             var bt = stream.ReadAsBytes(true);
 
-            var path2 = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\', '/')}/{Guid.NewGuid()}.txt";
+            var path2 = $"{DwrUtilitySetting.Root}/{Guid.NewGuid()}.txt";
             File.WriteAllBytes(path2, bt);
             var result = path2.ToFileMd5();
 
@@ -129,6 +129,41 @@ namespace DwrUtility.Test
         {
             var py = "中华人民共和国".ToPingYin();
             Assert.IsTrue(py == "ZhongHuaRenMinGongHeGuo");
+        }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            //转二进制
+            Assert.IsTrue(ConvertHelper.ToBinary(2, false) == "10");
+            Assert.IsTrue(ConvertHelper.ToBinary(2, true) == "00000010");
+            //转二进制
+            Assert.IsTrue(ConvertHelper.ToBinary(2) == "10");
+            Assert.IsTrue(ConvertHelper.ToBinary(999) == "1111100111");
+
+            //转十六进制
+            Assert.IsTrue(ConvertHelper.ToHexadecimal(255, false) == "ff");
+            Assert.IsTrue(ConvertHelper.ToHexadecimal(255, true) == "FF");
+            //转十六进制
+            Assert.IsTrue(ConvertHelper.ToHexadecimal(255) == "ff");
+            Assert.IsTrue(ConvertHelper.ToHexadecimal(999) == "3e7");
+
+        }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+            var str = "我是中国人";
+            var unicode = ConvertHelper.StringToUnicode(str);
+            Assert.IsTrue(unicode == "\\u6211\\u662f\\u4e2d\\u56fd\\u4eba");
+        }
+
+        [TestMethod]
+        public void TestMethod7()
+        {
+            var unicode = "\\u6211\\u662f\\u4e2d\\u56fd\\u4eba";
+            var str = ConvertHelper.UnicodeToString(unicode);
+            Assert.IsTrue(str == "我是中国人");
         }
     }
 }

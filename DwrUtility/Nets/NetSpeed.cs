@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFULL
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -57,3 +58,5 @@ namespace DwrUtility.Nets
         }
     }
 }
+
+#endif

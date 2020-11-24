@@ -115,5 +115,59 @@ namespace DwrUtility
             msg = "压缩包不存在，压缩失败";
             return false;
         }
+
+        /// <summary>
+        /// 解压缩（系统自带）
+        /// </summary>
+        public static bool UnZip(string sourceArchiveFileName, string destinationDirectoryName, out string msg)
+        {
+            if (!File.Exists(sourceArchiveFileName))
+            {
+                msg = "压缩文件不存在";
+                return false;
+            }
+
+            try
+            {
+                destinationDirectoryName.CreateDir();
+                ZipFile.ExtractToDirectory(sourceArchiveFileName, destinationDirectoryName);
+                msg = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 压缩（系统自带）
+        /// </summary>
+        /// <param name="sourceDirectoryName"></param>
+        /// <param name="destinationArchiveFileName"></param>
+        /// <param name="msg"></param>
+        public static bool Zip(string sourceDirectoryName, string destinationArchiveFileName, out string msg)
+        {
+            if (!Directory.Exists(sourceDirectoryName))
+            {
+                msg = "压缩文件夹不存在";
+                return false;
+            }
+
+            try
+            {
+                destinationArchiveFileName.CreateDirByFilePath();
+                ZipFile.CreateFromDirectory(sourceDirectoryName, destinationArchiveFileName);
+                var b = File.Exists(destinationArchiveFileName);
+                msg = b ? null : "压缩文件不存在";
+                return b;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return false;
+            }
+        }
     }
 }

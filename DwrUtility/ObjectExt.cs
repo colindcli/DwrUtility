@@ -1,10 +1,10 @@
-﻿using DwrUtility.Converts;
-using System;
+﻿using System;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using DwrUtility.Converts;
 
 namespace DwrUtility
 {
@@ -272,6 +272,43 @@ namespace DwrUtility
             return regex.IsMatch(email);
         }
 
+        /// <summary>
+        /// 字符串是否为Guid
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool IsGuid(this string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return false;
+            }
+
+            var regex = new Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", RegexOptions.IgnoreCase);
+            return regex.IsMatch(id);
+        }
+
+        /// <summary>
+        /// 字符串是否为Guid，返回Guid
+        /// </summary>
+        /// <param name="id">输入字符串</param>
+        /// <param name="guid">返回Guid</param>
+        /// <returns>
+        /// 是否为Guid
+        /// </returns>
+        public static bool IsGuid(this string id, out Guid guid)
+        {
+            var b = id.IsGuid();
+            // ReSharper disable once InvertIf
+            if (!b)
+            {
+                guid = Guid.Empty;
+                return false;
+            }
+
+            return Guid.TryParse(id, out guid);
+        }
+
         private static readonly Regex RegexHtml1 = new Regex("<[^>]+>", RegexOptions.Singleline);
         private static readonly Regex RegexHtml2 = new Regex("&[^;]+;", RegexOptions.Singleline);
         private static readonly Regex RegexHtml3 = new Regex("[ ]+", RegexOptions.Singleline);
@@ -358,6 +395,7 @@ namespace DwrUtility
             return EncryptionHelper.FileMd5(fileName);
         }
 
+#if NETFULL
         /// <summary>
         /// 获取请求payload内容
         /// 在Controller获取var payload = HttpContext.GetPayloadData();
@@ -372,5 +410,6 @@ namespace DwrUtility
             request.InputStream.Read(bt, 0, bt.Length);
             return (encoding ?? Encoding.UTF8).GetString(bt);
         }
+#endif
     }
 }

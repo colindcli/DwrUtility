@@ -2,17 +2,18 @@
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
+#if NETFULL
 using System.Windows.Forms;
+#endif
 
 namespace DwrUtility.Test
 {
     [TestClass]
     public class TreeHelperTest
     {
-        private static readonly string FileDir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/");
+        private static readonly string FileDir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
 
         [TestMethod]
         public void TestMethod1()
@@ -157,6 +158,7 @@ namespace DwrUtility.Test
             Assert.IsTrue(eq.AreEqual, JsonConvert.SerializeObject(eq.Differences));
         }
 
+#if NETFULL
         /// <summary>
         /// 未能实现 TODO
         /// </summary>
@@ -190,6 +192,7 @@ namespace DwrUtility.Test
             tn.ExpandAll();
             return tn;
         }
+#endif
 
         public class Team
         {

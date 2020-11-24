@@ -39,6 +39,16 @@ namespace DwrUtility
                         continue;
                     }
 
+                    if (!itemT.CanRead)
+                    {
+                        continue;
+                    }
+
+                    if (!itemL.CanWrite)
+                    {
+                        continue;
+                    }
+
                     var value = itemT.GetValue(obj, null);
                     itemL.SetValue(setT, value, null);
                 }
@@ -77,6 +87,16 @@ namespace DwrUtility
                     foreach (var itemT in propertiesS)
                     {
                         if (itemL.Name != itemT.Name)
+                        {
+                            continue;
+                        }
+
+                        if (!itemT.CanRead)
+                        {
+                            continue;
+                        }
+
+                        if (!itemL.CanWrite)
                         {
                             continue;
                         }

@@ -1,0 +1,89 @@
+﻿#if NETFRAMEWORK
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DwrUtility.Test
+{
+    [TestClass]
+    public class CacheHelperTest
+    {
+        [TestMethod]
+        public void TestMethod1A()
+        {
+            var n = 0;
+            for (var i = 0; i < 1000; i++)
+            {
+                var b = IsRobotIp("127.0.0.1", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36");
+                if (b)
+                {
+                    break;
+                }
+                n++;
+            }
+
+            var m = 0;
+            for (var i = 0; i < 1000; i++)
+            {
+                var b = IsRobotIp("127.0.0.2", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36");
+                if (b)
+                {
+                    break;
+                }
+                m++;
+            }
+
+            var total = 31;
+            Assert.IsTrue(n == total && m == total);
+        }
+
+        /// <summary>
+        /// 是否机器人IP
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="userAgent"></param>
+        /// <returns></returns>
+        public static bool IsRobotIp(string ip, string userAgent)
+        {
+            //如果在黑名单里
+            var keyBlack = "BlackList";
+            var blackIpList = CacheHelper.GetCache<List<string>>(keyBlack);
+            if (blackIpList != null && blackIpList.Exists(p => p == ip))
+            {
+                return true;
+            }
+
+            //统计是否超出阈值
+            var key = "Ips";
+            var cacheIpList = CacheHelper.GetCache<List<string>>(key);
+
+            //超出阈值
+            if (cacheIpList != null && cacheIpList.Count(p => p == ip) > 30)
+            {
+                //加入黑名单1小时
+                if (blackIpList == null)
+                {
+                    blackIpList = new List<string>();
+                }
+                blackIpList.Add(ip);
+                CacheHelper.SetCache(keyBlack, blackIpList, DateTime.Now.AddHours(3));
+
+                return true;
+            }
+
+            if (cacheIpList == null)
+            {
+                cacheIpList = new List<string>();
+            }
+            cacheIpList.Add(ip);
+
+            //没有超出阈值
+            CacheHelper.SetCache(key, cacheIpList, DateTime.Now.AddSeconds(60));
+
+            return false;
+        }
+    }
+}
+
+#endif

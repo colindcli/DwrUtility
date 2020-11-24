@@ -18,10 +18,10 @@ namespace DwrUtility.Test.Utility
         /// <summary>
         /// 到Test目录，包含“/”
         /// </summary>
-        public static readonly string TestDir = Path.GetFullPath($"{BinDir}../../");
+        public static readonly string TestDir = Path.GetFullPath($"{BinDir}../../../");
         /// <summary>
         /// 到Web目录，包含“/”
         /// </summary>
-        public static readonly string WebDir = Path.GetFullPath($"{BinDir}../../../DwrUtility.Web/");
+        public static readonly string WebDir = Path.GetFullPath($"{BinDir}../../../../DwrUtility.Web/");
     }
 }

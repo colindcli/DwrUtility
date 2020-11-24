@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿#if NETFULL
 using DwrUtility.Nets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
+using System.Threading;
 
 namespace DwrUtility.Test
 {
@@ -30,3 +31,5 @@ namespace DwrUtility.Test
         }
     }
 }
+
+#endif

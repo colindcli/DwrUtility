@@ -6,14 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace DwrUtility.Test
 {
     [TestClass]
     public class ObjectExtensionTest
     {
-        private static readonly string FileDir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/");
+        private static readonly string FileDir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
 
         [TestMethod]
         public void TestMethod1()
@@ -239,7 +238,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDist(p => new { p.Id, p.Name });
+            var obj = rows.ToDist((p, q) => p.Id == q.Id && string.Equals(p.Name, q.Name, StringComparison.OrdinalIgnoreCase));
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<RowTwo>>(str);
 
@@ -335,7 +334,7 @@ namespace DwrUtility.Test
             });
 
 
-            var obj = rows.ToDist(p => p.Id, StringComparer.OrdinalIgnoreCase);
+            var obj = rows.ToDist((p, q) => string.Equals(p.Id, q.Id, StringComparison.OrdinalIgnoreCase)).Select(p => p.Id).ToList();
             var str = JsonConvert.SerializeObject(obj);
             var result = JsonConvert.DeserializeObject<List<string>>(str);
 
@@ -786,7 +785,7 @@ namespace DwrUtility.Test
         public void TestMethod21()
         {
             Func<Row, bool> func = m => true;
-            
+
 
         }
 
@@ -813,6 +812,19 @@ namespace DwrUtility.Test
             public string Id { get; set; }
             public string Name { get; set; }
             public string Desc { get; set; }
+        }
+
+        [TestMethod]
+        public void TestMethod22()
+        {
+            Assert.IsTrue("16eb0000-00a4-5254-652a-08d84e97d7f8".IsGuid());
+            Assert.IsTrue("16eb0000-00a4-5254-9dff-08d84e75d6ad".IsGuid());
+            Assert.IsTrue("16eb0000-00a4-5254-3eed-08d847f7c1fa".IsGuid());
+
+            Assert.IsTrue(!"16eb0000-00a4-525T-3eed-08d847f7c1fa".IsGuid());
+            Assert.IsTrue("16eb0000-00a4-5254-3eed-08d847f7c1Fa".IsGuid());
+
+            Assert.IsTrue("16eb0000-00a4-5254-9dff-08d84e75d6ad".IsGuid(out var guid) && guid == Guid.Parse("16eb0000-00a4-5254-9dff-08d84e75d6ad"));
         }
     }
 }

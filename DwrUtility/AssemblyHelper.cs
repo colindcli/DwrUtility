@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace DwrUtility
@@ -54,6 +55,42 @@ namespace DwrUtility
         public static object CallStaticMethod(Type type, string methodName, object[] param = null)
         {
             return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, param);
+        }
+
+        /// <summary>
+        /// 获取静态变量值
+        /// </summary>
+        /// <param name="assemblyString">dll名称，不包含“.dll”</param>
+        /// <param name="namespaceClass">命名空间.类名</param>
+        /// <param name="fieldName">字段名</param>
+        /// <returns></returns>
+        internal static object GetStaticFieldValue(string assemblyString, string namespaceClass, string fieldName)
+        {
+            var sc = CreateStaticClass(assemblyString, namespaceClass).GetRuntimeFields();
+            return (from item in sc where item.IsStatic where item.Name.IsContains($"<{fieldName}>") select item.GetValue(null)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 设置静态变量值
+        /// </summary>
+        /// <param name="assemblyString">dll名称，不包含“.dll”</param>
+        /// <param name="namespaceClass">命名空间.类名</param>
+        /// <param name="fieldName">字段名</param>
+        /// <param name="value">设置值</param>
+        /// <returns></returns>
+        internal static bool SetStaticFieldValue(string assemblyString, string namespaceClass, string fieldName, object value)
+        {
+            var sc = CreateStaticClass(assemblyString, namespaceClass).GetRuntimeFields();
+            var flag = false;
+            foreach (var item in sc)
+            {
+                if (!item.IsStatic) continue;
+                if (!item.Name.IsContains($"<{fieldName}>")) continue;
+                item.SetValue(null, value);
+                flag = true;
+            }
+
+            return flag;
         }
     }
 }

@@ -1,17 +1,16 @@
-﻿using System;
+﻿using DwrUtility.Trees;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using DwrUtility.Trees;
-using KellermanSoftware.CompareNetObjects;
-using Newtonsoft.Json;
 
 namespace DwrUtility.Test
 {
     [TestClass]
     public class ParentChildTest
     {
-        private static readonly string FileDir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/");
+        private static readonly string FileDir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
 
         [TestMethod]
         public void TestMethod1()

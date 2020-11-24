@@ -344,6 +344,28 @@ namespace DwrUtility.TaskExt
         }
 
         /// <summary>
+        /// 运行单个线程，定时返回结果，直到完成为止；
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="waitTimeMilliseconds">等待时间</param>
+        /// <param name="action">返回次数</param>
+        public static void TaskStatus(Task task, int waitTimeMilliseconds, Action<int> action)
+        {
+            var array = new[] { task };
+            var num = 0;
+            while (true)
+            {
+                var b = Task.WaitAll(array, waitTimeMilliseconds);
+                num++;
+                action?.Invoke(num);
+                if (b)
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// 代替Task.WaitAll()，抛出异常明细
         /// </summary>
         /// <param name="tasks"></param>

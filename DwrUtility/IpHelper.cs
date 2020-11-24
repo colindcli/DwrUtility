@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFULL
+using System;
 using System.Linq;
 using System.Web;
 
@@ -62,3 +63,5 @@ namespace DwrUtility
         //ip 获取地址：http://int.dpool.sina.com.cn/iplookup/iplookup.php?ip=
     }
 }
+
+#endif

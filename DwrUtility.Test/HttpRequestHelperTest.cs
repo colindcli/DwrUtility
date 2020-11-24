@@ -216,7 +216,7 @@ namespace DwrUtility.Test
             sw.Stop();
 
             var b1 = sw.ElapsedMilliseconds < 2500;
-            
+
             var b2 = !result.IsSuccessful && result.StatusCode == HttpStatusCode.RequestTimeout;
             Assert.IsTrue(b1 && b2);
         }
@@ -339,7 +339,7 @@ namespace DwrUtility.Test
                 {"Content", "Content" },
             };
 
-            var path = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory.TrimSlash()}/../../DataFiles/");
+            var path = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
             var files = new List<HttpRequestFileModel>()
             {
                 new HttpRequestFileModel($"{path}test_1.json"),
@@ -354,16 +354,126 @@ namespace DwrUtility.Test
             Assert.IsTrue(content.IsContains("文件数：2；内容：测试&名称=哈#哈；Content；"));
         }
 
+        /// <summary>
+        /// 请求被中止: 未能创建 SSL/TLS 安全通道。
+        /// Could not create SSL/TLS secure channel
+        /// </summary>
         [TestMethod]
         public void TestMethod14()
         {
-            Assert.Inconclusive("请求被中止: 未能创建 SSL/TLS 安全通道。");
+            //Assert.Inconclusive("请求被中止: 未能创建 SSL/TLS 安全通道。");
 
+            //Tls1.3
             var url = "https://www.ddun.com/";
             var result = HttpRequestHelper.GetData(url);
 
             var b1 = result.IsSuccessful && result.StatusCode == HttpStatusCode.OK;
-            Assert.IsTrue(b1, result.Exception.Message);
+            Assert.IsTrue(b1, result.Exception?.Message);
+        }
+
+        /// <summary>
+        /// 文档：https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
+        /// 安装更新：http://www.catalog.update.microsoft.com/search.aspx?q=kb3140245 （win7：https://www.microsoft.com/en-us/download/details.aspx?id=53335）
+        /// 更新补丁：KB3140245
+        /// 
+        /// 请求被中止: 未能创建 SSL/TLS 安全通道。
+        /// Could not create SSL/TLS secure channel
+        /// 
+        ///  TLS1.2 只有在 Win8.1 和 Win 10 上才默认支持
+        /// 
+        /// PowerShell:
+        /// [Net.ServicePointManager]::SecurityProtocol
+        /// [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Ssl3 -bor [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
+        /// </summary>
+        [TestMethod]
+        public void TestMethod14A()
+        {
+            //Assert.Inconclusive("请求被中止: 未能创建 SSL/TLS 安全通道。");
+
+            //Tls1.2
+            var url = "https://ieltsliz.com/";
+            var result = HttpRequestHelper.GetData(url);
+
+            var b1 = result.IsSuccessful && result.StatusCode == HttpStatusCode.OK;
+            Assert.IsTrue(b1, result.Exception?.Message);
+        }
+
+        [TestMethod]
+        public void TestMethod15()
+        {
+            var url = "https://www.baidu.com/link?url=Sy2569H4e4mGS5q7LxmwiFWJdxRJJBhGekKMEwo-Tx_&wd=&eqid=d255d347000484ac000000035f803f0f";
+            var result = HttpRequestHelper.GetData(url, new HttpRequestParam()
+            {
+                AllowAutoRedirect = false,
+            });
+
+            Assert.IsTrue(result.Content.IsContains("0;URL='https://www.baidu.com/'"));
+
+            //var val = result.Headers["Location"];
+            //Assert.IsTrue(val == "https://www.xftsoft.com/news/zixun/sftsoft6.0.html");
+        }
+
+        [TestMethod]
+        public void TestMethod16()
+        {
+            var url = $"{TestConfig.WebUrl}/Cookie/RequestCookie";
+
+            var res = HttpRequestHelper.GetData(url, new HttpRequestParam()
+            {
+                CookieValue = "Hm_lvt_49541358a94eea717001819b500f76c8=1597235189,1597314394,1597320946,1597393762; Hm_lvt_cdf7318ce2f5dc58e89bb436a5989912=1597323174,1597323207,1597330588,1597393762; Hm_lvt_d165b0df9d8b576128f53e461359a530=1597323142,1597323175,1597323207,1597393762; active_2020814=1; Hm_lpvt_cdf7318ce2f5dc58e89bb436a5989912=1597393768; Hm_lpvt_49541358a94eea717001819b500f76c8=1597393768; Hm_lpvt_d165b0df9d8b576128f53e461359a530=1597393768",
+            });
+
+            Assert.IsTrue(res.Content == "1597323142,1597323175,1597323207,1597393762");
+        }
+
+        [TestMethod]
+        public void TestMethod17()
+        {
+            var kvs = new List<KeyValue<long, long>>();
+            var url = $"{TestConfig.WebUrl}/soft/XFTV12.0.zip";
+            var http = HttpRequestHelper.GetData(url, new HttpRequestParam()
+            {
+                Progress = (n, t) =>
+                {
+                    kvs.Add(new KeyValue<long, long>()
+                    {
+                        Key = n,
+                        Value = t,
+                    });
+                }
+            });
+
+            var r1 = kvs.Select(p => p.Key).ToList();
+            var total = r1.Sum(p => p);
+            var r2 = kvs.Select(p => p.Value).ToList();
+
+            Assert.IsTrue(r1.Count == 12 && total == 1340886);
+            Assert.IsTrue(r2.Distinct().Count() == 1 && r2.First() == 1340886);
+        }
+
+        [TestMethod]
+        public void TestMethod17A()
+        {
+            var kvs = new List<KeyValue<long, long>>();
+            var url = $"{TestConfig.WebUrl}/Request/GetChunked/{Guid.NewGuid()}";
+            var http = HttpRequestHelper.GetData(url, new HttpRequestParam()
+            {
+                Progress = (n, t) =>
+                {
+                    kvs.Add(new KeyValue<long, long>()
+                    {
+                        Key = n,
+                        Value = t,
+                    });
+                }
+            });
+
+            var r1 = kvs.Select(p => p.Key).ToList();
+            var total = r1.Sum(p => p);
+            var r2 = kvs.Select(p => p.Value).ToList();
+
+            Assert.IsTrue(r1.Count == 2 && total == 144028);
+            Assert.IsTrue(r2.Distinct().Count() == 1 && r2.First() == -1);
         }
     }
 }

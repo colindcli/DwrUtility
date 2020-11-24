@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 
@@ -84,5 +86,30 @@ namespace DwrUtility.Https
         /// Response Header编码
         /// </summary>
         public string ContentType { get; internal set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<string, string> Headers { get; internal set; }
+    }
+
+    internal class MsStreamModel : MemoryStream
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public Action<long> Progress { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        public override void Write(byte[] array, int offset, int count)
+        {
+            base.Write(array, offset, count);
+            Progress?.Invoke(count);
+        }
     }
 }

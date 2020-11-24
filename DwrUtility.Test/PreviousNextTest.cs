@@ -12,7 +12,7 @@ namespace DwrUtility.Test
     [TestClass]
     public class PreviousNextTest
     {
-        private static readonly string FileDir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/");
+        private static readonly string FileDir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
 
         [TestMethod]
         public void TestMethod1()
