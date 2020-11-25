@@ -48,18 +48,18 @@ namespace DwrUtility.Test
         {
             //如果在黑名单里
             var keyBlack = "BlackList";
-            var blackIpList = CacheHelper.GetCache<List<string>>(keyBlack);
-            if (blackIpList != null && blackIpList.Exists(p => p == ip))
+            var b = CacheHelper.GetCache<List<string>>(keyBlack, out var blackIpList);
+            if (b && blackIpList.Exists(p => p == ip))
             {
                 return true;
             }
 
             //统计是否超出阈值
             var key = "Ips";
-            var cacheIpList = CacheHelper.GetCache<List<string>>(key);
+            var b2 = CacheHelper.GetCache<List<string>>(key, out var cacheIpList);
 
             //超出阈值
-            if (cacheIpList != null && cacheIpList.Count(p => p == ip) > 30)
+            if (b2 && cacheIpList.Count(p => p == ip) > 30)
             {
                 //加入黑名单1小时
                 if (blackIpList == null)
@@ -82,6 +82,23 @@ namespace DwrUtility.Test
             CacheHelper.SetCache(key, cacheIpList, DateTime.Now.AddSeconds(60));
 
             return false;
+        }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            var b = CacheHelper.GetCache<int>("TestInt", out var n);
+            Assert.IsTrue(!b);
+        }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var b1 = CacheHelper.SetCache("TestInsert", 10);
+            var b2 = CacheHelper.SetCache("TestInsert", 100);
+
+            var b = CacheHelper.GetCache<int>("TestInsert", out var n);
+            Assert.IsTrue(b1 && b2 && b && n == 100);
         }
     }
 }

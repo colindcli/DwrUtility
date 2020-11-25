@@ -44,9 +44,9 @@ namespace DwrUtility
         /// <returns></returns>
         public T GetCache()
         {
-            var obj = CacheHelper.GetCache<T>(CacheKey);
+            var flag = CacheHelper.GetCache<T>(CacheKey, out var obj);
 
-            if (obj != null)
+            if (flag)
             {
                 return obj;
             }
@@ -86,7 +86,7 @@ namespace DwrUtility
         // ReSharper disable once MemberCanBePrivate.Global
         public bool RefreshCache()
         {
-            var obj = CacheHelper.GetCache<T>(CacheKey);
+            var obj = GetData();
             return SetCache(obj);
         }
 

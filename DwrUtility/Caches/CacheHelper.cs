@@ -14,15 +14,18 @@ namespace DwrUtility
         /// 获取数据缓存
         /// </summary>
         /// <param name="cacheKey">键</param>
-        public static T GetCache<T>(string cacheKey)
+        /// <param name="m"></param>
+        public static bool GetCache<T>(string cacheKey, out T m)
         {
             var objCache = HttpRuntime.Cache;
             var obj = objCache[cacheKey];
             if (obj == null)
             {
-                return default;
+                m = default;
+                return false;
             }
-            return (T)obj;
+            m = (T)obj;
+            return true;
         }
 
         /// <summary>
