@@ -1,5 +1,4 @@
-﻿#if NETFULL
-using DwrUtility.Registers;
+﻿using DwrUtility.Registers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DwrUtility.Test
@@ -45,5 +44,3 @@ namespace DwrUtility.Test
         }
     }
 }
-
-#endif

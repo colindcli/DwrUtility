@@ -30,7 +30,7 @@ namespace DwrUtility.Web.Controllers
         [HttpGet]
         public void GetChunked(Guid id)
         {
-            var path = $"{DwrUtilitySetting.Root}/Logs/{id}.txt";
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory.TrimSlash()}/Logs/{id}.txt";
             path.CreateDirByFilePath();
 
             var sb = new StringBuilder("START----------");

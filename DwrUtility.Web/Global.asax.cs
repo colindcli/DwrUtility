@@ -24,7 +24,7 @@ namespace DwrUtility.Web
                         DeleteTime = TimeSpan.FromSeconds(20),
                         Directories = new List<string>()
                         {
-                            $"{DwrUtilitySetting.Root}/Logs"
+                            $"{AppDomain.CurrentDomain.BaseDirectory}Logs"
                         }
                     }
                 },

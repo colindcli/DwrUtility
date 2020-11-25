@@ -1,52 +1,42 @@
 [
   {
     "Id": 0,
-    "Name": "Value_0",
-    "Desc": "Desc_0"
+    "Name": "Value_0"
   },
   {
     "Id": 1,
-    "Name": "Value_1",
-    "Desc": "Desc_1"
+    "Name": "Value_1"
   },
   {
     "Id": 2,
-    "Name": "Value_2",
-    "Desc": "Desc_2"
+    "Name": "Value_2"
   },
   {
     "Id": 3,
-    "Name": "Value_3",
-    "Desc": "Desc_3"
+    "Name": "Value_3"
   },
   {
     "Id": 4,
-    "Name": "Value_4",
-    "Desc": "Desc_4"
+    "Name": "Value_4"
   },
   {
     "Id": 5,
-    "Name": "Value_5",
-    "Desc": "Desc_5"
+    "Name": "Value_5"
   },
   {
     "Id": 6,
-    "Name": "Value_6",
-    "Desc": "Desc_6"
+    "Name": "Value_6"
   },
   {
     "Id": 7,
-    "Name": "Value_7",
-    "Desc": "Desc_7"
+    "Name": "Value_7"
   },
   {
     "Id": 8,
-    "Name": "Value_8",
-    "Desc": "Desc_8"
+    "Name": "Value_8"
   },
   {
     "Id": 9,
-    "Name": "Value_9",
-    "Desc": "Desc_9"
+    "Name": "Value_9"
   }
 ]

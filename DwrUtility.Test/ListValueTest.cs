@@ -12,7 +12,7 @@ namespace DwrUtility.Test
     [TestClass]
     public class ListValueTest
     {
-        private static readonly string FileDir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../DataFiles/");
+        private static readonly string FileDir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../DataFiles/");
 
         [TestMethod]
         public void TestMethod1()

@@ -175,17 +175,6 @@ namespace DwrUtility.TaskExt
         }
 
         /// <summary>
-        /// 运行单个线程，定时返回结果，直到完成为止；
-        /// </summary>
-        /// <param name="task"></param>
-        /// <param name="waitTimeMilliseconds">等待时间</param>
-        /// <param name="action">返回次数</param>
-        public static void TaskStatus(this Task task, int waitTimeMilliseconds, Action<int> action)
-        {
-            TaskHelper.TaskStatus(task, waitTimeMilliseconds, action);
-        }
-
-        /// <summary>
         /// 获取各线程任务运行时间
         /// </summary>
         /// <returns>返回个线程运行时间，如果运行失败返回-1</returns>

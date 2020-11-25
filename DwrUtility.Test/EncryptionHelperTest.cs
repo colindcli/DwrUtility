@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DwrUtility.Test
 {
@@ -127,55 +127,6 @@ namespace DwrUtility.Test
             var str = "5Lit5paHZW7kuK3lm73oqp7spJHqta3slrTguIjguLXguJnjgZPjgpPjgavjgaHjga/oqp7oqIA=";
             var enStr = EncryptionHelper.DecryptBase64(str);
             Assert.IsTrue(enStr == "中文en中国語중국어จีนこんにちは語言");
-        }
-
-        [TestMethod]
-        public void TestMethod14()
-        {
-            var str = "中文en中国語중국어จีนこんにちは語言";
-
-            var b1 = EncryptionHelper.RsaGenerateKey(out var privateKey, out var publicKey, 1024);
-            Assert.IsTrue(b1);
-
-            var b2 = EncryptionHelper.RsaEncrypt(str, publicKey, out var result);
-            Assert.IsTrue(b2);
-
-            var b3 = EncryptionHelper.RsaDecrypt(result, privateKey, out var content);
-            Assert.IsTrue(b3);
-
-            Assert.IsTrue(str == content);
-        }
-
-        [TestMethod]
-        public void TestMethod15()
-        {
-            var str = "中文en中国語중국어จีนこんにちは語言";
-
-            var b1 = EncryptionHelper.RsaGenerateKey(out var privateKey, out var publicKey, 2048);
-            Assert.IsTrue(b1);
-
-            var b2 = EncryptionHelper.RsaEncrypt(str, publicKey, out var result);
-            Assert.IsTrue(b2);
-
-            var b3 = EncryptionHelper.RsaDecrypt(result, privateKey, out var content);
-            Assert.IsTrue(b3);
-
-            Assert.IsTrue(str == content);
-        }
-
-        [TestMethod]
-        public void TestMethod16()
-        {
-            var str = "qq";
-
-            var b1 = EncryptionHelper.RsaGenerateKey(out var privateKey, out var publicKey, 1024);
-            Assert.IsTrue(b1);
-
-            var b2 = EncryptionHelper.RsaSignData(str, privateKey, out var signData);
-            Assert.IsTrue(b2);
-
-            var b3 = EncryptionHelper.RsaVerify(str, publicKey, signData);
-            Assert.IsTrue(b3);
         }
     }
 }

@@ -11,13 +11,6 @@ namespace DwrUtility.Test
     [TestClass]
     public class FileHelperTest
     {
-        public FileHelperTest()
-        {
-#if NETSTANDARD
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
-        }
-
         private static bool TestEncoding(string txt)
         {
             var path = $"{TestConfig.TestDir}Logs/{Guid.NewGuid()}.txt";

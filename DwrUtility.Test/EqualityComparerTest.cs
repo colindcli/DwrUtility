@@ -1,8 +1,9 @@
 ﻿using DwrUtility.Lists;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using KellermanSoftware.CompareNetObjects.TypeComparers;
+using StringComparer = System.StringComparer;
 
 namespace DwrUtility.Test
 {
@@ -71,16 +72,16 @@ namespace DwrUtility.Test
                 },
             };
 
-            var rows = list.ToDist((p, q) => p.Id == q.Id).ToList();
+            var rows = list.ToDist(p => new { p.Id }).ToList();
             Assert.IsTrue(rows.Count() == 1);
 
-            var rows2 = list.ToDist((p, q) => p.Value == q.Value).ToList();
+            var rows2 = list.ToDist(p => new { p.Value }).ToList();
             Assert.IsTrue(rows2.Count() == 3);
 
-            var rows3 = list.ToDist((p, q) => string.Equals(p.Value, q.Value, StringComparison.OrdinalIgnoreCase)).ToList();
+            var rows3 = list.ToDist(p => p.Value, StringComparer.OrdinalIgnoreCase).ToList();
             Assert.IsTrue(rows3.Count() == 2);
 
-            var rows4 = list.ToDist((p, q) => string.Equals(p.Value, q.Value, StringComparison.Ordinal)).ToList();
+            var rows4 = list.ToDist(p => p.Value, StringComparer.Ordinal).ToList();
             Assert.IsTrue(rows4.Count() == 3);
         }
 

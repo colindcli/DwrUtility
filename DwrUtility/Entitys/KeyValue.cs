@@ -29,26 +29,4 @@
         /// </summary>
         public string Value { get; set; }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Key<T>
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public T Value { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Key
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Value { get; set; }
-    }
 }

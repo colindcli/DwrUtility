@@ -3,20 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-#pragma warning disable 618
 
 namespace DwrUtility.Https
 {
     /// <summary>
     /// Http请求类
     /// </summary>
-    public abstract class HttpRequestHelper
+    public class HttpRequestHelper
     {
         /// <summary>
         /// Get请求
@@ -62,7 +60,7 @@ namespace DwrUtility.Https
         {
             //HttpWebRequest
             var request = GetRequest(url, param, "GET");
-            var result = GetResponse(request, param.Progress);
+            var result = GetResponse(request);
             request.Abort();
             return result;
         }
@@ -251,7 +249,7 @@ namespace DwrUtility.Https
                 streamWriter.Write(data);
                 streamWriter.Flush();
             }
-            var result = GetResponse(request, param.Progress);
+            var result = GetResponse(request);
             request.Abort();
             return result;
         }
@@ -313,7 +311,7 @@ namespace DwrUtility.Https
                 }
             }
 
-            var result = GetResponse(request, param.Progress);
+            var result = GetResponse(request);
             request.Abort();
             return result;
         }
@@ -330,8 +328,6 @@ namespace DwrUtility.Https
             HttpWebRequest request;
             if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
                 request = WebRequest.Create(url) as HttpWebRequest;
                 if (request != null)
@@ -349,15 +345,7 @@ namespace DwrUtility.Https
                 throw new Exception("创建HttpWebRequest失败");
             }
 
-            request.AllowAutoRedirect = param.AllowAutoRedirect;
-            if (!string.IsNullOrWhiteSpace(param.CookieValue))
-            {
-                request.Headers.Add("Cookie", param.CookieValue);
-            }
-            else if (param.CookieContainer != null)
-            {
-                request.CookieContainer = param.CookieContainer;
-            }
+            request.CookieContainer = param.CookieContainer;
             request.Timeout = param.Timeout;
             request.ContinueTimeout = -1;
             request.ReadWriteTimeout = -1;
@@ -366,7 +354,6 @@ namespace DwrUtility.Https
             request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.9");
             request.UserAgent = param.UserAgent;
             request.Accept = param.Accept;
-            request.Referer = param.Referer ?? url;
 
             return request;
         }
@@ -375,9 +362,8 @@ namespace DwrUtility.Https
         /// 获取数据
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="progress"></param>
         /// <returns></returns>
-        private static HttpResponseResult GetResponse(HttpWebRequest request, Action<long, long> progress)
+        private static HttpResponseResult GetResponse(HttpWebRequest request)
         {
             HttpWebResponse response = null;
             var result = new HttpResponseResult();
@@ -389,35 +375,29 @@ namespace DwrUtility.Https
                 result.StatusCode = response.StatusCode;
                 result.ContentType = response.Headers.Get("Content-Type");
 
-                var keys = response.Headers.AllKeys.Distinct().ToList();
-                result.Headers = keys.ToDictionary(key => key, key => response.Headers.Get(key));
-
                 var stream = response.GetResponseStream();
                 if (stream != null)
                 {
-                    // ReSharper disable once ConstantConditionalAccessQualifier
-                    switch (response.ContentEncoding?.ToLower())
+                    switch (response.ContentEncoding.ToLower())
                     {
                         case "gzip":
                             {
                                 using (var zipStream = new GZipStream(stream, CompressionMode.Decompress))
                                 {
+                                    //成功
+                                    result.IsSuccessful = true;
+
                                     //字节
                                     using (var ms = new MemoryStream())
                                     {
-                                        var total = response.ContentLength;
-                                        var buffer = new byte[131072];
+                                        var buffer = new byte[16384];
                                         int count;
                                         while ((count = zipStream.Read(buffer, 0, buffer.Length)) > 0)
                                         {
                                             ms.Write(buffer, 0, count);
-                                            progress?.Invoke(count, total);
                                         }
                                         result.RawBytes = ms.ToArray();
                                     }
-
-                                    //成功
-                                    result.IsSuccessful = true;
                                 }
                                 break;
                             }
@@ -425,43 +405,39 @@ namespace DwrUtility.Https
                             {
                                 using (var deflateStream = new DeflateStream(stream, CompressionMode.Decompress))
                                 {
+                                    //成功
+                                    result.IsSuccessful = true;
+
                                     //字节
                                     using (var ms = new MemoryStream())
                                     {
-                                        var total = response.ContentLength;
-                                        var buffer = new byte[131072];
+                                        var buffer = new byte[16384];
                                         int count;
                                         while ((count = deflateStream.Read(buffer, 0, buffer.Length)) > 0)
                                         {
                                             ms.Write(buffer, 0, count);
-                                            progress?.Invoke(count, total);
                                         }
                                         result.RawBytes = ms.ToArray();
                                     }
-
-                                    //成功
-                                    result.IsSuccessful = true;
                                 }
                                 break;
                             }
                         default:
                             {
+                                //成功
+                                result.IsSuccessful = true;
+
                                 //字节
                                 using (var ms = new MemoryStream())
                                 {
-                                    var total = response.ContentLength;
-                                    var buffer = new byte[131072];
+                                    var buffer = new byte[16384];
                                     int count;
                                     while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
                                     {
                                         ms.Write(buffer, 0, count);
-                                        progress?.Invoke(count, total);
                                     }
                                     result.RawBytes = ms.ToArray();
                                 }
-
-                                //成功
-                                result.IsSuccessful = true;
                                 break;
                             }
                     }

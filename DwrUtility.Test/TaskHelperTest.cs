@@ -76,11 +76,7 @@ namespace DwrUtility.Test
             catch (Exception ex)
             {
                 var msg = ex.ToString();
-#if NETSTANDARD
-                Assert.IsTrue(msg.IsContains("One or more errors occurred."));
-#else
                 Assert.IsTrue(msg.IsContains("输入字符串的格式不正确") && msg.IsContains("该字符串未被识别为有效的 DateTime"));
-#endif
             }
         }
 

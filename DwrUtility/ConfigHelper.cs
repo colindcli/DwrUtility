@@ -1,5 +1,4 @@
-﻿#if NETFULL
-using System;
+﻿using System;
 using System.Configuration;
 using System.IO;
 using System.Xml;
@@ -338,4 +337,3 @@ namespace DwrUtility
         #endregion
     }
 }
-#endif

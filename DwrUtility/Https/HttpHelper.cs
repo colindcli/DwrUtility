@@ -48,9 +48,6 @@ namespace DwrUtility.Https
             var coding = Encoding.UTF8;
             try
             {
-#if NETSTANDARD
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
                 coding = Encoding.GetEncoding(code);
             }
             catch (Exception)
@@ -60,7 +57,7 @@ namespace DwrUtility.Https
 
             return coding;
         }
-
+        
         /// <summary>
         /// 获取Header编码 [text/html; charset=UTF-8]
         /// </summary>

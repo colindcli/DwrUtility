@@ -1,9 +1,9 @@
-﻿using DwrUtility.CreanFiles;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using DwrUtility.CreanFiles;
 
 namespace DwrUtility.Test
 {
@@ -13,7 +13,7 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var root = DwrUtilitySetting.Root;
+            var root = AppDomain.CurrentDomain.BaseDirectory;
             var dir = $"{root}/testFolder";
             if (!Directory.Exists(dir))
             {

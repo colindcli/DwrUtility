@@ -222,7 +222,7 @@ namespace DwrUtility.Images
                 return false;
             }
 
-            var tempPath = $"{DwrUtilitySetting.Root}/Files/Temp/{Guid.NewGuid()}";
+            var tempPath = $"{AppDomain.CurrentDomain.BaseDirectory}Files/Temp/{Guid.NewGuid()}";
             tempPath.CreateDirByFilePath();
 
             //缩略图片

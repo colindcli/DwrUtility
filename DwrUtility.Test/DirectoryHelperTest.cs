@@ -1,7 +1,9 @@
 ﻿using DwrUtility.Test.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace DwrUtility.Test
 {
@@ -53,7 +55,7 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod4()
         {
-            var dir = Path.GetFullPath($"{DwrUtilitySetting.Root}/../../../Html/");
+            var dir = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}/../../Html/");
             DirectoryHelper.GetDirectoryFiles(dir, out var dirs, out var files);
 
             Assert.IsTrue(dirs.Count == 3 && files.Count == 4);
@@ -107,7 +109,7 @@ namespace DwrUtility.Test
         [TestMethod]
         public void TestMethod8()
         {
-            var dir = $"{DwrUtilitySetting.Root}/{Guid.NewGuid()}";
+            var dir = $"{AppDomain.CurrentDomain.BaseDirectory.TrimSlash()}/{Guid.NewGuid()}";
             DirectoryHelper.GetDirectoryFiles(dir, out var dirs, out var files);
             Assert.IsTrue(dirs.Count == 0 && files.Count == 0);
 

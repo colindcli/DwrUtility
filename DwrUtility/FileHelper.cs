@@ -91,9 +91,6 @@ namespace DwrUtility
             var encoding = bt.GetEncoding();
             if (encoding != null)
             {
-#if NETSTANDARD
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
                 return File.ReadAllText(path, Encoding.GetEncoding(encoding));
             }
 
@@ -101,9 +98,6 @@ namespace DwrUtility
             var txt = File.ReadAllText(path, Encoding.UTF8);
             if (txt.Contains("�"))
             {
-#if NETSTANDARD
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-#endif
                 return File.ReadAllText(path, Encoding.GetEncoding("gb2312"));
             }
 

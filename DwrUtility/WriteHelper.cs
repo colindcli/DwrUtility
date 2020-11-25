@@ -27,7 +27,7 @@ namespace DwrUtility
             {
                 content = "";
             }
-            var path = $"{DwrUtilitySetting.Root}/Logs/log.txt";
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEndSlash()}/Logs/log.txt";
             path.CreateDirByFilePath();
 
             lock (Obj)
@@ -41,7 +41,7 @@ namespace DwrUtility
                     //备份
                     if (isBak)
                     {
-                        var newPath = $"{DwrUtilitySetting.Root}/Logs/log_{Ticks}.txt";
+                        var newPath = $"{AppDomain.CurrentDomain.BaseDirectory.TrimEndSlash()}/Logs/log_{Ticks}.txt";
                         if (File.Exists(newPath))
                         {
                             File.Delete(newPath);
@@ -55,7 +55,7 @@ namespace DwrUtility
                     }
                 }
 
-                File.AppendAllText(path, $"{DateTime.Now:HH:mm:ss}：{content}\r\n\r\n", Encoding.UTF8);
+                File.AppendAllText(path, $"{DateTime.Now:HH:mm:ss}：{content}\r\n\r\n", Encoding.GetEncoding("gb2312"));
             }
         }
     }
